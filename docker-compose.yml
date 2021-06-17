@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  market-place:
+    image: x89/market-place
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:80
