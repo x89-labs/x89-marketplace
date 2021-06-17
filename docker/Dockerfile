@@ -4,13 +4,13 @@ LABEL name="x89/market-place"
 FROM node:12.20.1-alpine as build
 WORKDIR /app
 RUN apk add yarn
-RUN npm install react-scripts -g --silent
+RUN yarn install react-scripts -g --silent
 
 COPY ./package.json ./
-RUN npm install
+RUN yarn install
 
 COPY . .
-RUN npm run build
+RUN yarn run build
 
 FROM base
 COPY --from=build /app/build /usr/share/nginx/html

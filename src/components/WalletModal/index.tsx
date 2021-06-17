@@ -346,7 +346,7 @@ export default function WalletModal({
             <AutoRow style={{ flexWrap: 'nowrap' }}>
               <TYPE.main fontSize={14}>
                 <Trans>
-                  By connecting a wallet, you agree to Uniswap Labs’{' '}
+                  By connecting a wallet, you agree to X89 Labs’{' '}
                   <ExternalLink href="https://uniswap.org/terms-of-service/">Terms of Service</ExternalLink> and
                   acknowledge that you have read and understand the{' '}
                   <ExternalLink href="https://uniswap.org/disclaimer/">Uniswap protocol disclaimer</ExternalLink>.
