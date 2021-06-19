@@ -11,23 +11,6 @@ import ErrorBoundary from '../components/ErrorBoundary'
 import { ApplicationModal } from '../state/application/actions'
 import { useModalOpen, useToggleModal } from '../state/application/hooks'
 import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
-import { RedirectDuplicateTokenIds } from './AddLiquidity/redirects'
-import Earn from './Earn'
-import Manage from './Earn/Manage'
-import MigrateV2 from './MigrateV2'
-import MigrateV2Pair from './MigrateV2/MigrateV2Pair'
-import Pool from './Pool'
-import PoolV2 from './Pool/v2'
-import PoolFinder from './PoolFinder'
-import RemoveLiquidity from './RemoveLiquidity'
-import RemoveLiquidityV3 from './RemoveLiquidity/V3'
-import Swap from './Swap'
-import { OpenClaimAddressModalAndRedirectToSwap, RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
-import Vote from './Vote'
-import VotePage from './Vote/VotePage'
-import { RedirectDuplicateTokenIdsV2 } from './AddLiquidityV2/redirects'
-import { PositionPage } from './Pool/PositionPage'
-import AddLiquidity from './AddLiquidity'
 import ApeModeQueryParamReader from 'hooks/useApeModeQueryParamReader'
 import Create from './Create'
 import { Multiple } from './Create/CreateDetail/Multiple'
@@ -38,7 +21,6 @@ const AppWrapper = styled.div`
   flex-flow: column;
   align-items: flex-start;
 `
-
 const BodyWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -47,7 +29,6 @@ const BodyWrapper = styled.div`
   align-items: center;
   flex: 1;
   z-index: 1;
-
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 16px;
     padding-top: 6rem;
@@ -93,7 +74,6 @@ export default function App() {
               <Route exact strict path="/create" component={Create} />
               <Route exact strict path={`/create/erc721`} component={Single} />
               <Route exact strict path="/create/erc1155" component={Multiple} />
-              <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>
           <Marginer />
