@@ -171,16 +171,16 @@ export const Multiple = ({ history }: RouteComponentProps) => {
           }}
         >
           <FormGroup>
-            <Label className="labelUpload">PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</Label>
+            <Label className="labelUpload">{`PNG, GIF, WEBP, MP4 or MP3. Max 100mb.`}</Label>
             <br />
             <Input type="file" name="file" />
           </FormGroup>
         </div>
         <div>
-          <h2>Put on marketplace</h2>
+          <h2>{`Put on marketplace`}</h2>
           <div>
-            <p>Enter price to allow users instantly purchase your NFT</p>
-            <p>Put your new NFT on Rarible's marketplace</p>
+            <p>{`Enter price to allow users instantly purchase your NFT`}</p>
+            <p>{`Put your new NFT on Rarible's marketplace`}</p>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               <Create>
                 <div>
