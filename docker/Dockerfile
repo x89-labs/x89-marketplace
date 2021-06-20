@@ -1,7 +1,7 @@
 FROM nginx:1.19.6-alpine as base
 LABEL name="x89/market-place"
 
-FROM node:12.20.1-alpine as build
+FROM node:14.17.1-alpine as build
 WORKDIR /app
 RUN apk add yarn
 RUN npm install react-scripts -g --silent

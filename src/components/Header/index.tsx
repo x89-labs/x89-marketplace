@@ -344,8 +344,11 @@ export default function Header() {
         </Title>
       </HeaderRow>
       <HeaderLinks>
-        <StyledNavLink id={`swap-nav-link`} to={'/explore'}>
+        <StyledNavLink id={`explore-nav-link`} to={'/explore'}>
           <Trans>Explore</Trans>
+        </StyledNavLink>
+        <StyledNavLink id={`stats-nav-link`} to={'/stats'}>
+          <Trans>Stats</Trans>
         </StyledNavLink>
         <StyledNavLink
           id={`pool-nav-link`}
