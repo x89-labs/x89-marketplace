@@ -48,16 +48,9 @@ const Marginer = styled.div`
   margin-top: 5rem;
 `
 
-function TopLevelModals() {
-  const open = useModalOpen(ApplicationModal.ADDRESS_CLAIM)
-  const toggle = useToggleModal(ApplicationModal.ADDRESS_CLAIM)
-  return <AddressClaimModal isOpen={open} onDismiss={toggle} />
-}
-
 export default function App() {
   return (
     <ErrorBoundary>
-      <Route component={GoogleAnalyticsReporter} />
       <Route component={DarkModeQueryParamReader} />
       <Route component={ApeModeQueryParamReader} />
       <AppWrapper>
@@ -65,9 +58,6 @@ export default function App() {
           <Header />
         </HeaderWrapper>
         <BodyWrapper>
-          <Popups />
-          <Polling />
-          <TopLevelModals />
           <Web3ReactManager>
             <Switch>
               <Route exact strict path="/explore" component={Explore} />
