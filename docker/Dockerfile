@@ -4,7 +4,7 @@ LABEL name="x89/market-place"
 FROM node:14.17.1-alpine as build
 WORKDIR /app
 RUN apk add yarn
-RUN npm install react-scripts -g --silent
+
 
 COPY ./package.json ./
 RUN npm install
