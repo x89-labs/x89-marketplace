@@ -2,7 +2,9 @@ import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { FormGroup, Label, Input } from 'reactstrap'
 import * as Icon from 'react-feather'
+import * as Asset from '../../assets'
 import styled from 'styled-components'
+import { useIsDarkMode } from 'state/user/hooks'
 interface ico {
   icon: any
   name: string
@@ -19,10 +21,11 @@ const FeatherIcon = (icon: ico) => {
     </div>
   )
 }
+
 export const Multiple = ({ history }: RouteComponentProps) => {
   const Around = styled.div`
     p {
-      color: rgba(4, 4, 5, 0.5);
+      color: ${({ theme }) => theme.text5};
       fontweight: 500;
     }
 
@@ -31,7 +34,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
     }
 
     .labelUpload {
-      color: rgba(4, 4, 5, 0.5);
+      color: ${({ theme }) => theme.text5};
     }
     .unlockOncePurchased {
       color: linear-gradient(to right, blue, pink);
@@ -109,6 +112,20 @@ export const Multiple = ({ history }: RouteComponentProps) => {
       align-items: center;
       text-align: center;
     }
+    .marketplace {
+      display: flex;
+      flex-direction: column;
+      width: 220px;
+      height: 140px;
+      border: 2px solid lightgray;
+      border-radius: 16px;
+      padding: 0 20px;
+      margin: 10px;
+      cursor: pointer;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
 
     .image {
       width: 40px;
@@ -130,7 +147,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
 
     .content {
       border-radius: 16px;
-      border: 1px solid rgba(4, 4, 5, 0.1);
+      border: 1px solid ${({ theme }) => theme.text5};
       height: 320px;
       width: 240px;
       padding: 22px 24px;
@@ -146,13 +163,32 @@ export const Multiple = ({ history }: RouteComponentProps) => {
     }
 
     p {
-      color: rgba(4, 4, 5, 0.5);
+      color: ${({ theme }) => theme.text5};
       font-weight: bold;
     }
   `
 
   const CreateType = () => {
     return 'multiple'
+  }
+  const darkMode = useIsDarkMode()
+
+  const FixedPrice = () => {
+    return (
+      <div className="marketplace">
+        <Asset.FixedPrice className="image" fill={darkMode ? '#ffffff' : '#000000'} />
+        <h4>Fixed price</h4>
+      </div>
+    )
+  }
+
+  const UnlimitedAuction = () => {
+    return (
+      <div className="marketplace">
+        <Asset.UnlimitedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
+        <h4>Unlimited auction</h4>
+      </div>
+    )
   }
 
   return (
@@ -184,26 +220,8 @@ export const Multiple = ({ history }: RouteComponentProps) => {
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               <Create>
                 <div>
-                  <div className="create">
-                    <img
-                      className="image"
-                      src="https://rarible.com/static/a1ad72f9c7e601882faf9d4ce2ae275f.svg"
-                      alt="img"
-                    />
-                    <h4>Fixed price</h4>
-                  </div>
-                  <div className="create">
-                    <img src="https://rarible.com/static/3964cd18f98b562e56c6c74062686822.svg" alt="img" />
-                    <h4>Timed auction</h4>
-                  </div>
-                  <div className="create">
-                    <img
-                      className="image"
-                      src="https://rarible.com/static/d392e670a870dc4ef09d4f1ed08d6abd.svg"
-                      alt="img"
-                    />
-                    <h4>Unlimited auction</h4>
-                  </div>
+                  <FixedPrice />
+                  <UnlimitedAuction />
                 </div>
               </Create>
             </div>

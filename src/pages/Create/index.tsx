@@ -106,11 +106,12 @@ export default function Create({ history }: RouteComponentProps) {
   const Around = styled.div`
     p {
       margin: 44px 0;
-      color: rgba(4, 4, 5, 0.5);
+      color: ${({ theme }) => theme.text5};
       fontweight: 500;
     }
     h4 {
       text-align: center;
+      color: #000000;
     }
     h3:hover {
       cursor: pointer;

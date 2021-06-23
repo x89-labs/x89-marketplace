@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { FormGroup, Label } from 'reactstrap'
-
 import * as Icon from 'react-feather'
 import styled from 'styled-components'
-
+import useFilePicker from 'hooks/useFilePicker'
+import { useAppDispatch, useAppSelector } from 'state/hooks'
+import * as Asset from '../../assets'
+import { deleteFile, fileChange } from 'state/mint/actions'
+import { useIsDarkMode } from 'state/user/hooks'
+import { AppState } from 'state'
+import { MintState } from 'state/mint/reducer'
+import { useMintState } from 'state/mint/hooks'
 interface ico {
   icon: any
   name: string
@@ -13,6 +19,17 @@ interface ico {
 const icons: ico = {
   icon: <Icon.ArrowLeft />,
   name: 'Manage collectible type',
+}
+
+enum SwitchType {
+  FixedPrice = 1,
+  TimedAuction,
+  UnlimitedAuction,
+}
+
+const iconImage: ico = {
+  icon: <Icon.Image />,
+  name: 'Choose File',
 }
 
 const FeatherIcon = (icon: ico) => {
@@ -25,10 +42,16 @@ const FeatherIcon = (icon: ico) => {
 }
 
 export const Single = ({ history }: RouteComponentProps) => {
+  const [show, setShow] = useState(true)
+  const dispatch = useAppDispatch()
+  const state = useMintState()
+  const [switchType, setSwitchType] = useState<SwitchType>()
+
   const Around = styled.div`
     p {
-      color: rgba(4, 4, 5, 0.5);
+      color: ${({ theme }) => theme.text5};
       fontweight: 500;
+      line-height: 0.5;
     }
 
     h3:hover {
@@ -36,17 +59,16 @@ export const Single = ({ history }: RouteComponentProps) => {
     }
 
     .labelUpload {
-      color: rgba(4, 4, 5, 0.5);
+      color: ${({ theme }) => theme.text5};
     }
 
     .unlockOncePurchased {
-      color: linear-gradient(to right, blue, pink);
+      color: ${({ theme }) => theme.text5};
     }
 
     .form__group {
       position: relative;
       padding: 15px 0 0;
-      margin-top: 10px;
       width: 50%;
     }
 
@@ -56,7 +78,6 @@ export const Single = ({ history }: RouteComponentProps) => {
       border: 0;
       border-bottom: 2px solid gray;
       outline: 0;
-      padding: 7px 0;
       background: transparent;
       transition: border-color 0.2s;
 
@@ -81,7 +102,7 @@ export const Single = ({ history }: RouteComponentProps) => {
       padding-bottom: 6px;
       font-weight: bold;
       border-width: 3px;
-      border-image: linear-gradient(to right, #11998e, #38ef7d);
+      border-image: ${({ theme }) => theme.text5};
       border-image-slice: 1;
     }
 
@@ -141,13 +162,10 @@ export const Single = ({ history }: RouteComponentProps) => {
 
     .content {
       border-radius: 16px;
-      border: 1px solid rgba(4, 4, 5, 0.1);
+      border: 1px solid ${({ theme }) => theme.text5};
       height: 320px;
       width: 240px;
       padding: 22px 24px;
-      align-items: center;
-      text-align: center;
-      justify-content: center;
     }
 
     .unlockContent {
@@ -157,19 +175,60 @@ export const Single = ({ history }: RouteComponentProps) => {
     }
 
     p {
-      color: rgba(4, 4, 5, 0.5);
+      color: ${({ theme }) => theme.text5};
       font-weight: bold;
     }
+    .image {
+      margin-top: 86px;
+      margin-left: 8px;
+      width: 90%;
+      height: 100px;
+      border-radius: 5px;
+    }
   `
+  const UploadFile = styled.div`
+    .UploadFile {
+      width: 460px;
+      height: auto;
+      padding: 32px 60px 32px 60px;
+      border: 1px dashed lightgray;
+      borderradius: 16px;
+      position: relative;
+    }
+  `
+  const CloseBtn = styled.div`
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    position: absolute;
+    top: 20px;
+    right: 62px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    .closeBtn {
+      margin: 10px;
+    }
+  `
+
+  const [openFileSelector, { plainFiles }] = useFilePicker({
+    multiple: false,
+    accept: ['.png', '.jpg', '.mp4', '.mov'],
+    readAs: 'DataURL',
+  })
+
+  useEffect(() => {
+    dispatch(fileChange({ value: plainFiles[0] }))
+  }, [plainFiles])
 
   const CreateType = () => {
     return 'single'
   }
+  const darkMode = useIsDarkMode()
 
   const FixedPrice = () => {
     return (
-      <div className="marketplace">
-        <img className="image" src="https://rarible.com/static/a1ad72f9c7e601882faf9d4ce2ae275f.svg" alt="img" />
+      <div className="marketplace" onClick={() => setSwitchType(SwitchType.FixedPrice)}>
+        <Asset.FixedPrice className="image" fill={darkMode ? '#ffffff' : '#000000'} />
         <h4>Fixed price</h4>
       </div>
     )
@@ -177,8 +236,8 @@ export const Single = ({ history }: RouteComponentProps) => {
 
   const TimedAuction = () => {
     return (
-      <div className="marketplace">
-        <img src="https://rarible.com/static/3964cd18f98b562e56c6c74062686822.svg" alt="img" />
+      <div className="marketplace" onClick={() => setSwitchType(SwitchType.TimedAuction)}>
+        <Asset.TimedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
         <h4>Timed auction</h4>
       </div>
     )
@@ -186,8 +245,8 @@ export const Single = ({ history }: RouteComponentProps) => {
 
   const UnlimitedAuction = () => {
     return (
-      <div className="marketplace">
-        <img className="image" src="https://rarible.com/static/d392e670a870dc4ef09d4f1ed08d6abd.svg" alt="img" />
+      <div className="marketplace" onClick={() => setSwitchType(SwitchType.UnlimitedAuction)}>
+        <Asset.UnlimitedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
         <h4>Unlimited auction</h4>
       </div>
     )
@@ -199,24 +258,30 @@ export const Single = ({ history }: RouteComponentProps) => {
         <h3 onClick={() => history.goBack()}>{FeatherIcon(icons)}</h3>
         <h1>Create {CreateType()} collectible</h1>
         <h2>Upload file</h2>
-        <div
-          style={{
-            width: '460px',
-            height: '140px',
-            padding: '32px 60px 32px 60px',
-            border: '1px dashed lightgray',
-            borderRadius: '16px',
-          }}
-        >
-          <FormGroup>
-            <Label className="labelUpload">PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</Label>
-            <br />
-            <input type="file" />
-          </FormGroup>
-        </div>
+        <UploadFile>
+          <div className="UploadFile">
+            <FormGroup hidden={state.file ? true : false}>
+              <Label className="labelUpload">PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</Label>
+              <br />
+              <h3 onClick={() => openFileSelector()}>{FeatherIcon(iconImage)}</h3>
+            </FormGroup>
+            <FormGroup hidden={state.file ? false : true}>
+              <CloseBtn
+                onClick={() => {
+                  dispatch(deleteFile({ value: state.file }))
+                }}
+              >
+                <Asset.Close width={8} height={8} className="closeBtn" fill={darkMode ? '#fff' : '#000'} />
+              </CloseBtn>
+              {state.file && (
+                <img src={URL.createObjectURL(state.file)} width={'90%'} height={240} style={{ borderRadius: 10 }} />
+              )}
+            </FormGroup>
+          </div>
+        </UploadFile>
         <div>
           <h2>Put on marketplace</h2>
-          <div>
+          <div style={{ marginBottom: 20 }}>
             <p>Enter price to allow users instantly purchase your NFT</p>
             <p>{`Put your new NFT on Rarible's marketplace`}</p>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -228,6 +293,56 @@ export const Single = ({ history }: RouteComponentProps) => {
                 </div>
               </Create>
             </div>
+          </div>
+
+          <div>
+            {switchType === SwitchType.FixedPrice && (
+              <div>
+                <h3 style={{ margin: 0 }}>Price</h3>
+                <div className="form__group field">
+                  <input
+                    type="input"
+                    className="form__field"
+                    placeholder="Enter price for one piece ..."
+                    name="name"
+                    id="name"
+                  />
+                </div>
+                <p>Service fee 2.5%</p>
+                <p>You will receive 0 ETH0</p>
+              </div>
+            )}
+            {switchType === SwitchType.TimedAuction && (
+              <div>
+                <h3 style={{ margin: 0 }}>Minimum bid</h3>
+                <div className="form__group field">
+                  <input
+                    type="input"
+                    className="form__field"
+                    placeholder="Enter price for one piece ..."
+                    name="name"
+                    id="name"
+                  />
+                </div>
+                <p>Bids below this amount won’t be allowed.</p>
+              </div>
+            )}
+            {switchType === SwitchType.UnlimitedAuction && (
+              <div>
+                <h3 style={{ margin: 0 }}>Price</h3>
+                <div className="form__group field">
+                  <input
+                    type="input"
+                    className="form__field"
+                    placeholder="Enter price for one piece ..."
+                    name="name"
+                    id="name"
+                  />
+                </div>
+                <p>Service fee 2.5%</p>
+                <p>You will receive 0 ETH0</p>
+              </div>
+            )}
           </div>
           <div>
             <h2 style={{ color: 'blue' }}>Unlock once purchased</h2>
@@ -250,7 +365,8 @@ export const Single = ({ history }: RouteComponentProps) => {
           <div className="pr">
             <h4>Preview</h4>
             <div className="content">
-              <p> Upload file to preview your brand new NFT</p>
+              <p hidden={state.file ? true : false}> Upload file to preview your brand new NFT</p>
+              {state.file && <img src={URL.createObjectURL(state.file)} className="image" />}
             </div>
           </div>
         </div>
