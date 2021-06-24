@@ -11,6 +11,7 @@ import { useIsDarkMode } from 'state/user/hooks'
 import { AppState } from 'state'
 import { MintState } from 'state/mint/reducer'
 import { useMintState } from 'state/mint/hooks'
+import { Ipfs } from 'client/ipfs'
 interface ico {
   icon: any
   name: string
@@ -220,6 +221,9 @@ export const Single = ({ history }: RouteComponentProps) => {
     dispatch(fileChange({ value: plainFiles[0] }))
   }, [plainFiles])
 
+  const onSubmit = () => {
+    state.file && Ipfs.add(URL.createObjectURL(state.file))
+  }
   const CreateType = () => {
     return 'single'
   }
@@ -227,7 +231,13 @@ export const Single = ({ history }: RouteComponentProps) => {
 
   const FixedPrice = () => {
     return (
-      <div className="marketplace" onClick={() => setSwitchType(SwitchType.FixedPrice)}>
+      <div
+        className="marketplace"
+        onClick={() => setSwitchType(SwitchType.FixedPrice)}
+        style={{
+          border: switchType === SwitchType.FixedPrice ? '2px solid rgb(0, 102, 255)' : '2px solid lightgray',
+        }}
+      >
         <Asset.FixedPrice className="image" fill={darkMode ? '#ffffff' : '#000000'} />
         <h4>Fixed price</h4>
       </div>
@@ -236,7 +246,13 @@ export const Single = ({ history }: RouteComponentProps) => {
 
   const TimedAuction = () => {
     return (
-      <div className="marketplace" onClick={() => setSwitchType(SwitchType.TimedAuction)}>
+      <div
+        className="marketplace"
+        onClick={() => setSwitchType(SwitchType.TimedAuction)}
+        style={{
+          border: switchType === SwitchType.TimedAuction ? '2px solid rgb(0, 102, 255)' : '2px solid lightgray',
+        }}
+      >
         <Asset.TimedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
         <h4>Timed auction</h4>
       </div>
@@ -245,7 +261,13 @@ export const Single = ({ history }: RouteComponentProps) => {
 
   const UnlimitedAuction = () => {
     return (
-      <div className="marketplace" onClick={() => setSwitchType(SwitchType.UnlimitedAuction)}>
+      <div
+        className="marketplace"
+        onClick={() => setSwitchType(SwitchType.UnlimitedAuction)}
+        style={{
+          border: switchType === SwitchType.UnlimitedAuction ? '2px solid rgb(0, 102, 255)' : '2px solid lightgray',
+        }}
+      >
         <Asset.UnlimitedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
         <h4>Unlimited auction</h4>
       </div>
@@ -276,6 +298,14 @@ export const Single = ({ history }: RouteComponentProps) => {
               {state.file && (
                 <img src={URL.createObjectURL(state.file)} width={'90%'} height={240} style={{ borderRadius: 10 }} />
               )}
+              <p
+                onClick={() => {
+                  onSubmit()
+                }}
+                style={{ cursor: 'pointer' }}
+              >
+                Ok
+              </p>
             </FormGroup>
           </div>
         </UploadFile>
