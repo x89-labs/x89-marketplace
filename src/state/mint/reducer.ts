@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { Field, resetMintState, typeInput } from './actions'
+import { deleteFile, Field, fileChange, resetMintState, typeInput } from './actions'
 
 export interface MintState {
   readonly independentField: Field
@@ -8,6 +8,8 @@ export interface MintState {
   readonly startPriceTypedValue: string // for the case when there's no liquidity
   readonly leftRangeTypedValue: string
   readonly rightRangeTypedValue: string
+  file?: File
+  files?: File[]
 }
 
 export const initialState: MintState = {
@@ -22,6 +24,15 @@ export const initialState: MintState = {
 export default createReducer<MintState>(initialState, (builder) =>
   builder
     .addCase(resetMintState, () => initialState)
+    .addCase(fileChange, (state, action) => {
+      if (action) {
+        state.file = action.payload.value
+        // state.files = action.payload.value
+      }
+    })
+    .addCase(deleteFile, (state, action) => {
+      state.file = undefined
+    })
     .addCase(typeInput, (state, { payload: { field, typedValue, noLiquidity } }) => {
       if (noLiquidity) {
         // they're typing into the field they've last typed in
