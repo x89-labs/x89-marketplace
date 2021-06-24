@@ -5,7 +5,6 @@ import * as Icon from 'react-feather'
 import singger_create from '../../assets/images/nft-create/singger_create.png'
 import singger_create_timed_auctions from '../../assets/images/nft-create/singger_create_timed_auctions.png'
 import multi_create from '../../assets/images/nft-create/multi_create.png'
-import learn_more_icon from '../../assets/images/nft-create/learn_more_icon.png'
 import styled from 'styled-components'
 
 interface ico {
@@ -126,51 +125,6 @@ export default function Create({ history }: RouteComponentProps) {
     return history.push('/create/erc1155')
   }
 
-  const LearnMore = () => {
-    alert('learn more')
-  }
-
-  const LearnMoreFixed = styled.div`
-    div {
-    display: flex;
-    flexDirection: row;
-    height: 42px;
-    position: fixed;
-    left: 20px;
-    bottom: 20px;
-    text-align: center;
-    border-radius: 21px
-    border: 1px solid lightgray; 
-    box-shadow: 5px 5px 5px lightgray;
-    }
-
-    p {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #12e0da;
-      margin-right: 3px;
-      cursor: pointer;
-    }
-
-    .weUse {
-      color: black;
-      fontWeight: bold;
-      fontSize: 14px;
-      margin-left: 10px;
-    }
-
-    p:hover {
-      color: black;
-    }  
-    img {
-      width: 14px;
-      height: 14px;
-      margin: auto;
-      display: block;
-    }
-  `
-
   const SingleComponent = () => {
     return (
       <Create>
@@ -211,16 +165,6 @@ export default function Create({ history }: RouteComponentProps) {
         </div>
         <p>We do not own your private keys and cannot access your funds without your confirmation</p>
       </Around>
-
-      <LearnMoreFixed>
-        <div>
-          <p className="weUse">We use</p>
-          <img style={{}} src={learn_more_icon} alt="" />
-          <p className="learnmore" onClick={LearnMore}>
-            Learn more
-          </p>
-        </div>
-      </LearnMoreFixed>
     </>
   )
 }
