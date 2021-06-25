@@ -8,10 +8,10 @@ import { useAppDispatch, useAppSelector } from 'state/hooks'
 import * as Asset from '../../assets'
 import { deleteFile, fileChange } from 'state/mint/actions'
 import { useIsDarkMode } from 'state/user/hooks'
-import { AppState } from 'state'
-import { MintState } from 'state/mint/reducer'
 import { useMintState } from 'state/mint/hooks'
 import { Ipfs } from 'client/ipfs'
+import Web3 from 'web3'
+import CurrencyList from 'components/SearchModal/CurrencyList'
 interface ico {
   icon: any
   name: string
@@ -43,7 +43,6 @@ const FeatherIcon = (icon: ico) => {
 }
 
 export const Single = ({ history }: RouteComponentProps) => {
-  const [show, setShow] = useState(true)
   const dispatch = useAppDispatch()
   const state = useMintState()
   const [switchType, setSwitchType] = useState<SwitchType>()
@@ -217,6 +216,8 @@ export const Single = ({ history }: RouteComponentProps) => {
     readAs: 'DataURL',
   })
 
+  const web3 = new Web3(Web3.givenProvider || 'ws://localhost:8545')
+
   useEffect(() => {
     dispatch(fileChange({ value: plainFiles[0] }))
   }, [plainFiles])
@@ -228,7 +229,6 @@ export const Single = ({ history }: RouteComponentProps) => {
     return 'single'
   }
   const darkMode = useIsDarkMode()
-
   const FixedPrice = () => {
     return (
       <div
@@ -306,6 +306,7 @@ export const Single = ({ history }: RouteComponentProps) => {
               >
                 Ok
               </p>
+              {state.file && Ipfs.getHash(URL.createObjectURL(state.file))}
             </FormGroup>
           </div>
         </UploadFile>
@@ -329,13 +330,26 @@ export const Single = ({ history }: RouteComponentProps) => {
             {switchType === SwitchType.FixedPrice && (
               <div>
                 <h3 style={{ margin: 0 }}>Price</h3>
-                <div className="form__group field">
+                <div className="form__group field" style={{ display: 'flex', flexDirection: 'row' }}>
                   <input
                     type="input"
                     className="form__field"
                     placeholder="Enter price for one piece ..."
                     name="name"
                     id="name"
+                  />
+                  <CurrencyList
+                    height={30}
+                    currencies={[]}
+                    showImportView={() => {
+                      console.log('aaa')
+                    }}
+                    setImportToken={(token) => {
+                      console.log('aaa')
+                    }}
+                    onCurrencySelect={(token) => {
+                      console.log('aaa')
+                    }}
                   />
                 </div>
                 <p>Service fee 2.5%</p>

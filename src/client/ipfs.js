@@ -12,8 +12,15 @@ const ipfs = IPFS.create({
 
 const IpfsClient = class {
   async add(file) {
-    const res = await ipfs.add(file)
-    console.log(res)
+    const res = await ipfs.add(file, (err, ipfshash) => {
+      console.log(ipfshash)
+    })
+    console.log(res.path)
+  }
+
+  getHash = async (file) => {
+    const res = await aipfs.add(file)
+    return res.path
   }
 
   async saveToIpfs(file) {
