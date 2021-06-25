@@ -2,6 +2,7 @@ import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import Web3ReactManager from '../components/Web3ReactManager'
 import ErrorBoundary from '../components/ErrorBoundary'
 import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
@@ -62,6 +63,7 @@ export default function App() {
           </Web3ReactManager>
           <Marginer />
         </BodyWrapper>
+        <Footer />
       </AppWrapper>
     </ErrorBoundary>
   )
