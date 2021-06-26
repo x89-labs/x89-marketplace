@@ -1,13 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
+import * as Asset from 'assets'
 
 const FooterFrame = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   bottom: 0;
   position: relative;
-  height: 400px;
+  height: auto;
   background-color: #efe4e4;
 `
 const InfoFooter = styled.div`
@@ -17,8 +18,10 @@ const InfoFooter = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 0 3rem;
+  margin-bottom: 4rem;
 `
 const InfoWithSearch = styled.div`
+  margin-bottom: 40px;
   p {
     color: #04040599;
     cursor: pointer;
@@ -30,16 +33,22 @@ const InfoWithSearch = styled.div`
     transition: all 0.12s ease-in-out 0s;
     -webkit-box-align: stretch;
     align-items: stretch;
-    padding: 0px 95px 0px 20px;
+    padding: 0px 20px;
+    display: flex;
     flex-direction: row;
     border: 0px;
   }
+  input {
+    border: none;
+  }
   .btnSend {
     cursor: pointer;
-    background-color: #0066ff;
-    overflow: hidden;
-    height: 48px;
-    width: 60px;
+    background: #0066ff;
+    align-self: center;
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 48px;
+    margin-right: -20px;
   }
 `
 const InfoWithText = styled.div`
@@ -52,7 +61,43 @@ const InfoWithText = styled.div`
     color: #000;
   }
 `
-const SocialFooter = styled.div``
+const SocialFooter = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-top: 1px solid #ccc;
+  font-size: 12px;
+  * {
+    display: flex;
+    flex-direction: row;
+  }
+  .term {
+    padding: 12px;
+    width: 50%;
+    .policy {
+      margin-left: 20px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .policy:hover {
+      opacity: 0.5;
+    }
+  }
+  .social {
+    padding: 12px;
+    align-items: center;
+  }
+  .image {
+    margin: 0 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+  .image:hover {
+    opacity: 0.5;
+  }
+`
 export default function Footer() {
   return (
     <FooterFrame>
@@ -60,8 +105,8 @@ export default function Footer() {
         <InfoWithSearch>
           <h4>Get the latest Rarible updates</h4>
           <div className="search">
-            <input></input>
-            <div className="btnsearch"></div>
+            <input placeholder="Your e-mail"></input>
+            <div className="btnSend">Im in</div>
           </div>
         </InfoWithSearch>
         <InfoWithText>
@@ -81,11 +126,23 @@ export default function Footer() {
         <InfoWithSearch>
           <h4>Language</h4>
           <div className="search">
-            <input placeholder="TEXT"></input>
+            <input placeholder="Language"></input>
           </div>
         </InfoWithSearch>
       </InfoFooter>
-      <SocialFooter></SocialFooter>
+      <SocialFooter>
+        <div className="term">
+          <p> @Rarible, Inc. All rights reserved</p>
+          <p className="policy"> Terms</p>
+          <p className="policy"> Private</p>
+        </div>
+        <div className="social">
+          <Asset.Twitter className="image" />
+          <Asset.Telegram className="image" />
+          <Asset.Instagram className="image" />
+          <Asset.Youtube className="image" />
+        </div>
+      </SocialFooter>
     </FooterFrame>
   )
 }

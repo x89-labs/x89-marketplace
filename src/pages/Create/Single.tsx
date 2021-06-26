@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { FormGroup, Label } from 'reactstrap'
 import * as Icon from 'react-feather'
@@ -11,7 +11,6 @@ import { useIsDarkMode } from 'state/user/hooks'
 import { useMintState } from 'state/mint/hooks'
 import { Ipfs } from 'client/ipfs'
 import Web3 from 'web3'
-import CurrencyList from 'components/SearchModal/CurrencyList'
 interface ico {
   icon: any
   name: string
@@ -46,7 +45,7 @@ export const Single = ({ history }: RouteComponentProps) => {
   const dispatch = useAppDispatch()
   const state = useMintState()
   const [switchType, setSwitchType] = useState<SwitchType>()
-
+  const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
   const Around = styled.div`
     p {
       color: ${({ theme }) => theme.text5};
@@ -69,7 +68,7 @@ export const Single = ({ history }: RouteComponentProps) => {
     .form__group {
       position: relative;
       padding: 15px 0 0;
-      width: 50%;
+      width: 100%;
     }
 
     .form__field {
@@ -209,6 +208,26 @@ export const Single = ({ history }: RouteComponentProps) => {
       margin: 10px;
     }
   `
+  const LableTitle = styled.h4`
+    font-weight: 700;
+    margin: 0;
+  `
+  const TextInput = styled.div`
+    margin-top: 40px;
+    p {
+      margin-top: 10px;
+    }
+  `
+  const AdvancedSetting = styled.div`
+    padding: 10px 0;
+    width: 100%;
+    margin-top: 4rem;
+    border: 1px solid #ccc;
+    text-align: center;
+    border-radius: 3rem;
+    font-size: 1rem;
+    cursor: pointer;
+  `
 
   const [openFileSelector, { plainFiles }] = useFilePicker({
     multiple: false,
@@ -274,12 +293,28 @@ export const Single = ({ history }: RouteComponentProps) => {
     )
   }
 
+  const CreateCollection = () => {
+    return (
+      <div className="marketplace" onClick={() => console.log('aa')}>
+        <Asset.Plus className="image" fill={darkMode ? '#ffffff' : '#000000'} />
+        <h4>Create </h4>
+      </div>
+    )
+  }
+  const DecreptionItem = () => {
+    return (
+      <div className="marketplace" style={{ border: '2px solid rgb(0, 102, 255)' }}>
+        <img src={Asset.SrcLogo} className="image" />
+        <h4>Unicon </h4>
+      </div>
+    )
+  }
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <Around style={{ width: '516px' }}>
         <h3 onClick={() => history.goBack()}>{FeatherIcon(icons)}</h3>
         <h1>Create {CreateType()} collectible</h1>
-        <h2>Upload file</h2>
+        <LableTitle>Upload file</LableTitle>
         <UploadFile>
           <div className="UploadFile">
             <FormGroup hidden={state.file ? true : false}>
@@ -306,12 +341,11 @@ export const Single = ({ history }: RouteComponentProps) => {
               >
                 Ok
               </p>
-              {state.file && Ipfs.getHash(URL.createObjectURL(state.file))}
             </FormGroup>
           </div>
         </UploadFile>
         <div>
-          <h2>Put on marketplace</h2>
+          <LableTitle>Put on marketplace</LableTitle>
           <div style={{ marginBottom: 20 }}>
             <p>Enter price to allow users instantly purchase your NFT</p>
             <p>{`Put your new NFT on Rarible's marketplace`}</p>
@@ -338,19 +372,6 @@ export const Single = ({ history }: RouteComponentProps) => {
                     name="name"
                     id="name"
                   />
-                  <CurrencyList
-                    height={30}
-                    currencies={[]}
-                    showImportView={() => {
-                      console.log('aaa')
-                    }}
-                    setImportToken={(token) => {
-                      console.log('aaa')
-                    }}
-                    onCurrencySelect={(token) => {
-                      console.log('aaa')
-                    }}
-                  />
                 </div>
                 <p>Service fee 2.5%</p>
                 <p>You will receive 0 ETH0</p>
@@ -371,36 +392,58 @@ export const Single = ({ history }: RouteComponentProps) => {
                 <p>Bids below this amount won’t be allowed.</p>
               </div>
             )}
-            {switchType === SwitchType.UnlimitedAuction && (
-              <div>
-                <h3 style={{ margin: 0 }}>Price</h3>
-                <div className="form__group field">
-                  <input
-                    type="input"
-                    className="form__field"
-                    placeholder="Enter price for one piece ..."
-                    name="name"
-                    id="name"
-                  />
-                </div>
-                <p>Service fee 2.5%</p>
-                <p>You will receive 0 ETH0</p>
-              </div>
-            )}
           </div>
           <div>
-            <h2 style={{ color: 'blue' }}>Unlock once purchased</h2>
+            <LableTitle style={{ color: 'blue' }}>Unlock once purchased</LableTitle>
             <p>Content will be unlocked after successful transaction</p>
-            <div className="form__group field">
-              <input
-                type="input"
-                className="form__field"
-                placeholder="Digital key, code to redeem or link to a file ..."
-                name="name"
-                id="name"
-              />
+            <LableTitle>Choose collection</LableTitle>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <Create>
+                <div>
+                  <CreateCollection />
+                  <DecreptionItem />
+                </div>
+              </Create>
             </div>
-            <p>Tip: Markdown syntax is supported</p>
+            <TextInput>
+              <LableTitle>Title</LableTitle>
+              <div className="form__group ">
+                <input
+                  type="input"
+                  className="form__field"
+                  placeholder="Digital key, code to redeem or link to a file ..."
+                  name="name"
+                  id="name"
+                />
+              </div>
+            </TextInput>
+            <TextInput>
+              <LableTitle>Descreption</LableTitle>
+              <div className="form__group ">
+                <input
+                  type="input"
+                  className="form__field"
+                  placeholder="Digital key, code to redeem or link to a file ..."
+                  name="name"
+                  id="name"
+                />
+              </div>
+              <p>With preserved line-breaks</p>
+            </TextInput>
+            <TextInput>
+              <LableTitle>Royalties</LableTitle>
+              <div className="form__group ">
+                <input
+                  type="input"
+                  className="form__field"
+                  placeholder="Digital key, code to redeem or link to a file ..."
+                  name="name"
+                  id="name"
+                />
+              </div>
+              <p>Suggested: 0%, 10%, 20%, 30%</p>
+            </TextInput>
+            <AdvancedSetting>Show Advenced Setting</AdvancedSetting>
           </div>
         </div>
       </Around>
