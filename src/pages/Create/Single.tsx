@@ -11,6 +11,16 @@ import { useIsDarkMode } from 'state/user/hooks'
 import { useMintState } from 'state/mint/hooks'
 import { Ipfs } from 'client/ipfs'
 import Web3 from 'web3'
+import CurrencyInputPanel from 'components/CurrencyInputPanel'
+import { maxAmountSpend } from 'utils/maxAmountSpend'
+import { useTokenBalance } from 'state/wallet/hooks'
+import { useDerivedStakeInfo, useStakingInfo } from 'state/stake/hooks'
+import { useCurrency } from 'hooks/Tokens'
+import { useV2Pair } from 'hooks/useV2Pairs'
+import { useActiveWeb3React } from 'hooks/web3'
+import { Currency } from '@uniswap/sdk-core'
+import { TableSelection } from 'components/TableSelection'
+
 interface ico {
   icon: any
   name: string
@@ -44,8 +54,29 @@ const FeatherIcon = (icon: ico) => {
 export const Single = ({ history }: RouteComponentProps) => {
   const dispatch = useAppDispatch()
   const state = useMintState()
+  const darkMode = useIsDarkMode()
   const [switchType, setSwitchType] = useState<SwitchType>()
   const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
+
+  const [typedValue, setTypedValue] = useState('')
+  // wrapped onUserInput to clear signatures
+  const onUserInput = useCallback((typedValue: string) => {
+    setTypedValue(typedValue)
+  }, [])
+
+  const { account } = useActiveWeb3React()
+  const [currencyA, currencyB] = [useCurrency('b123'), useCurrency('c123')]
+  const tokenA = (currencyA ?? undefined)?.wrapped
+  const tokenB = (currencyB ?? undefined)?.wrapped
+
+  const [, stakingTokenPair] = useV2Pair(tokenA, tokenB)
+  const stakingInfo = useStakingInfo(stakingTokenPair)?.[0]
+  const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakingInfo?.stakedAmount?.currency)
+  const maxAmountInput = maxAmountSpend(userLiquidityUnstaked)
+  const handleMax = useCallback(() => {
+    maxAmountInput && onUserInput(maxAmountInput.toExact())
+  }, [maxAmountInput, onUserInput])
+
   const Around = styled.div`
     p {
       color: ${({ theme }) => theme.text5};
@@ -65,15 +96,9 @@ export const Single = ({ history }: RouteComponentProps) => {
       color: ${({ theme }) => theme.text5};
     }
 
-    .form__group {
-      position: relative;
-      padding: 15px 0 0;
-      width: 100%;
-    }
-
     .form__field {
       font-family: inherit;
-      width: 100%;
+      width: 90%;
       border: 0;
       border-bottom: 2px solid gray;
       outline: 0;
@@ -214,8 +239,26 @@ export const Single = ({ history }: RouteComponentProps) => {
   `
   const TextInput = styled.div`
     margin-top: 40px;
+    margin-right: 20px;
+    .form__group {
+      margin-top: 10px;
+      background: #f7f2f7;
+      height: 48px;
+      display: flex;
+      flex-direction: row;
+      border-bottom: 1px solid #ccc;
+      justify-content: flex-end;
+    }
     p {
       margin-top: 10px;
+      font-size: 14px;
+      line-height: 0.4;
+    }
+    input {
+      background: #f7f2f7;
+      width: 100%;
+      border: none;
+      outline: none;
     }
   `
   const AdvancedSetting = styled.div`
@@ -227,15 +270,68 @@ export const Single = ({ history }: RouteComponentProps) => {
     border-radius: 3rem;
     font-size: 1rem;
     cursor: pointer;
+    font-weight: bold;
+    background-color: #fff;
+    color: #000;
   `
 
+  const CreateItem = styled.div`
+    display: flex;
+    margin-top: 2rem;
+    justify-content: space-between;
+    align-items: center;
+    .createBtn {
+      color: #fff;
+      padding: 0.8rem 2.5rem;
+      border: 1px solid #ccc;
+      text-align: center;
+      border-radius: 3rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border: 0;
+      background-color: #0066ff;
+      p {
+        font-size: 0.8rem;
+        color: rgba(4, 4, 5, 0.5);
+      }
+    }
+  `
+
+  // const currency: Currency = [{ isNative: true, isToken: true }]
+  const optionsToken = [
+    {
+      name: 'USDS',
+      icon: <img src={Asset.SrcUSDC} width={20} height={20} />,
+      id: '1',
+    },
+    {
+      name: 'ETH',
+      icon: <img src={Asset.SrcETH} width={20} height={20} />,
+      id: '2',
+    },
+    {
+      name: 'BTC',
+      icon: <img src={Asset.SrcETH} width={20} height={20} />,
+      id: '3',
+    },
+  ]
+  const options = [
+    {
+      name: 'Right after listing',
+      id: '1',
+    },
+    {
+      name: 'Pick spicific date',
+      id: '2',
+    },
+  ]
   const [openFileSelector, { plainFiles }] = useFilePicker({
     multiple: false,
     accept: ['.png', '.jpg', '.mp4', '.mov'],
     readAs: 'DataURL',
   })
 
-  const web3 = new Web3(Web3.givenProvider || 'ws://localhost:8545')
+  // const web3 = new Web3(Web3.givenProvider || 'ws://localhost:8545')
 
   useEffect(() => {
     dispatch(fileChange({ value: plainFiles[0] }))
@@ -247,7 +343,6 @@ export const Single = ({ history }: RouteComponentProps) => {
   const CreateType = () => {
     return 'single'
   }
-  const darkMode = useIsDarkMode()
   const FixedPrice = () => {
     return (
       <div
@@ -362,40 +457,57 @@ export const Single = ({ history }: RouteComponentProps) => {
 
           <div>
             {switchType === SwitchType.FixedPrice && (
-              <div>
-                <h3 style={{ margin: 0 }}>Price</h3>
-                <div className="form__group field" style={{ display: 'flex', flexDirection: 'row' }}>
-                  <input
-                    type="input"
-                    className="form__field"
-                    placeholder="Enter price for one piece ..."
-                    name="name"
-                    id="name"
-                  />
+              <TextInput>
+                <LableTitle style={{ margin: 0 }}>Price</LableTitle>
+                <div className="form__group ">
+                  <input type="input" placeholder="Enter price for one piece ..." name="name" id="name" />
+                  {/* <CurrencyInputPanel
+                    value={typedValue}
+                    onUserInput={onUserInput}
+                    // onMax={handleMax}
+                    showMaxButton={true}
+                    // currency={stakingInfo.stakedAmount.currency}
+                    label={''}
+                    id="stake-liquidity-token"
+                  /> */}
+                  <TableSelection option={optionsToken} />
                 </div>
                 <p>Service fee 2.5%</p>
                 <p>You will receive 0 ETH0</p>
-              </div>
+              </TextInput>
             )}
             {switchType === SwitchType.TimedAuction && (
               <div>
-                <h3 style={{ margin: 0 }}>Minimum bid</h3>
-                <div className="form__group field">
-                  <input
-                    type="input"
-                    className="form__field"
-                    placeholder="Enter price for one piece ..."
-                    name="name"
-                    id="name"
-                  />
+                <TextInput>
+                  <h3 style={{ margin: 0 }}>Minimum bid</h3>
+                  <div className="form__group ">
+                    <input type="input" placeholder="Enter price for one piece ..." name="name" id="name" />
+                    <TableSelection option={optionsToken} />
+                  </div>
+                  <p>Bids below this amount won’t be allowed.</p>
+                </TextInput>
+                <div style={{ display: 'flex', width: '100%', justifyContent: 'space-around' }}>
+                  <TextInput style={{ width: '50%' }}>
+                    <h3 style={{ margin: 0 }}>Starting Date</h3>
+                    <div className="form__group ">
+                      <TableSelection option={options} width={'100%'} />
+                    </div>
+                  </TextInput>
+                  <TextInput style={{ width: '50%' }}>
+                    <h3 style={{ margin: 0 }}>Expiration Date</h3>
+                    <div className="form__group ">
+                      <TableSelection option={options} width={'100%'} />
+                    </div>
+                  </TextInput>
                 </div>
-                <p>Bids below this amount won’t be allowed.</p>
               </div>
             )}
           </div>
           <div>
-            <LableTitle style={{ color: 'blue' }}>Unlock once purchased</LableTitle>
-            <p>Content will be unlocked after successful transaction</p>
+            <div>
+              <h2 style={{ color: 'blue' }}>Unlock once purchased</h2>
+              <p>Content will be unlocked after successful transaction</p>
+            </div>
             <LableTitle>Choose collection</LableTitle>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               <Create>
@@ -408,42 +520,28 @@ export const Single = ({ history }: RouteComponentProps) => {
             <TextInput>
               <LableTitle>Title</LableTitle>
               <div className="form__group ">
-                <input
-                  type="input"
-                  className="form__field"
-                  placeholder="Digital key, code to redeem or link to a file ..."
-                  name="name"
-                  id="name"
-                />
+                <input type="input" placeholder="e.g.Remdemable T-Shirt with logo" />
               </div>
             </TextInput>
             <TextInput>
               <LableTitle>Descreption</LableTitle>
               <div className="form__group ">
-                <input
-                  type="input"
-                  className="form__field"
-                  placeholder="Digital key, code to redeem or link to a file ..."
-                  name="name"
-                  id="name"
-                />
+                <input type="input" placeholder="e.g.Remdemable T-Shirt with logo" />
               </div>
               <p>With preserved line-breaks</p>
             </TextInput>
             <TextInput>
               <LableTitle>Royalties</LableTitle>
               <div className="form__group ">
-                <input
-                  type="input"
-                  className="form__field"
-                  placeholder="Digital key, code to redeem or link to a file ..."
-                  name="name"
-                  id="name"
-                />
+                <input type="input" placeholder="Digital key, code to redeem or link to a file ..." />
               </div>
               <p>Suggested: 0%, 10%, 20%, 30%</p>
             </TextInput>
             <AdvancedSetting>Show Advenced Setting</AdvancedSetting>
+            <CreateItem>
+              <div className="createBtn">Create Item</div>
+              <p>Unsaved changes </p>
+            </CreateItem>
           </div>
         </div>
       </Around>

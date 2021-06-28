@@ -7,6 +7,25 @@ import { ReactComponent as Telegram } from './svg/telegram.svg'
 import { ReactComponent as Youtube } from './svg/youtube.svg'
 import { ReactComponent as Instagram } from './svg/instagram.svg'
 import { ReactComponent as Twitter } from './svg/twitter.svg'
+import { ReactComponent as DownArrow } from './svg/down-arrow.svg'
+import { ReactComponent as Check } from './svg/check.svg'
 import SrcLogo from './images/token-logo.png'
+import SrcETH from './images/ic_eth.png'
+import SrcUSDC from './images/ic_USDC.png'
 
-export { FixedPrice, TimedAuction, UnlimitedAuction, Close, Plus, SrcLogo, Telegram, Youtube, Instagram, Twitter }
+export {
+  SrcLogo,
+  SrcETH,
+  SrcUSDC,
+  FixedPrice,
+  TimedAuction,
+  UnlimitedAuction,
+  Close,
+  Plus,
+  Telegram,
+  Youtube,
+  Instagram,
+  Twitter,
+  DownArrow,
+  Check,
+}

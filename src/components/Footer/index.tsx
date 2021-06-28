@@ -9,7 +9,7 @@ const FooterFrame = styled.div`
   bottom: 0;
   position: relative;
   height: auto;
-  background-color: #efe4e4;
+  background-color: #fff;
 `
 const InfoFooter = styled.div`
   margin-top: 3.2rem;
@@ -27,7 +27,7 @@ const InfoWithSearch = styled.div`
     cursor: pointer;
   }
   .search {
-    background: rgb(255, 255, 255);
+    background: #f0f0f0;
     height: 48px;
     border-radius: 48px;
     transition: all 0.12s ease-in-out 0s;
@@ -40,11 +40,14 @@ const InfoWithSearch = styled.div`
   }
   input {
     border: none;
+    outline: none;
+    background: #f0f0f0;
   }
   .btnSend {
     cursor: pointer;
     background: #0066ff;
     align-self: center;
+    font-weight: 700;
     color: #fff;
     padding: 14px 24px;
     border-radius: 48px;
@@ -53,9 +56,9 @@ const InfoWithSearch = styled.div`
 `
 const InfoWithText = styled.div`
   p {
-    color: #04040599;
+    color: rgba(4, 4, 5, 0.6);
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
   }
   p:hover {
     color: #000;
@@ -118,7 +121,7 @@ export default function Footer() {
         </InfoWithText>
         <InfoWithText>
           <h4>Community</h4>
-          <p>RARI Token</p>
+          <p>X89 Token</p>
           <p>Discussion</p>
           <p>Voting</p>
           <p>Suggest feature</p>
@@ -132,7 +135,7 @@ export default function Footer() {
       </InfoFooter>
       <SocialFooter>
         <div className="term">
-          <p> @Rarible, Inc. All rights reserved</p>
+          <p> @Nmb, Inc. All rights reserved</p>
           <p className="policy"> Terms</p>
           <p className="policy"> Private</p>
         </div>
