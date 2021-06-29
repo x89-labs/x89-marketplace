@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from 'state/hooks'
 import * as Asset from '../../assets'
 import { useIsDarkMode } from 'state/user/hooks'
 import { useMintState } from 'state/mint/hooks'
-import { TableSelection } from 'components/TableSelection'
+import { StableSelect } from 'components/StableSelect'
 import OptionMintCreate from 'components/OptionMintCreate'
 import UploadFile from 'components/UploadFile'
 import ReactPlayer from 'react-player'
@@ -284,7 +284,7 @@ export const Single = ({ history }: RouteComponentProps) => {
                 <LableTitle style={{ margin: 0 }}>Price</LableTitle>
                 <div className="form__group ">
                   <input type="input" placeholder="Enter price for one piece ..." name="name" id="name" />
-                  <TableSelection option={optionsToken} />
+                  <StableSelect option={optionsToken} />
                 </div>
                 <p>Service fee 2.5%</p>
                 <p>You will receive 0 ETH0</p>
@@ -296,7 +296,7 @@ export const Single = ({ history }: RouteComponentProps) => {
                   <h3 style={{ margin: 0 }}>Minimum bid</h3>
                   <div className="form__group ">
                     <input type="input" placeholder="Enter price for one piece ..." name="name" id="name" />
-                    <TableSelection option={optionsToken} />
+                    <StableSelect option={optionsToken} />
                   </div>
                   <p>Bids below this amount won’t be allowed.</p>
                 </TextInput>
@@ -304,13 +304,13 @@ export const Single = ({ history }: RouteComponentProps) => {
                   <TextInput style={{ width: '50%' }}>
                     <h3 style={{ margin: 0 }}>Starting Date</h3>
                     <div className="form__group ">
-                      <TableSelection option={options} width={'100%'} />
+                      <StableSelect option={options} width={'100%'} />
                     </div>
                   </TextInput>
                   <TextInput style={{ width: '50%' }}>
                     <h3 style={{ margin: 0 }}>Expiration Date</h3>
                     <div className="form__group ">
-                      <TableSelection option={options} width={'100%'} />
+                      <StableSelect option={options} width={'100%'} />
                     </div>
                   </TextInput>
                 </div>

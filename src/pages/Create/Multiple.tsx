@@ -9,7 +9,7 @@ import UploadFile from 'components/UploadFile'
 import ReactPlayer from 'react-player'
 import { useMintState } from 'state/mint/hooks'
 import OptionMintCreate from 'components/OptionMintCreate'
-import { TableSelection } from 'components/TableSelection'
+import { StableSelect } from 'components/StableSelect'
 
 interface ico {
   icon: any
@@ -250,7 +250,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
                 <h3 style={{ margin: 0 }}>Price</h3>
                 <div className="form__group ">
                   <input type="input" placeholder="Enter price for one piece ..." name="name" id="name" />
-                  <TableSelection option={optionsToken} />
+                  <StableSelect option={optionsToken} />
                 </div>
                 <p>Service fee 2.5%</p>
                 <p>You will receive 0 ETH0</p>

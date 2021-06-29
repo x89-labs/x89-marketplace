@@ -52,7 +52,7 @@ const DropDown = styled.div`
   }
 `
 
-export const TableSelection = ({ option, width }: TableSelection) => {
+export const StableSelect = ({ option, width }: TableSelection) => {
   const [show, setShow] = useState(true)
   const [selected, setSelected] = useState()
 
