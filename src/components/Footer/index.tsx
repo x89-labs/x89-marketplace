@@ -1,15 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 import * as Asset from 'assets'
+import { useIsDarkMode } from 'state/user/hooks'
+import { NavLink } from 'reactstrap'
 
 const FooterFrame = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   bottom: 0;
-  position: relative;
-  height: auto;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.bg3};
 `
 const InfoFooter = styled.div`
   margin-top: 3.2rem;
@@ -45,23 +45,23 @@ const InfoWithSearch = styled.div`
   }
   .btnSend {
     cursor: pointer;
-    background: #0066ff;
+    background: #7d7272;
     align-self: center;
     font-weight: 700;
     color: #fff;
     padding: 14px 24px;
     border-radius: 48px;
-    margin-right: -20px;
+    margin-right: -21px;
   }
 `
 const InfoWithText = styled.div`
   p {
-    color: rgba(4, 4, 5, 0.6);
+    color: ${({ theme }) => theme.text5};
     cursor: pointer;
     font-weight: 700;
   }
   p:hover {
-    color: #000;
+    opacity: 0.7;
   }
 `
 const SocialFooter = styled.div`
@@ -101,12 +101,17 @@ const SocialFooter = styled.div`
     opacity: 0.5;
   }
 `
+const activeClassName = 'ACTIVE'
+const StyledNavLink = styled(NavLink).attrs({
+  activeClassName,
+})``
 export default function Footer() {
+  const darkMode = useIsDarkMode()
   return (
     <FooterFrame>
       <InfoFooter>
         <InfoWithSearch>
-          <h4>Get the latest Rarible updates</h4>
+          <h4>Get the latest Maketplace updates</h4>
           <div className="search">
             <input placeholder="Your e-mail"></input>
             <div className="btnSend">Im in</div>
@@ -140,10 +145,10 @@ export default function Footer() {
           <p className="policy"> Private</p>
         </div>
         <div className="social">
-          <Asset.Twitter className="image" />
-          <Asset.Telegram className="image" />
-          <Asset.Instagram className="image" />
-          <Asset.Youtube className="image" />
+          <Asset.Twitter className="image" fill={darkMode ? '#fff' : '#000'} />
+          <Asset.Telegram className="image" fill={darkMode ? '#fff' : '#000'} />
+          <Asset.Instagram className="image" fill={darkMode ? '#fff' : '#000'} />
+          <Asset.Youtube className="image" fill={darkMode ? '#fff' : '#000'} />
         </div>
       </SocialFooter>
     </FooterFrame>

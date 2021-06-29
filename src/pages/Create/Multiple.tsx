@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { FormGroup, Label, Input } from 'reactstrap'
 import * as Icon from 'react-feather'
 import * as Asset from '../../assets'
 import styled from 'styled-components'
 import { useIsDarkMode } from 'state/user/hooks'
+import UploadFile from 'components/UploadFile'
+import ReactPlayer from 'react-player'
+import { useMintState } from 'state/mint/hooks'
+import OptionMintCreate from 'components/OptionMintCreate'
+import { TableSelection } from 'components/TableSelection'
+
 interface ico {
   icon: any
   name: string
@@ -22,11 +28,22 @@ const FeatherIcon = (icon: ico) => {
   )
 }
 
+enum SwitchType {
+  FixedPrice = 1,
+  UnlimitedAuction,
+}
+
 export const Multiple = ({ history }: RouteComponentProps) => {
+  const state = useMintState()
+  const [switchType, setSwitchType] = useState<SwitchType>()
+  useEffect(() => {
+    setSwitchType(SwitchType.FixedPrice)
+  }, [])
   const Around = styled.div`
     p {
       color: ${({ theme }) => theme.text5};
       fontweight: 500;
+      margin: 6px;
     }
 
     h3:hover {
@@ -38,58 +55,6 @@ export const Multiple = ({ history }: RouteComponentProps) => {
     }
     .unlockOncePurchased {
       color: linear-gradient(to right, blue, pink);
-    }
-
-    .form__group {
-      position: relative;
-      padding: 15px 0 0;
-      margin-top: 10px;
-      width: 50%;
-    }
-    .form__field {
-      font-family: inherit;
-      width: 100%;
-      border: 0;
-      border-bottom: 2px solid gray;
-      outline: 0;
-      padding: 7px 0;
-      background: transparent;
-      transition: border-color 0.2s;
-      &::placeholder {
-        color: transparent;
-      }
-      &:placeholder-shown .form__label {
-        cursor: text;
-        top: 20px;
-      }
-    }
-
-    .form__field:focus {
-      .form__label {
-        position: absolute;
-        top: 0;
-        display: block;
-        transition: 0.2s;
-        font-weight: bold;
-      }
-      padding-bottom: 6px;
-      font-weight: bold;
-      border-width: 3px;
-      border-image: linear-gradient(to right, #11998e, #38ef7d);
-      border-image-slice: 1;
-    }
-    .form__field {
-      &:required,
-      &:invalid {
-        box-shadow: none;
-      }
-    }
-    body {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background-color: #222222;
     }
   `
   const Create = styled.div`
@@ -161,13 +126,50 @@ export const Multiple = ({ history }: RouteComponentProps) => {
       width: 190px;
       padding: 22px 24px;
     }
-
-    p {
-      color: ${({ theme }) => theme.text5};
-      font-weight: bold;
+  `
+  const TextInput = styled.div`
+    margin-top: 40px;
+    margin-right: 20px;
+    .form__group {
+      margin-top: 10px;
+      width: 90%;
+      background: #f7f2f7;
+      height: 48px;
+      display: flex;
+      flex-direction: row;
+      border-bottom: 1px solid #ccc;
+      justify-content: flex-end;
+    }
+    input {
+      background: #f7f2f7;
+      width: 100%;
+      border: none;
+      outline: none;
+    }
+    input::placeholder {
+      color: #fff;
     }
   `
-
+  const PreviewFile = () => {
+    if (state.file) {
+      if (state.file.type.includes('image')) {
+        return <img src={URL.createObjectURL(state.file)} width={'90%'} height={240} className="image" />
+      } else {
+        return (
+          <div className="image">
+            <ReactPlayer
+              url={URL.createObjectURL(state.file)}
+              playing={false}
+              muted={true}
+              controls={true}
+              width={'90%'}
+              height={'auto'}
+            />
+          </div>
+        )
+      }
+    } else return <></>
+  }
   const CreateType = () => {
     return 'multiple'
   }
@@ -175,7 +177,13 @@ export const Multiple = ({ history }: RouteComponentProps) => {
 
   const FixedPrice = () => {
     return (
-      <div className="marketplace">
+      <div
+        className="marketplace"
+        onClick={() => setSwitchType(SwitchType.FixedPrice)}
+        style={{
+          border: switchType === SwitchType.FixedPrice ? '2px solid rgb(0, 102, 255)' : '2px solid lightgray',
+        }}
+      >
         <Asset.FixedPrice className="image" fill={darkMode ? '#ffffff' : '#000000'} />
         <h4>Fixed price</h4>
       </div>
@@ -184,12 +192,35 @@ export const Multiple = ({ history }: RouteComponentProps) => {
 
   const UnlimitedAuction = () => {
     return (
-      <div className="marketplace">
+      <div
+        className="marketplace"
+        onClick={() => setSwitchType(SwitchType.UnlimitedAuction)}
+        style={{
+          border: switchType === SwitchType.UnlimitedAuction ? '2px solid rgb(0, 102, 255)' : '2px solid lightgray',
+        }}
+      >
         <Asset.UnlimitedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
         <h4>Unlimited auction</h4>
       </div>
     )
   }
+  const optionsToken = [
+    {
+      name: 'USDS',
+      icon: <img src={Asset.SrcUSDC} width={20} height={20} />,
+      id: '1',
+    },
+    {
+      name: 'ETH',
+      icon: <img src={Asset.SrcETH} width={20} height={20} />,
+      id: '2',
+    },
+    {
+      name: 'BTC',
+      icon: <img src={Asset.SrcETH} width={20} height={20} />,
+      id: '3',
+    },
+  ]
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -197,26 +228,15 @@ export const Multiple = ({ history }: RouteComponentProps) => {
         <h3 onClick={() => history.goBack()}>{FeatherIcon(icons)}</h3>
         <h1>Create {CreateType()} collectible</h1>
         <h2>Upload file</h2>
-        <div
-          style={{
-            width: '460px',
-            height: '140px',
-            padding: '32px 60px 32px 60px',
-            border: '1px dashed lightgray',
-            borderRadius: '16px',
-          }}
-        >
-          <FormGroup>
-            <Label className="labelUpload">{`PNG, GIF, WEBP, MP4 or MP3. Max 100mb.`}</Label>
-            <br />
-            <Input type="file" name="file" />
-          </FormGroup>
-        </div>
+        <UploadFile />
         <div>
           <h2>{`Put on marketplace`}</h2>
           <div>
-            <p>{`Enter price to allow users instantly purchase your NFT`}</p>
-            <p>{`Put your new NFT on Rarible's marketplace`}</p>
+            {switchType === SwitchType.FixedPrice ? (
+              <p>{`Enter price to allow users instantly purchase your NFT`}</p>
+            ) : (
+              <p>{` Allow other users to make bids on your NFT`}</p>
+            )}
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               <Create>
                 <div>
@@ -225,21 +245,19 @@ export const Multiple = ({ history }: RouteComponentProps) => {
                 </div>
               </Create>
             </div>
+            {switchType === SwitchType.FixedPrice && (
+              <TextInput>
+                <h3 style={{ margin: 0 }}>Price</h3>
+                <div className="form__group ">
+                  <input type="input" placeholder="Enter price for one piece ..." name="name" id="name" />
+                  <TableSelection option={optionsToken} />
+                </div>
+                <p>Service fee 2.5%</p>
+                <p>You will receive 0 ETH0</p>
+              </TextInput>
+            )}
           </div>
-          <div>
-            <h2 style={{ color: 'blue' }}>Unlock once purchased</h2>
-            <p>Content will be unlocked after successful transaction</p>
-            <div className="form__group field">
-              <input
-                type="input"
-                className="form__field"
-                placeholder="Digital key, code to redeem or link to a file ..."
-                name="name"
-                id="name"
-              />
-            </div>
-            <p>Tip: Markdown syntax is supported</p>
-          </div>
+          <OptionMintCreate />
         </div>
       </Around>
       <Preview>
@@ -247,7 +265,8 @@ export const Multiple = ({ history }: RouteComponentProps) => {
           <div className="pr">
             <h4>Preview</h4>
             <div className="content">
-              <p> Upload file to preview your brand new NFT</p>
+              <p hidden={state.file ? true : false}> Upload file to preview your brand new NFT</p>
+              <PreviewFile />
             </div>
           </div>
         </div>
