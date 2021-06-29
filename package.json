@@ -93,7 +93,6 @@
     "rebass": "^4.0.7",
     "redux-localstorage-simple": "^2.3.1",
     "serve": "^11.3.2",
-  
     "start-server-and-test": "^1.11.0",
     "styled-components": "^4.2.0",
     "styled-system": "^5.1.5",
@@ -146,6 +145,7 @@
     "file-selector": "^0.2.4",
     "ipfs-api": "^26.1.2",
     "ipfs-http-client": "^50.1.2",
+    "react-player": "^2.9.0",
     "truffle-contract": "^4.0.31"
   }
 }

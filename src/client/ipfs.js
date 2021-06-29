@@ -1,4 +1,5 @@
 /* eslint @typescript-eslint/no-var-requires: "off" */
+import { Contract, mintNFT } from 'client/callSmContract'
 const projectId = '1uNvKihbXH3z3eOIsDenqoARQCd'
 const projectSecret = '258447d982ae4ad74238e4bc0450ecd'
 const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64')
@@ -15,7 +16,7 @@ const IpfsClient = class {
     const res = await ipfs.add(file, (err, ipfshash) => {
       console.log(ipfshash)
     })
-    console.log(res.path)
+    mintNFT(res.path)
   }
 
   getHash = async (file) => {

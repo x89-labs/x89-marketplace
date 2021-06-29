@@ -46,13 +46,13 @@ export function colors(darkMode: boolean): Colors {
     text2: darkMode ? '#C3C5CB' : '#565A69',
     text3: darkMode ? '#6C7284' : '#888D9B',
     text4: darkMode ? '#565A69' : '#C3C5CB',
-    text5: darkMode ? '#FFFFFF' : ' rgba(4, 4, 5, 0.5)',
+    text5: darkMode ? '#9c9393' : ' rgba(4, 4, 5, 0.5)',
 
     // backgrounds / greys
     bg0: darkMode ? '#191B1F' : '#FFF',
     bg1: darkMode ? '#212429' : '#F7F8FA',
     bg2: darkMode ? '#2C2F36' : '#EDEEF2',
-    bg3: darkMode ? '#40444F' : '#CED0D9',
+    bg3: darkMode ? '#565A69' : '#FFFFFF',
     bg4: darkMode ? '#565A69' : '#888D9B',
     bg5: darkMode ? '#6C7284' : '#888D9B',
     bg6: darkMode ? '#1A2028' : '#6C7284',
