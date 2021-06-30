@@ -18,7 +18,7 @@ const IpfsClient = class {
       console.log(ipfshash)
     })
     console.log(res)
-    await mintNFT(res.path)
+    await mintNFT('https://infura.ipfs.io/ipfs/' + res.path)
   }
 
   getHash = async (file) => {

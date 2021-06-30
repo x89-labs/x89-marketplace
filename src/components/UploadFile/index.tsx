@@ -63,13 +63,15 @@ export default function UploadFile() {
   }, [plainFiles])
 
   const PreviewFile = () => {
-    if (state.file) {
-      if (state.file.type.includes('image')) {
-        return <img src={URL.createObjectURL(state.file)} width={'90%'} height={240} style={{ borderRadius: 10 }}></img>
+    if (plainFiles[0]) {
+      if (plainFiles[0].type.includes('image')) {
+        return (
+          <img src={URL.createObjectURL(plainFiles[0])} width={'90%'} height={240} style={{ borderRadius: 10 }}></img>
+        )
       } else {
         return (
           <ReactPlayer
-            url={URL.createObjectURL(state.file)}
+            url={URL.createObjectURL(plainFiles[0])}
             playing={false}
             muted={true}
             controls={true}
