@@ -100,10 +100,6 @@ export default function UploadFile() {
         <p
           onClick={() => {
             state.file && Ipfs.add(URL.createObjectURL(state.file))
-            // Contract.getABI()
-            // mintNFT(Ipfs.getHash(URL.createObjectURL(state.file)))
-            // mintNFT('QmTc1uPSar8eJaNGgSVitjqUaXmQbg61DhoAks1PHBvkhA')
-            // console.log(Ipfs.getHash(URL.createObjectURL(state.file)))
           }}
           style={{ cursor: 'pointer' }}
         >

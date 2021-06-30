@@ -106,18 +106,24 @@
     "workbox-expiration": "^6.1.0",
     "workbox-precaching": "^6.1.0",
     "workbox-routing": "^6.1.0",
-    "workbox-strategies": "^6.1.0"
+    "workbox-strategies": "^6.1.0",
+    "truffle": "^5.3.13",
+    "@typechain/truffle-v5": "^5.0.0"
   },
   "scripts": {
     "compile-contract-types": "yarn compile-external-abi-types && yarn compile-v3-contract-types",
     "compile-external-abi-types": "typechain --target ethers-v5 --out-dir src/abis/types './src/abis/**/*.json'",
     "compile-v3-contract-types": "typechain --target ethers-v5 --out-dir src/types/v3 './node_modules/@uniswap/?(v3-core|v3-periphery)/artifacts/contracts/**/*.json'",
+    "truffle-compile-contract-types": "yarn truffle-compile-external-abi-types && yarn truffle-compile-v3-contract-types",
+    "truffle-compile-external-abi-types": "typechain --target=truffle-v5 --out-dir src/abis/types './src/abis/**/*.json'",
+    "truffle-compile-v3-contract-types": "typechain --target=truffle-v5 --out-dir src/types/v3 './node_modules/@uniswap/?(v3-core|v3-periphery)/artifacts/contracts/**/*.json'",
     "build": "yarn compile-contract-types && yarn i18n:extract && yarn i18n:compile && react-scripts build",
     "i18n:extract": "lingui extract --locale en-US",
     "i18n:compile": "lingui compile",
     "integration-test": "start-server-and-test 'serve build -l 3000' http://localhost:3000 'cypress run'",
     "postinstall": "yarn compile-contract-types",
     "start": "yarn compile-contract-types && react-scripts start",
+    "start:truffle": "yarn truffle-compile-contract-types && react-scripts start",
     "start:window": "react-scripts start",
     "test": "react-scripts test --env=jsdom",
     "up": "docker compose up"
