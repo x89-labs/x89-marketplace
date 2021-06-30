@@ -18,7 +18,7 @@ export { Contract }
 
 export async function mintNFT(tokenURI?: string) {
   const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, 'latest') //get latest nonce
-  console.log(nonce)
+
   //the transaction
   const tx = {
     from: PUBLIC_KEY,
