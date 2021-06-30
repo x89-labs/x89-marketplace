@@ -13,6 +13,7 @@ import { Single } from './Create/Single'
 import Explore from './Explore'
 const AppWrapper = styled.div`
   display: flex;
+  height: 100vh;
   flex-flow: column;
   align-items: flex-start;
 `

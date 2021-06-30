@@ -310,7 +310,7 @@ export default function Header() {
       </HeaderRow>
       <HeaderLinks>
         <StyledNavLink id={`explore-nav-link`} to={'/explore'}>
-          <Trans>Explore</Trans>
+          <Trans>Explore</Trans>to={'/explore'}
         </StyledNavLink>
         <StyledNavLink id={`stats-nav-link`} to={'/stats'}>
           <Trans>Stats</Trans>

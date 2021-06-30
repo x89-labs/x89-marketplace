@@ -1,7 +1,7 @@
 /* eslint @typescript-eslint/no-var-requires: "off" */
 import { Contract, mintNFT } from 'client/callSmContract'
-const projectId = '1uNvKihbXH3z3eOIsDenqoARQCd'
-const projectSecret = '258447d982ae4ad74238e4bc0450ecd'
+const projectId = '5e4235dd371d43f0bbc8d252f58ac94c'
+const projectSecret = '9d9b22eac02e4576a1ba727b3682fd16'
 const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64')
 const IPFS = require('ipfs-http-client')
 
@@ -9,6 +9,7 @@ const ipfs = IPFS.create({
   host: 'ipfs.infura.io',
   port: 5001,
   protocol: 'https',
+  auth: auth,
 })
 
 const IpfsClient = class {
@@ -17,7 +18,7 @@ const IpfsClient = class {
       console.log(ipfshash)
     })
     console.log(res)
-    await mintNFT('https://gateway.ipfs.io/ipfs/' + res.path)
+    await mintNFT(res.path)
   }
 
   getHash = async (file) => {

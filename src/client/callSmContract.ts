@@ -1,7 +1,8 @@
 /* eslint @typescript-eslint/no-var-requires: "off" */
+import { useActiveWeb3React } from 'hooks/web3'
 import Web3 from 'web3'
 
-const web3: Web3 = new Web3('ws://localhost:8546')
+const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/5e4235dd371d43f0bbc8d252f58ac94c'))
 const contract = require('../abis/MNFT.json')
 const contractAddress = '0x81c587EB0fE773404c42c1d2666b5f557C470eED'
 const PUBLIC_KEY = '0xAB1F741Bf4eF582873dC8A50C0560F4f0dC183eF'
@@ -17,35 +18,32 @@ const Contract = new useGetContractInfo()
 export { Contract }
 
 export async function mintNFT(tokenURI?: string) {
-  const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, 'latest') //get latest nonce
-
+  // const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, 'latest') //get latest nonce
+  // console.log(nonce)
   //the transaction
+
   const tx = {
     from: PUBLIC_KEY,
     to: contractAddress,
-    nonce: nonce,
-    gas: 500000,
+    gas: 50000,
     data: nftContract.methods.mintNFT(PUBLIC_KEY, tokenURI).encodeABI(),
   }
 
-  const signPromise = web3.eth.accounts.signTransaction(tx, PRIVATE_KEY)
+  console.log(nftContract.methods.mintNFT(PUBLIC_KEY, tokenURI).encodeABI())
+
+  const signPromise = await web3.eth.accounts.signTransaction(tx, PRIVATE_KEY)
   console.log(signPromise)
-  signPromise
-    .then((signedTx) => {
-      signedTx.rawTransaction &&
-        web3.eth.sendSignedTransaction(signedTx.rawTransaction, function (err, hash) {
-          if (!err) {
-            console.log(
-              'The hash of your transaction is: ',
-              hash,
-              "\nCheck Alchemy's Mempool to view the status of your transaction!"
-            )
-          } else {
-            console.log('Something went wrong when submitting your transaction:', err)
-          }
-        })
-    })
-    .catch((err) => {
-      console.log(' Promise failed:', err)
+
+  signPromise.rawTransaction &&
+    web3.eth.sendSignedTransaction(signPromise.rawTransaction, function (err, hash) {
+      if (!err) {
+        console.log(
+          'The hash of your transaction is: ',
+          hash,
+          "\nCheck Alchemy's Mempool to view the status of your transaction!"
+        )
+      } else {
+        console.log('Something went wrong when submitting your transaction:', err)
+      }
     })
 }
