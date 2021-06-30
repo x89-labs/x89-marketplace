@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import * as Asset from 'assets'
 import { useIsDarkMode } from 'state/user/hooks'
 import { NavLink } from 'reactstrap'
+import { ExternalLink } from '../../theme'
 
 const FooterFrame = styled.div`
   display: flex;
@@ -102,9 +103,15 @@ const SocialFooter = styled.div`
   }
 `
 const activeClassName = 'ACTIVE'
+
 const StyledNavLink = styled(NavLink).attrs({
   activeClassName,
 })``
+
+const StyledExternalLink = styled(ExternalLink).attrs({
+  activeClassName,
+})<{ isActive?: boolean }>``
+
 export default function Footer() {
   const darkMode = useIsDarkMode()
   return (
@@ -119,7 +126,10 @@ export default function Footer() {
         </InfoWithSearch>
         <InfoWithText>
           <h4>MaketPlace</h4>
-          <p>Expole</p>
+          <StyledNavLink id={`explore-nav-link`} to={'/explore'}>
+            <p>Explore</p>
+          </StyledNavLink>
+
           <p>Stats</p>
           <p>Mint</p>
           <p>Studio</p>
@@ -145,10 +155,18 @@ export default function Footer() {
           <p className="policy"> Private</p>
         </div>
         <div className="social">
-          <Asset.Twitter className="image" fill={darkMode ? '#fff' : '#000'} />
-          <Asset.Telegram className="image" fill={darkMode ? '#fff' : '#000'} />
-          <Asset.Instagram className="image" fill={darkMode ? '#fff' : '#000'} />
-          <Asset.Youtube className="image" fill={darkMode ? '#fff' : '#000'} />
+          <StyledExternalLink id={`stake-nav-link`} href={'https://twitter.com/x89_nft'}>
+            <Asset.Twitter className="image" fill={darkMode ? '#fff' : '#000'} />
+          </StyledExternalLink>
+          <StyledExternalLink id={`stake-nav-link`} href={'https://t.me/joinchat/6oNOOAqXlJo0ZmM1'}>
+            <Asset.Telegram className="image" fill={darkMode ? '#fff' : '#000'} />
+          </StyledExternalLink>
+          <StyledExternalLink id={`stake-nav-link`} href={''}>
+            <Asset.Instagram className="image" fill={darkMode ? '#fff' : '#000'} />
+          </StyledExternalLink>
+          <StyledExternalLink id={`stake-nav-link`} href={''}>
+            <Asset.Youtube className="image" fill={darkMode ? '#fff' : '#000'} />
+          </StyledExternalLink>
         </div>
       </SocialFooter>
     </FooterFrame>
