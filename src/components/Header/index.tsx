@@ -15,13 +15,10 @@ import { useActiveWeb3React } from '../../hooks/web3'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances } from '../../state/wallet/hooks'
 import { ExternalLink } from '../../theme'
-
 import { YellowCard } from '../Card'
 import Menu from '../Menu'
-
 import Row, { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
-import ClaimModal from '../claim/ClaimModal'
 import Modal from '../Modal'
 import UniBalanceContent from './UniBalanceContent'
 
@@ -297,7 +294,6 @@ export default function Header() {
 
   return (
     <HeaderFrame showBackground={scrollY > 45}>
-      <ClaimModal />
       <Modal isOpen={showUniBalanceModal} onDismiss={() => setShowUniBalanceModal(false)}>
         <UniBalanceContent setShowUniBalanceModal={setShowUniBalanceModal} />
       </Modal>
