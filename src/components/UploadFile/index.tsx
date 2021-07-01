@@ -10,8 +10,6 @@ import * as Asset from 'assets'
 import { useIsDarkMode } from 'state/user/hooks'
 import { Ipfs } from 'client/ipfs'
 import ReactPlayer from 'react-player'
-import { Contract, mintNFT } from 'client/callSmContract'
-// import { useGetContractInfo } from 'client/callSmContract'
 
 const Around = styled.div`
   margin-top: 10px;
