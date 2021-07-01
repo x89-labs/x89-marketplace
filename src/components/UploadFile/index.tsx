@@ -60,18 +60,16 @@ export default function UploadFile() {
 
   useEffect(() => {
     plainFiles[0] && dispatch(fileChange({ value: plainFiles[0] }))
-  }, [plainFiles])
+  }, [plainFiles[0]])
 
   const PreviewFile = () => {
-    if (plainFiles[0]) {
-      if (plainFiles[0].type.includes('image')) {
-        return (
-          <img src={URL.createObjectURL(plainFiles[0])} width={'90%'} height={240} style={{ borderRadius: 10 }}></img>
-        )
+    if (state.file) {
+      if (state.file.type.includes('image')) {
+        return <img src={URL.createObjectURL(state.file)} width={'90%'} height={240} style={{ borderRadius: 10 }}></img>
       } else {
         return (
           <ReactPlayer
-            url={URL.createObjectURL(plainFiles[0])}
+            url={URL.createObjectURL(state.file)}
             playing={false}
             muted={true}
             controls={true}
@@ -93,7 +91,7 @@ export default function UploadFile() {
       <FormGroup hidden={state.file ? false : true}>
         <CloseBtn
           onClick={() => {
-            dispatch(deleteFile({ value: state.file }))
+            state.file && dispatch(deleteFile({ value: state.file }))
           }}
         >
           <Asset.Close width={8} height={8} className="closeBtn" fill={darkMode ? '#fff' : '#000'} />

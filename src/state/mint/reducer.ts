@@ -9,7 +9,6 @@ export interface MintState {
   readonly leftRangeTypedValue: string
   readonly rightRangeTypedValue: string
   file?: File
-  files?: File[]
 }
 
 export const initialState: MintState = {
@@ -20,18 +19,20 @@ export const initialState: MintState = {
   leftRangeTypedValue: '',
   rightRangeTypedValue: '',
 }
-
 export default createReducer<MintState>(initialState, (builder) =>
   builder
     .addCase(resetMintState, () => initialState)
-    .addCase(fileChange, (state, action) => {
-      if (action) {
-        state.file = action.payload.value
-        // state.files = action.payload.value
+    .addCase(fileChange, (state, { payload: { value } }) => {
+      return {
+        ...state,
+        file: value,
       }
     })
     .addCase(deleteFile, (state, action) => {
-      state.file = undefined
+      return {
+        ...state,
+        file: undefined,
+      }
     })
     .addCase(typeInput, (state, { payload: { field, typedValue, noLiquidity } }) => {
       if (noLiquidity) {

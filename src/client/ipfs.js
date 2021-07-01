@@ -18,25 +18,7 @@ const IpfsClient = class {
       console.log(ipfshash)
     })
     console.log(res)
-    await mintNFT('https://infura.ipfs.io/ipfs/' + res.path)
-  }
-
-  getHash = async (file) => {
-    const res = await aipfs.add(file)
-    return res.path
-  }
-
-  async saveToIpfs(file) {
-    try {
-      console.log(file)
-      const added = await ipfs.add(file, {
-        progress: (prog) => console.log(`received: ${prog}`),
-      })
-      const a = added.cid.toString()
-      console.log(a)
-    } catch (err) {
-      console.error(err)
-    }
+    await mintNFT('https://ipfs.infura.io/ipfs/' + res.path)
   }
 }
 const Ipfs = new IpfsClient()

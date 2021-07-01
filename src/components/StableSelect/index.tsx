@@ -66,7 +66,7 @@ export const StableSelect = ({ option, width }: TableSelection) => {
         {option?.map((item, index) => (
           <div
             className="item"
-            key={'item'}
+            key={index}
             onClick={() => {
               setSelected(item.name)
               setShow(true)

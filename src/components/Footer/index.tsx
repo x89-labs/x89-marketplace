@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import * as Asset from 'assets'
 import { useIsDarkMode } from 'state/user/hooks'
-import { NavLink } from 'reactstrap'
+import { NavLink } from 'react-router-dom'
 import { ExternalLink } from '../../theme'
 
 const FooterFrame = styled.div`
@@ -31,13 +31,9 @@ const InfoWithSearch = styled.div`
     background: #f0f0f0;
     height: 48px;
     border-radius: 48px;
-    transition: all 0.12s ease-in-out 0s;
-    -webkit-box-align: stretch;
-    align-items: stretch;
     padding: 0px 20px;
     display: flex;
     flex-direction: row;
-    border: 0px;
   }
   input {
     border: none;
@@ -106,11 +102,20 @@ const activeClassName = 'ACTIVE'
 
 const StyledNavLink = styled(NavLink).attrs({
   activeClassName,
-})``
+})`
+  outline: none;
+  text-decoration: none;
+`
 
 const StyledExternalLink = styled(ExternalLink).attrs({
   activeClassName,
-})<{ isActive?: boolean }>``
+})<{ isActive?: boolean }>`
+  outline: none;
+  text-decoration: none;
+  :hover {
+    text-decoration: none;
+  }
+`
 
 export default function Footer() {
   const darkMode = useIsDarkMode()
@@ -129,14 +134,24 @@ export default function Footer() {
           <StyledNavLink id={`explore-nav-link`} to={'/explore'}>
             <p>Explore</p>
           </StyledNavLink>
-
-          <p>Stats</p>
-          <p>Mint</p>
-          <p>Studio</p>
+          <StyledNavLink id={`explore-nav-link`} to={'/stats'}>
+            <p>Stats</p>
+          </StyledNavLink>
+          <StyledNavLink id={`explore-nav-link`} to={'/create'}>
+            <p>Mint</p>
+          </StyledNavLink>
+          <StyledExternalLink id={`stake-nav-link`} href={'https://ink-studio.nmb.com.vn'}>
+            <p>Studio</p>
+          </StyledExternalLink>
+          <StyledExternalLink id={`stake-nav-link`} href={'https://vr-art.nmb.com.vn'}>
+            <p>Exhibitions</p>
+          </StyledExternalLink>
         </InfoWithText>
         <InfoWithText>
           <h4>Community</h4>
-          <p>X89 Token</p>
+          <StyledNavLink id={`explore-nav-link`} to={'.'}>
+            <p>X89 Token</p>
+          </StyledNavLink>
           <p>Discussion</p>
           <p>Voting</p>
           <p>Suggest feature</p>
