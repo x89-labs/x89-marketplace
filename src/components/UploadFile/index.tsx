@@ -95,14 +95,14 @@ export default function UploadFile() {
           <Asset.Close width={8} height={8} className="closeBtn" fill={darkMode ? '#fff' : '#000'} />
         </CloseBtn>
         <PreviewFile />
-        <p
+        {/* <p
           onClick={() => {
             state.file && Ipfs.add(URL.createObjectURL(state.file))
           }}
           style={{ cursor: 'pointer' }}
         >
           Ok
-        </p>
+        </p> */}
       </FormGroup>
     </Around>
   )

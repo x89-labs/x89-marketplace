@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import * as Asset from 'assets'
 import styled from 'styled-components'
 import { useState } from 'react'
-
+import { useOnClickOutside } from 'hooks/useOnClickOutside'
+import { useModalOpen, useToggleModal } from 'state/application/hooks'
+import { ApplicationModal } from 'state/application/actions'
 interface TableSelection {
   a?: string
   option?: any[]
@@ -27,8 +29,9 @@ const DropDown = styled.div`
   background-color: #fff;
   box-shadow: rgb(4 4 5 / 20%) 0px 7px 36px -8px;
   border-radius: 5px;
-  width: 10rem;
-  padding: 6px;
+  min-width: 8rem;
+  width: auto;
+  padding: 12px;
   height: auto;
   position: absolute;
   .item {
@@ -36,13 +39,13 @@ const DropDown = styled.div`
     cursor: pointer;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    width: auto;
     .itemName {
       display: flex;
       align-items: center;
     }
     p {
-      margin-left: 5px;
+      margin-left: 12px;
       color: #000;
       font-weight: 700;
     }
@@ -52,15 +55,24 @@ const DropDown = styled.div`
   }
 `
 
-export const StableSelect = ({ option, width }: TableSelection) => {
+export default function StableSelect({ option, width }: TableSelection) {
   const [show, setShow] = useState(true)
   const [selected, setSelected] = useState()
+  const open = useModalOpen(ApplicationModal.DROPDOWN)
+  const toggle = useToggleModal(ApplicationModal.DROPDOWN)
+  const node = useRef<HTMLDivElement>()
+  useOnClickOutside(node, open ? toggle : undefined)
 
   return (
-    <div style={{ alignSelf: 'center', width: width, justifyContent: 'space-between' }}>
-      <Around onClick={() => setShow(false)}>
+    <div style={{ alignSelf: 'center', width: width, justifyContent: 'space-between' }} ref={node as any}>
+      <Around
+        onClick={() => {
+          // toggle()
+          setShow(false)
+        }}
+      >
         <h4>{selected ? selected : ''}</h4>
-        <Asset.DownArrow width={16} height={16} fill={'#9c9292'}></Asset.DownArrow>
+        <Asset.DownArrow width={16} height={16} fill={'#9c9292'} style={{ marginTop: 4, marginLeft: 6 }} />
       </Around>
       <DropDown hidden={show} className="dropdown">
         {option?.map((item, index) => (

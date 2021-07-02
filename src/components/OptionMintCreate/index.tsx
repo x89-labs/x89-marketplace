@@ -25,7 +25,7 @@ const TextInput = styled.div`
     font-size: 14px;
     line-height: 0.4;
     color: #060a10;
-    font-weight: 500;
+    font-weight: 700;
   }
   input {
     background: #f7f2f7;

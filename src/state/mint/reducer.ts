@@ -1,6 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { deleteFile, Field, fileChange, resetMintState, typeInput } from './actions'
-
+import { client, Endpoint } from 'api'
+import { deleteFile, Field, fileChange, getItems, postItem, resetMintState, typeInput } from './actions'
+import axios from 'axios'
 export interface MintState {
   readonly independentField: Field
   readonly typedValue: string
@@ -8,7 +9,7 @@ export interface MintState {
   readonly startPriceTypedValue: string // for the case when there's no liquidity
   readonly leftRangeTypedValue: string
   readonly rightRangeTypedValue: string
-  file?: File
+  readonly file?: File
 }
 
 export const initialState: MintState = {
@@ -19,6 +20,8 @@ export const initialState: MintState = {
   leftRangeTypedValue: '',
   rightRangeTypedValue: '',
 }
+
+const URL = `${Endpoint.GET_ITEM}`
 export default createReducer<MintState>(initialState, (builder) =>
   builder
     .addCase(resetMintState, () => initialState)
@@ -29,9 +32,32 @@ export default createReducer<MintState>(initialState, (builder) =>
       }
     })
     .addCase(deleteFile, (state, action) => {
+      const res = client.get(URL, {})
+      Promise.all([res]).then((response) => {
+        console.log(response)
+      })
       return {
         ...state,
         file: undefined,
+      }
+    })
+    .addCase(getItems, (state, { payload: { value } }) => {
+      const res = client.post(URL, { value })
+      Promise.all([res]).then((response) => {
+        console.log(response)
+      })
+      return {
+        ...state,
+      }
+    })
+    .addCase(postItem, (state, action) => {
+      const res = client.get(URL, {})
+      Promise.all([res]).then((response) => {
+        console.log(response)
+      })
+
+      return {
+        ...state,
       }
     })
     .addCase(typeInput, (state, { payload: { field, typedValue, noLiquidity } }) => {

@@ -9,7 +9,7 @@ import UploadFile from 'components/UploadFile'
 import ReactPlayer from 'react-player'
 import { useMintState } from 'state/mint/hooks'
 import OptionMintCreate from 'components/OptionMintCreate'
-import { StableSelect } from 'components/StableSelect'
+import StableSelect from 'components/StableSelect'
 
 interface ico {
   icon: any
