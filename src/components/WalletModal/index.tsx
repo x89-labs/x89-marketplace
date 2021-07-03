@@ -171,22 +171,22 @@ export default function WalletModal({
     //   action: 'Change Wallet',
     //   label: name,
     // })
-    // setPendingWallet(connector) // set wallet for pending view
-    // setWalletView(WALLET_VIEWS.PENDING)
+    setPendingWallet(connector) // set wallet for pending view
+    setWalletView(WALLET_VIEWS.PENDING)
 
-    // // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
+    // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
     // if (connector instanceof WalletConnectConnector && connector.walletConnectProvider?.wc?.uri) {
     //   connector.walletConnectProvider = undefined
     // }
 
-    // connector &&
-    //   activate(connector, undefined, true).catch((error) => {
-    //     if (error instanceof UnsupportedChainIdError) {
-    //       activate(connector) // a little janky...can't use setError because the connector isn't set
-    //     } else {
-    //       setPendingError(true)
-    //     }
-    //   })
+    connector &&
+      activate(connector, undefined, true).catch((error) => {
+        if (error instanceof UnsupportedChainIdError) {
+          activate(connector) // a little janky...can't use setError because the connector isn't set
+        } else {
+          setPendingError(true)
+        }
+      })
   }
 
   // close wallet modal if fortmatic modal is active

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "noImplicitReturns": false,
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -15,7 +16,6 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "noImplicitReturns": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -26,5 +26,5 @@
     "baseUrl": "src"
   },
   "exclude": ["node_modules", "cypress"],
-  "include": ["./src/**/*.ts", "./src/**/*.tsx", "src/components/Confetti/index.js"]
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "src/components/Confetti/index.js", "src/client/ipfs.js", "src/client/smartcontract.js"]
 }

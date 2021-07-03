@@ -2,6 +2,7 @@ import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import Web3ReactManager from '../components/Web3ReactManager'
 import ErrorBoundary from '../components/ErrorBoundary'
 import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
@@ -12,6 +13,7 @@ import { Single } from './Create/Single'
 import Explore from './Explore'
 const AppWrapper = styled.div`
   display: flex;
+  height: 100vh;
   flex-flow: column;
   align-items: flex-start;
 `
@@ -62,6 +64,7 @@ export default function App() {
           </Web3ReactManager>
           <Marginer />
         </BodyWrapper>
+        <Footer />
       </AppWrapper>
     </ErrorBoundary>
   )

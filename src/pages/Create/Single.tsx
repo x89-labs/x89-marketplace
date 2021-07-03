@@ -1,16 +1,16 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { FormGroup, Label } from 'reactstrap'
 import * as Icon from 'react-feather'
 import styled from 'styled-components'
-import useFilePicker from 'hooks/useFilePicker'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
 import * as Asset from '../../assets'
-import { deleteFile, fileChange } from 'state/mint/actions'
 import { useIsDarkMode } from 'state/user/hooks'
-import { AppState } from 'state'
-import { MintState } from 'state/mint/reducer'
 import { useMintState } from 'state/mint/hooks'
+import StableSelect from 'components/StableSelect'
+import OptionMintCreate from 'components/OptionMintCreate'
+import UploadFile from 'components/UploadFile'
+import ReactPlayer from 'react-player'
+
 interface ico {
   icon: any
   name: string
@@ -27,11 +27,6 @@ enum SwitchType {
   UnlimitedAuction,
 }
 
-const iconImage: ico = {
-  icon: <Icon.Image />,
-  name: 'Choose File',
-}
-
 const FeatherIcon = (icon: ico) => {
   return (
     <div style={{ position: 'relative', left: '0', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -42,20 +37,27 @@ const FeatherIcon = (icon: ico) => {
 }
 
 export const Single = ({ history }: RouteComponentProps) => {
-  const [show, setShow] = useState(true)
-  const dispatch = useAppDispatch()
   const state = useMintState()
+  const darkMode = useIsDarkMode()
   const [switchType, setSwitchType] = useState<SwitchType>()
+  useEffect(() => {
+    setSwitchType(SwitchType.FixedPrice)
+  }, [])
 
   const Around = styled.div`
     p {
       color: ${({ theme }) => theme.text5};
-      fontweight: 500;
+      fontweight: bold;
       line-height: 0.5;
     }
-
+    h3 {
+      margin: 0;
+    }
     h3:hover {
       cursor: pointer;
+    }
+    h1 {
+      margin: 1rem 0;
     }
 
     .labelUpload {
@@ -64,61 +66,6 @@ export const Single = ({ history }: RouteComponentProps) => {
 
     .unlockOncePurchased {
       color: ${({ theme }) => theme.text5};
-    }
-
-    .form__group {
-      position: relative;
-      padding: 15px 0 0;
-      width: 50%;
-    }
-
-    .form__field {
-      font-family: inherit;
-      width: 100%;
-      border: 0;
-      border-bottom: 2px solid gray;
-      outline: 0;
-      background: transparent;
-      transition: border-color 0.2s;
-
-      &::placeholder {
-        color: transparent;
-      }
-
-      &:placeholder-shown .form__label {
-        cursor: text;
-        top: 20px;
-      }
-    }
-
-    .form__field:focus {
-      .form__label {
-        position: absolute;
-        top: 0;
-        display: block;
-        transition: 0.2s;
-        font-weight: bold;
-      }
-      padding-bottom: 6px;
-      font-weight: bold;
-      border-width: 3px;
-      border-image: ${({ theme }) => theme.text5};
-      border-image-slice: 1;
-    }
-
-    .form__field {
-      &:required,
-      &:invalid {
-        box-shadow: none;
-      }
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background-color: #222222;
     }
   `
   const Create = styled.div`
@@ -134,7 +81,6 @@ export const Single = ({ history }: RouteComponentProps) => {
       height: 140px;
       border: 2px solid lightgray;
       border-radius: 16px;
-      padding: 0 20px;
       margin: 10px;
       cursor: pointer;
       justify-content: center;
@@ -174,10 +120,6 @@ export const Single = ({ history }: RouteComponentProps) => {
       padding: 22px 24px;
     }
 
-    p {
-      color: ${({ theme }) => theme.text5};
-      font-weight: bold;
-    }
     .image {
       margin-top: 86px;
       margin-left: 8px;
@@ -186,48 +128,96 @@ export const Single = ({ history }: RouteComponentProps) => {
       border-radius: 5px;
     }
   `
-  const UploadFile = styled.div`
-    .UploadFile {
-      width: 460px;
-      height: auto;
-      padding: 32px 60px 32px 60px;
-      border: 1px dashed lightgray;
-      borderradius: 16px;
-      position: relative;
+  const LableTitle = styled.h4`
+    font-weight: 700;
+    margin: 0;
+  `
+  const TextInput = styled.div`
+    margin-top: 40px;
+    margin-right: 20px;
+    .form__group {
+      margin-top: 10px;
+      background: #f7f2f7;
+      height: 48px;
+      display: flex;
+      flex-direction: row;
+      border-bottom: 1px solid #ccc;
+      justify-content: flex-end;
+    }
+    input {
+      background: #f7f2f7;
+      width: 100%;
+      border: none;
+      outline: none;
+    }
+    p {
+      font-weight: 700;
+      font-size: 0.8rem;
     }
   `
-  const CloseBtn = styled.div`
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    position: absolute;
-    top: 20px;
-    right: 62px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    .closeBtn {
-      margin: 10px;
-    }
-  `
-
-  const [openFileSelector, { plainFiles }] = useFilePicker({
-    multiple: false,
-    accept: ['.png', '.jpg', '.mp4', '.mov'],
-    readAs: 'DataURL',
-  })
-
-  useEffect(() => {
-    dispatch(fileChange({ value: plainFiles[0] }))
-  }, [plainFiles])
+  // const currency: Currency = [{ isNative: true, isToken: true }]
+  const optionsToken = [
+    {
+      name: 'USDS',
+      icon: <img src={Asset.SrcUSDC} width={20} height={20} />,
+      id: '1',
+    },
+    {
+      name: 'ETH',
+      icon: <Asset.Ethereum width={20} height={20} />,
+      id: '2',
+    },
+    {
+      name: 'BTC',
+      icon: <Asset.BitCoin width={20} height={20} />,
+      id: '3',
+    },
+  ]
+  const options = [
+    {
+      name: 'Right after listing',
+      id: '1',
+    },
+    {
+      name: 'Pick spicific date',
+      id: '2',
+      type: 'DatePicker',
+    },
+  ]
+  // const web3 = new Web3(Web3.givenProvider || 'ws://localhost:8545')
+  const PreviewFile = () => {
+    if (state.file) {
+      if (state.file.type.includes('image')) {
+        return <img src={URL.createObjectURL(state.file)} width={'90%'} height={240} className="image" />
+      } else {
+        return (
+          <div className="image">
+            <ReactPlayer
+              url={URL.createObjectURL(state.file)}
+              playing={false}
+              muted={true}
+              controls={true}
+              width={'90%'}
+              height={'auto'}
+            />
+          </div>
+        )
+      }
+    } else return <></>
+  }
 
   const CreateType = () => {
     return 'single'
   }
-  const darkMode = useIsDarkMode()
-
   const FixedPrice = () => {
     return (
-      <div className="marketplace" onClick={() => setSwitchType(SwitchType.FixedPrice)}>
+      <div
+        className="marketplace"
+        onClick={() => setSwitchType(SwitchType.FixedPrice)}
+        style={{
+          border: switchType === SwitchType.FixedPrice ? '2px solid rgb(0, 102, 255)' : '2px solid lightgray',
+        }}
+      >
         <Asset.FixedPrice className="image" fill={darkMode ? '#ffffff' : '#000000'} />
         <h4>Fixed price</h4>
       </div>
@@ -236,7 +226,13 @@ export const Single = ({ history }: RouteComponentProps) => {
 
   const TimedAuction = () => {
     return (
-      <div className="marketplace" onClick={() => setSwitchType(SwitchType.TimedAuction)}>
+      <div
+        className="marketplace"
+        onClick={() => setSwitchType(SwitchType.TimedAuction)}
+        style={{
+          border: switchType === SwitchType.TimedAuction ? '2px solid rgb(0, 102, 255)' : '2px solid lightgray',
+        }}
+      >
         <Asset.TimedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
         <h4>Timed auction</h4>
       </div>
@@ -245,7 +241,13 @@ export const Single = ({ history }: RouteComponentProps) => {
 
   const UnlimitedAuction = () => {
     return (
-      <div className="marketplace" onClick={() => setSwitchType(SwitchType.UnlimitedAuction)}>
+      <div
+        className="marketplace"
+        onClick={() => setSwitchType(SwitchType.UnlimitedAuction)}
+        style={{
+          border: switchType === SwitchType.UnlimitedAuction ? '2px solid rgb(0, 102, 255)' : '2px solid lightgray',
+        }}
+      >
         <Asset.UnlimitedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
         <h4>Unlimited auction</h4>
       </div>
@@ -257,33 +259,19 @@ export const Single = ({ history }: RouteComponentProps) => {
       <Around style={{ width: '516px' }}>
         <h3 onClick={() => history.goBack()}>{FeatherIcon(icons)}</h3>
         <h1>Create {CreateType()} collectible</h1>
-        <h2>Upload file</h2>
-        <UploadFile>
-          <div className="UploadFile">
-            <FormGroup hidden={state.file ? true : false}>
-              <Label className="labelUpload">PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</Label>
-              <br />
-              <h3 onClick={() => openFileSelector()}>{FeatherIcon(iconImage)}</h3>
-            </FormGroup>
-            <FormGroup hidden={state.file ? false : true}>
-              <CloseBtn
-                onClick={() => {
-                  dispatch(deleteFile({ value: state.file }))
-                }}
-              >
-                <Asset.Close width={8} height={8} className="closeBtn" fill={darkMode ? '#fff' : '#000'} />
-              </CloseBtn>
-              {state.file && (
-                <img src={URL.createObjectURL(state.file)} width={'90%'} height={240} style={{ borderRadius: 10 }} />
-              )}
-            </FormGroup>
-          </div>
-        </UploadFile>
-        <div>
-          <h2>Put on marketplace</h2>
+        <LableTitle>UploadFile</LableTitle>
+        <UploadFile />
+        <div style={{ marginTop: 40 }}>
+          <LableTitle>Put on marketplace</LableTitle>
           <div style={{ marginBottom: 20 }}>
-            <p>Enter price to allow users instantly purchase your NFT</p>
-            <p>{`Put your new NFT on Rarible's marketplace`}</p>
+            {switchType === SwitchType.FixedPrice ? (
+              <p>Enter price to allow users instantly purchase your NFT</p>
+            ) : switchType === SwitchType.TimedAuction ? (
+              <p>Set a period of time for which buyers can place bids</p>
+            ) : (
+              <p>{`Put your new NFT on Rarible's marketplace`}</p>
+            )}
+
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               <Create>
                 <div>
@@ -297,67 +285,44 @@ export const Single = ({ history }: RouteComponentProps) => {
 
           <div>
             {switchType === SwitchType.FixedPrice && (
-              <div>
-                <h3 style={{ margin: 0 }}>Price</h3>
-                <div className="form__group field">
-                  <input
-                    type="input"
-                    className="form__field"
-                    placeholder="Enter price for one piece ..."
-                    name="name"
-                    id="name"
-                  />
+              <TextInput>
+                <LableTitle style={{ margin: 0 }}>Price</LableTitle>
+                <div className="form__group ">
+                  <input type="input" placeholder="Enter price for one piece ..." name="name" id="name" />
+                  <StableSelect option={optionsToken} />
                 </div>
                 <p>Service fee 2.5%</p>
                 <p>You will receive 0 ETH0</p>
-              </div>
+              </TextInput>
             )}
             {switchType === SwitchType.TimedAuction && (
               <div>
-                <h3 style={{ margin: 0 }}>Minimum bid</h3>
-                <div className="form__group field">
-                  <input
-                    type="input"
-                    className="form__field"
-                    placeholder="Enter price for one piece ..."
-                    name="name"
-                    id="name"
-                  />
+                <TextInput>
+                  <h3 style={{ margin: 0 }}>Minimum bid</h3>
+                  <div className="form__group ">
+                    <input type="input" placeholder="Enter price for one piece ..." name="name" id="name" />
+                    <StableSelect option={optionsToken} />
+                  </div>
+                  <p>Bids below this amount won’t be allowed.</p>
+                </TextInput>
+                <div style={{ display: 'flex', width: '100%', justifyContent: 'space-around' }}>
+                  <TextInput style={{ width: '50%' }}>
+                    <h3 style={{ margin: 0 }}>Starting Date</h3>
+                    <div className="form__group ">
+                      <StableSelect option={options} width={'100%'} />
+                    </div>
+                  </TextInput>
+                  <TextInput style={{ width: '50%' }}>
+                    <h3 style={{ margin: 0 }}>Expiration Date</h3>
+                    <div className="form__group ">
+                      <StableSelect option={options} width={'100%'} />
+                    </div>
+                  </TextInput>
                 </div>
-                <p>Bids below this amount won’t be allowed.</p>
-              </div>
-            )}
-            {switchType === SwitchType.UnlimitedAuction && (
-              <div>
-                <h3 style={{ margin: 0 }}>Price</h3>
-                <div className="form__group field">
-                  <input
-                    type="input"
-                    className="form__field"
-                    placeholder="Enter price for one piece ..."
-                    name="name"
-                    id="name"
-                  />
-                </div>
-                <p>Service fee 2.5%</p>
-                <p>You will receive 0 ETH0</p>
               </div>
             )}
           </div>
-          <div>
-            <h2 style={{ color: 'blue' }}>Unlock once purchased</h2>
-            <p>Content will be unlocked after successful transaction</p>
-            <div className="form__group field">
-              <input
-                type="input"
-                className="form__field"
-                placeholder="Digital key, code to redeem or link to a file ..."
-                name="name"
-                id="name"
-              />
-            </div>
-            <p>Tip: Markdown syntax is supported</p>
-          </div>
+          <OptionMintCreate />
         </div>
       </Around>
       <Preview>
@@ -366,7 +331,7 @@ export const Single = ({ history }: RouteComponentProps) => {
             <h4>Preview</h4>
             <div className="content">
               <p hidden={state.file ? true : false}> Upload file to preview your brand new NFT</p>
-              {state.file && <img src={URL.createObjectURL(state.file)} className="image" />}
+              <PreviewFile />
             </div>
           </div>
         </div>
