@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { FormGroup, Label } from 'reactstrap'
 import { useAppDispatch } from 'state/hooks'
-import { deleteFile, fileChange } from 'state/mint/actions'
+import { deleteFile, fileChange, postItem } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
 import styled from 'styled-components'
 import * as Asset from 'assets'
@@ -60,6 +60,17 @@ export default function UploadFile() {
     plainFiles[0] && dispatch(fileChange({ value: plainFiles[0] }))
   }, [plainFiles[0]])
 
+  const onSubmit = () => {
+    if (state.file) {
+      const file = state.file
+      const reader = new window.FileReader()
+      reader.readAsArrayBuffer(file)
+      reader.onloadend = () => {
+        Ipfs.add(reader.result)
+      }
+    }
+  }
+
   const PreviewFile = () => {
     if (state.file) {
       if (state.file.type.includes('image')) {
@@ -95,14 +106,9 @@ export default function UploadFile() {
           <Asset.Close width={8} height={8} className="closeBtn" fill={darkMode ? '#fff' : '#000'} />
         </CloseBtn>
         <PreviewFile />
-        {/* <p
-          onClick={() => {
-            state.file && Ipfs.add(URL.createObjectURL(state.file))
-          }}
-          style={{ cursor: 'pointer' }}
-        >
+        <p onClick={() => onSubmit()} style={{ cursor: 'pointer' }}>
           Ok
-        </p> */}
+        </p>
       </FormGroup>
     </Around>
   )

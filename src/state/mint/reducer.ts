@@ -1,7 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { client, Endpoint } from 'api'
-import { deleteFile, Field, fileChange, getItems, postItem, resetMintState, typeInput } from './actions'
-import axios from 'axios'
+import { deleteFile, Field, fileChange, postItem, resetMintState, typeInput } from './actions'
 export interface MintState {
   readonly independentField: Field
   readonly typedValue: string
@@ -9,7 +8,7 @@ export interface MintState {
   readonly startPriceTypedValue: string // for the case when there's no liquidity
   readonly leftRangeTypedValue: string
   readonly rightRangeTypedValue: string
-  readonly file?: File
+  readonly file?: any
 }
 
 export const initialState: MintState = {
@@ -41,20 +40,8 @@ export default createReducer<MintState>(initialState, (builder) =>
         file: undefined,
       }
     })
-    .addCase(getItems, (state, { payload: { value } }) => {
+    .addCase(postItem, (state, { payload: { value } }) => {
       const res = client.post(URL, { value })
-      Promise.all([res]).then((response) => {
-        console.log(response)
-      })
-      return {
-        ...state,
-      }
-    })
-    .addCase(postItem, (state, action) => {
-      const res = client.get(URL, {})
-      Promise.all([res]).then((response) => {
-        console.log(response)
-      })
 
       return {
         ...state,
