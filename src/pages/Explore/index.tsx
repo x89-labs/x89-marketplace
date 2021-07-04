@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
-import { getItems } from 'state/explore/actions'
+import { getItems, listItems } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
 
 export default function Explore({ history }: RouteComponentProps) {
   const dispatch = useDispatch()
   const state = useExploreState()
   useEffect(() => {
-    dispatch(getItems({ value: '' }))
+    dispatch(listItems())
   }, [])
-  console.log(state.listItem)
 
   return (
     <>
