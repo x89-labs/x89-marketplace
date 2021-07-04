@@ -111,7 +111,7 @@ const StyledNavLink = styled(NavLink).attrs({
 
 const StyledExternalLink = styled(ExternalLink).attrs({
   activeClassName,
-})<{ isActive?: boolean }>`
+}) <{ isActive?: boolean }>`
   outline: none;
   text-decoration: none;
   :hover {
@@ -153,7 +153,7 @@ export default function Footer() {
           <InfoWithText>
             <h4>Community</h4>
             <StyledNavLink id={`explore-nav-link`} to={'.'}>
-              <p>X89 Token</p>
+              <p>Polrare Token</p>
             </StyledNavLink>
             <p>Discussion</p>
             <p>Voting</p>
