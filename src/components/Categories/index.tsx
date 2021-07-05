@@ -1,17 +1,11 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import * as Asset from 'assets'
 import styled from 'styled-components'
 import { useState } from 'react'
-import { useOnClickOutside } from 'hooks/useOnClickOutside'
-import { useModalOpen, useToggleModal } from 'state/application/hooks'
-import { ApplicationModal } from 'state/application/actions'
-import { textColor } from 'styled-system'
-interface TableSelection {
-  a?: string
-  option?: any[]
-  width?: any
-  textColor?: string
-}
+import { useDispatch } from 'react-redux'
+import { fieldChange, getCategories } from 'state/mint/actions'
+import { useExploreState } from 'state/explore/hooks'
+import { useMintState } from 'state/mint/hooks'
 
 const Around = styled.div`
   display: flex;
@@ -32,7 +26,6 @@ const DropDown = styled.div`
   background-color: #fff;
   box-shadow: rgb(4 4 5 / 20%) 0px 7px 36px -8px;
   border-radius: 5px;
-  min-width: 8rem;
   width: auto;
   padding: 12px;
   height: auto;
@@ -59,43 +52,37 @@ const DropDown = styled.div`
   }
 `
 
-export default function StableSelect({ option, width, textColor }: TableSelection) {
+export default function Categories() {
+  const state = useMintState()
+  const dispatch = useDispatch()
   const [show, setShow] = useState(true)
-  const [selected, setSelected] = useState()
-  const open = useModalOpen(ApplicationModal.DROPDOWN)
-  const toggle = useToggleModal(ApplicationModal.DROPDOWN)
-  const node = useRef<HTMLDivElement>()
-  useOnClickOutside(node, open ? toggle : undefined)
+  const [selected, setSelected] = useState('')
 
   return (
-    <div
-      style={{ alignSelf: 'center', width: width, justifyContent: 'space-between', margin: '0 5px' }}
-      ref={node as any}
-    >
+    <div style={{ alignSelf: 'center', width: '80%', justifyContent: 'space-between', margin: '0 5px' }}>
+      Categories
       <Around
         onClick={() => {
-          // toggle()
           setShow(false)
         }}
       >
-        <h4 style={{ color: textColor ? textColor : '' }}>{selected ? selected : option && option[0]?.name}</h4>
-        <Asset.DownArrow width={12} height={12} fill={textColor ?? '#9c9292'} />
+        <h4>{selected ? selected : ''}</h4>
+        <Asset.DownArrow width={12} height={12} fill={'#9c9292'} />
       </Around>
       <DropDown hidden={show} className="dropdown">
-        {option?.map((item, index) => (
+        {state.categories?.map((item, index) => (
           <div
             className="item"
             key={index}
             onClick={() => {
-              setSelected(item.name)
-              setShow(true)
+              setSelected(item.categoryName)
+              dispatch(fieldChange({ fieldName: 'categorie', fieldValue: item.id }))
             }}
           >
             <div className="itemName">
-              {item.icon && item.icon}
-              <p>{item.name}</p>
+              <p>{item.categoryName}</p>
             </div>
-            {selected === item.name && <Asset.Check width={16} height={16}></Asset.Check>}
+            {selected === item.categoryName && <Asset.Check width={16} height={16}></Asset.Check>}
           </div>
         ))}
       </DropDown>

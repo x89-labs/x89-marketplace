@@ -11,6 +11,8 @@ import Create from './Create'
 import { Multiple } from './Create/Multiple'
 import { Single } from './Create/Single'
 import Explore from './Explore'
+import DetailItem from './DetailItem'
+import Stats from './Stats'
 const AppWrapper = styled.div`
   display: flex;
   height: 100vh;
@@ -57,9 +59,11 @@ export default function App() {
           <Web3ReactManager>
             <Switch>
               <Route exact strict path="/explore" component={Explore} />
+              <Route exact strict path="/stats" component={Stats} />
               <Route exact strict path="/create" component={Create} />
               <Route exact strict path={`/create/erc721`} component={Single} />
               <Route exact strict path="/create/erc1155" component={Multiple} />
+              <Route exact strict path={`/detail/:itemid`} component={DetailItem} />
             </Switch>
           </Web3ReactManager>
           <Marginer />

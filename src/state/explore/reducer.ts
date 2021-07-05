@@ -1,17 +1,18 @@
 import { createReducer, createSlice } from '@reduxjs/toolkit'
-import { getItems, listItems } from './actions'
-import { listItem } from 'models/explore'
+import { getItem, listItems } from './actions'
+import { Item } from 'models/explore'
 import { useMintState } from 'state/mint/hooks'
 
 export interface ExploreState {
-  listItem: listItem[]
+  listItem: Item[]
+  item?: Item
 }
 
 export const initialState: ExploreState = {
   listItem: [],
 }
 
-const usersSlice = createSlice({
+const exploreSlice = createSlice({
   name: 'users',
   initialState: initialState,
   reducers: {},
@@ -21,6 +22,11 @@ const usersSlice = createSlice({
         state.listItem = action.payload.items
       }
     })
+    builder.addCase(getItem.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.item = action.payload
+      }
+    })
   },
 })
-export default usersSlice.reducer
+export default exploreSlice.reducer

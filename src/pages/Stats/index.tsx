@@ -1,3 +1,4 @@
+import useMintNf from 'hooks/useMintNft'
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { fieldChange } from 'state/stats/actions'
@@ -11,8 +12,9 @@ const BodyExplore = styled.div`
 
 export default function Stats() {
   const dispatch = useDispatch()
+  const x = useMintNf()
   useEffect(() => {
-    dispatch(fieldChange);
+    // dispatch(fieldChange());
   }, [])
 
   return (

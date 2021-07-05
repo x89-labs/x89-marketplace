@@ -1,9 +1,11 @@
 import StableSelect from 'components/StableSelect'
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 import { listItems } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
 import styled from 'styled-components'
+import * as Asset from 'assets'
 
 const BodyExplore = styled.div`
   width: 100%;
@@ -12,7 +14,10 @@ const BodyExplore = styled.div`
 const Header = styled.div`
   display: flex;
 `
-const Item = styled.div`
+const activeClassName = 'ACTIVE'
+const Item = styled(NavLink).attrs({
+  activeClassName,
+})`
   width: 16rem;
   height: 16rem;
   margin: 0 10px;
@@ -43,18 +48,20 @@ const Item = styled.div`
     }
   }
 `
-const TopSeller = styled.div`
-  .title {
-    margin-top: 20px;
-    display: flex;
-    font-size: 26px;
-    font-weight: bold;
-    .seller {
-    }
-    .days {
-    }
-  }
+const ItemContent = styled.div``
+const TopSeller = styled.div``
+const Title = styled.div`
+  margin-top: 20px;
+  display: flex;
+  font-size: 26px;
+  font-weight: bold;
+  align-items: center;
 `
+const Text = styled.p``
+const Image = styled.img``
+const LiveAuctions = styled.div``
+const HotBids = styled.div``
+const Explores = styled.div``
 const optionsSeller = [
   {
     name: 'Seller',
@@ -92,23 +99,36 @@ export default function Explore() {
     <BodyExplore>
       <Header>
         {state.listItem.map((item, index) => (
-          <Item key={index}>
-            <img src={item.image} className="image" />
-            <div className="content">
-              <p className="itemName">{item.name}</p>
-              {item.createdBy !== '' && <p className="author">By {item.createdBy}</p>}
-            </div>
+          <Item key={index} id={`stats-nav-link`} to={`/detail/${item.id}`}>
+            <Image src={item.image} className="image" />
+            <ItemContent className="content">
+              <Text className="itemName">{item.name}</Text>
+              {item.createdBy !== '' && <Text className="author">By {item.createdBy}</Text>}
+            </ItemContent>
           </Item>
         ))}
       </Header>
       <TopSeller>
-        <div className=" title">
+        <Title className=" title">
           Top
-          <StableSelect option={optionsSeller} />
+          <StableSelect option={optionsSeller} textColor={'rgb(0, 102, 255)'} />
           in
-          <StableSelect option={optionsDay} />
-        </div>
+          <StableSelect option={optionsDay} textColor={'rgb(0, 102, 255)'} />
+        </Title>
       </TopSeller>
+      <LiveAuctions>
+        <Title>
+          Live Auction <Asset.Fire width={20} height={20} />
+        </Title>
+      </LiveAuctions>
+      <HotBids>
+        <Title>
+          Hot Bids <Asset.Fire width={20} height={20} />
+        </Title>
+      </HotBids>
+      <Explores>
+        <Title>Explore</Title>
+      </Explores>
     </BodyExplore>
   )
 }

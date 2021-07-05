@@ -14,11 +14,10 @@ const ipfs = IPFS.create({
 
 const IpfsClient = class {
   async add(file) {
-    console.log(Buffer(file))
     const res = await ipfs.add(Buffer(file), (err, ipfshash) => {
       console.log(ipfshash)
     })
-    console.log('https://ipfs.infura.io/ipfs/' + res.path)
+
     await mintNFT('https://ipfs.infura.io/ipfs/' + res.path)
   }
   GetHash = async (file) => {

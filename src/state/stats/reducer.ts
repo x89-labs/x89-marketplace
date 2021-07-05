@@ -10,7 +10,7 @@ export const initialState: StatsState = {
 }
 
 export default createReducer(initialState, (builder) =>
-  builder.addCase(fieldChange, (state, { payload: {} }) => {
+  builder.addCase(fieldChange, (state, action) => {
     useMintNf()
   })
 )
