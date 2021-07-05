@@ -2,7 +2,7 @@ import StableSelect from 'components/StableSelect'
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { listItems } from 'state/explore/actions'
+import { getListItems } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
 import styled from 'styled-components'
 import * as Asset from 'assets'
@@ -92,7 +92,7 @@ export default function Explore() {
   const dispatch = useDispatch()
   const state = useExploreState()
   useEffect(() => {
-    dispatch(listItems())
+    dispatch(getListItems())
   }, [])
 
   return (
