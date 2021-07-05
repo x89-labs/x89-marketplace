@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from 'state/hooks'
 import * as Asset from '../../assets'
 import { useIsDarkMode } from 'state/user/hooks'
 import { useMintState } from 'state/mint/hooks'
-import { StableSelect } from 'components/StableSelect'
+import StableSelect from 'components/StableSelect'
 import OptionMintCreate from 'components/OptionMintCreate'
 import UploadFile from 'components/UploadFile'
 import ReactPlayer from 'react-player'
@@ -150,6 +150,10 @@ export const Single = ({ history }: RouteComponentProps) => {
       border: none;
       outline: none;
     }
+    p {
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
   `
   // const currency: Currency = [{ isNative: true, isToken: true }]
   const optionsToken = [
@@ -160,12 +164,12 @@ export const Single = ({ history }: RouteComponentProps) => {
     },
     {
       name: 'ETH',
-      icon: <img src={Asset.SrcETH} width={20} height={20} />,
+      icon: <Asset.Ethereum width={20} height={20} />,
       id: '2',
     },
     {
       name: 'BTC',
-      icon: <img src={Asset.SrcETH} width={20} height={20} />,
+      icon: <Asset.BitCoin width={20} height={20} />,
       id: '3',
     },
   ]
@@ -177,6 +181,7 @@ export const Single = ({ history }: RouteComponentProps) => {
     {
       name: 'Pick spicific date',
       id: '2',
+      type: 'DatePicker',
     },
   ]
   // const web3 = new Web3(Web3.givenProvider || 'ws://localhost:8545')

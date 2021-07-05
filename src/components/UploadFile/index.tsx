@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { FormGroup, Label } from 'reactstrap'
 import { useAppDispatch } from 'state/hooks'
-import { deleteFile, fileChange } from 'state/mint/actions'
+import { deleteFile, fileChange, ipfsHash, postItem } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
 import styled from 'styled-components'
 import * as Asset from 'assets'
@@ -58,18 +58,33 @@ export default function UploadFile() {
 
   useEffect(() => {
     plainFiles[0] && dispatch(fileChange({ value: plainFiles[0] }))
-  }, [plainFiles])
+  }, [plainFiles[0]])
+
+  const onSubmit = () => {
+    if (state.file) {
+      const file = state.file
+      const reader = new window.FileReader()
+      reader.readAsArrayBuffer(file)
+      reader.onloadend = async () => {
+        Ipfs.add(reader.result)
+        const hash = await Ipfs.GetHash(reader.result)
+        if (hash) {
+          dispatch(ipfsHash({ value: hash }))
+        }
+      }
+    }
+  }
+
+  console.log(state.ipfsHash)
 
   const PreviewFile = () => {
-    if (plainFiles[0]) {
-      if (plainFiles[0].type.includes('image')) {
-        return (
-          <img src={URL.createObjectURL(plainFiles[0])} width={'90%'} height={240} style={{ borderRadius: 10 }}></img>
-        )
+    if (state.file) {
+      if (state.file.type.includes('image')) {
+        return <img src={URL.createObjectURL(state.file)} width={'90%'} height={240} style={{ borderRadius: 10 }}></img>
       } else {
         return (
           <ReactPlayer
-            url={URL.createObjectURL(plainFiles[0])}
+            url={URL.createObjectURL(state.file)}
             playing={false}
             muted={true}
             controls={true}
@@ -91,18 +106,13 @@ export default function UploadFile() {
       <FormGroup hidden={state.file ? false : true}>
         <CloseBtn
           onClick={() => {
-            dispatch(deleteFile({ value: state.file }))
+            state.file && dispatch(deleteFile({ value: state.file }))
           }}
         >
           <Asset.Close width={8} height={8} className="closeBtn" fill={darkMode ? '#fff' : '#000'} />
         </CloseBtn>
         <PreviewFile />
-        <p
-          onClick={() => {
-            state.file && Ipfs.add(URL.createObjectURL(state.file))
-          }}
-          style={{ cursor: 'pointer' }}
-        >
+        <p onClick={() => onSubmit()} style={{ cursor: 'pointer' }}>
           Ok
         </p>
       </FormGroup>

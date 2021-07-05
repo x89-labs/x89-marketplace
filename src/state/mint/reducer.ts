@@ -1,6 +1,7 @@
-import { createReducer } from '@reduxjs/toolkit'
-import { deleteFile, Field, fileChange, resetMintState, typeInput } from './actions'
-
+import { createReducer, createSlice } from '@reduxjs/toolkit'
+import { client, Endpoint } from 'api'
+import { Ipfs } from 'client/ipfs'
+import { deleteFile, Field, fileChange, ipfsHash, postItem, resetMintState, typeInput } from './actions'
 export interface MintState {
   readonly independentField: Field
   readonly typedValue: string
@@ -8,8 +9,8 @@ export interface MintState {
   readonly startPriceTypedValue: string // for the case when there's no liquidity
   readonly leftRangeTypedValue: string
   readonly rightRangeTypedValue: string
-  file?: File
-  files?: File[]
+  readonly file?: any
+  readonly ipfsHash?: any
 }
 
 export const initialState: MintState = {
@@ -21,44 +22,36 @@ export const initialState: MintState = {
   rightRangeTypedValue: '',
 }
 
-export default createReducer<MintState>(initialState, (builder) =>
-  builder
-    .addCase(resetMintState, () => initialState)
-    .addCase(fileChange, (state, action) => {
-      if (action) {
-        state.file = action.payload.value
-        // state.files = action.payload.value
-      }
-    })
-    .addCase(deleteFile, (state, action) => {
-      state.file = undefined
-    })
-    .addCase(typeInput, (state, { payload: { field, typedValue, noLiquidity } }) => {
-      if (noLiquidity) {
-        // they're typing into the field they've last typed in
-        if (field === state.independentField) {
-          return {
-            ...state,
-            independentField: field,
-            typedValue,
-          }
-        }
-        // they're typing into a new field, store the other value
-        else {
-          return {
-            ...state,
-            independentField: field,
-            typedValue,
-            otherTypedValue: state.typedValue,
-          }
-        }
-      } else {
+const URL = `${Endpoint.GET_ITEM}`
+
+const usersSlice = createSlice({
+  name: 'users',
+  initialState: initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fileChange, (state, { payload: { value } }) => {
         return {
           ...state,
-          independentField: field,
-          typedValue,
-          otherTypedValue: '',
+          file: value,
         }
-      }
-    })
-)
+      })
+      .addCase(ipfsHash, (state, { payload: { value } }) => {
+        return {
+          ...state,
+          ipfsHash: value,
+        }
+      })
+      .addCase(deleteFile, (state, action) => {
+        const res = client.get(URL, {})
+        Promise.all([res]).then((response) => {
+          console.log(response)
+        })
+        return {
+          ...state,
+          file: undefined,
+        }
+      })
+  },
+})
+export default usersSlice.reducer

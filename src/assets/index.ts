@@ -9,6 +9,9 @@ import { ReactComponent as Instagram } from './svg/instagram.svg'
 import { ReactComponent as Twitter } from './svg/twitter.svg'
 import { ReactComponent as DownArrow } from './svg/down-arrow.svg'
 import { ReactComponent as Check } from './svg/check.svg'
+import { ReactComponent as Ethereum } from './svg/ethereum.svg'
+import { ReactComponent as BitCoin } from './svg/bitcoin.svg'
+import { ReactComponent as Fire } from './svg/fire.svg'
 import SrcLogo from './images/token-logo.png'
 import SrcETH from './images/ic_eth.png'
 import SrcUSDC from './images/ic_USDC.png'
@@ -17,6 +20,8 @@ export {
   SrcLogo,
   SrcETH,
   SrcUSDC,
+  Ethereum,
+  BitCoin,
   FixedPrice,
   TimedAuction,
   UnlimitedAuction,
@@ -28,4 +33,5 @@ export {
   Twitter,
   DownArrow,
   Check,
+  Fire,
 }

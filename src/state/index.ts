@@ -1,6 +1,6 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { save, load } from 'redux-localstorage-simple'
-
+import thunkMiddleware from 'redux-thunk'
 import application from './application/reducer'
 import { updateVersion } from './global/actions'
 import user from './user/reducer'
@@ -12,6 +12,7 @@ import lists from './lists/reducer'
 import burn from './burn/reducer'
 import burnV3 from './burn/v3/reducer'
 import multicall from './multicall/reducer'
+import explore from './explore/reducer'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
 
@@ -27,8 +28,13 @@ const store = configureStore({
     burnV3,
     multicall,
     lists,
+    explore,
   },
-  middleware: [...getDefaultMiddleware({ thunk: false }), save({ states: PERSISTED_KEYS, debounce: 1000 })],
+  middleware: [
+    ...getDefaultMiddleware({ thunk: true }),
+    thunkMiddleware,
+    save({ states: PERSISTED_KEYS, debounce: 1000 }),
+  ],
   preloadedState: load({ states: PERSISTED_KEYS }),
 })
 

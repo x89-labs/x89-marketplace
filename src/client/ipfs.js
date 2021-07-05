@@ -1,5 +1,5 @@
 /* eslint @typescript-eslint/no-var-requires: "off" */
-import { Contract, mintNFT } from 'client/callSmContract'
+import { mintNFT } from 'client/callSmContract'
 const projectId = '5e4235dd371d43f0bbc8d252f58ac94c'
 const projectSecret = '9d9b22eac02e4576a1ba727b3682fd16'
 const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64')
@@ -14,29 +14,16 @@ const ipfs = IPFS.create({
 
 const IpfsClient = class {
   async add(file) {
-    const res = await ipfs.add(file, (err, ipfshash) => {
+    console.log(Buffer(file))
+    const res = await ipfs.add(Buffer(file), (err, ipfshash) => {
       console.log(ipfshash)
     })
-    console.log(res)
-    await mintNFT('https://infura.ipfs.io/ipfs/' + res.path)
+    console.log('https://ipfs.infura.io/ipfs/' + res.path)
+    await mintNFT('https://ipfs.infura.io/ipfs/' + res.path)
   }
-
-  getHash = async (file) => {
-    const res = await aipfs.add(file)
-    return res.path
-  }
-
-  async saveToIpfs(file) {
-    try {
-      console.log(file)
-      const added = await ipfs.add(file, {
-        progress: (prog) => console.log(`received: ${prog}`),
-      })
-      const a = added.cid.toString()
-      console.log(a)
-    } catch (err) {
-      console.error(err)
-    }
+  GetHash = async (file) => {
+    const res = await ipfs.add(Buffer(file))
+    return 'https://ipfs.infura.io/ipfs/' + res.path
   }
 }
 const Ipfs = new IpfsClient()
