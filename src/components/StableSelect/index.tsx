@@ -9,6 +9,7 @@ interface TableSelection {
   a?: string
   option?: any[]
   width?: any
+  colorText?: string
 }
 
 const Around = styled.div`
@@ -46,6 +47,7 @@ const DropDown = styled.div`
     }
     p {
       margin-left: 12px;
+      font-size: 16px;
       color: #000;
       font-weight: 700;
     }
@@ -71,7 +73,7 @@ export default function StableSelect({ option, width }: TableSelection) {
           setShow(false)
         }}
       >
-        <h4>{selected ? selected : ''}</h4>
+        <h4>{selected ? selected : option && option[0]?.name}</h4>
         <Asset.DownArrow width={16} height={16} fill={'#9c9292'} style={{ marginTop: 4, marginLeft: 6 }} />
       </Around>
       <DropDown hidden={show} className="dropdown">
