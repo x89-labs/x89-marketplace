@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import * as Icon from 'react-feather'
 import styled from 'styled-components'
-import { useAppDispatch, useAppSelector } from 'state/hooks'
 import * as Asset from '../../assets'
 import { useIsDarkMode } from 'state/user/hooks'
 import { useMintState } from 'state/mint/hooks'
@@ -10,6 +9,9 @@ import StableSelect from 'components/StableSelect'
 import OptionMintCreate from 'components/OptionMintCreate'
 import UploadFile from 'components/UploadFile'
 import ReactPlayer from 'react-player'
+import Categories from 'components/Categories'
+import { useDispatch } from 'react-redux'
+import { getCategories } from 'state/mint/actions'
 
 interface ico {
   icon: any
@@ -37,12 +39,16 @@ const FeatherIcon = (icon: ico) => {
 }
 
 export const Single = ({ history }: RouteComponentProps) => {
+  const dispatch = useDispatch()
   const state = useMintState()
   const darkMode = useIsDarkMode()
   const [switchType, setSwitchType] = useState<SwitchType>()
   useEffect(() => {
     setSwitchType(SwitchType.FixedPrice)
+    dispatch(getCategories())
   }, [])
+
+  console.log(state.categorie)
 
   const Around = styled.div`
     p {
@@ -322,6 +328,7 @@ export const Single = ({ history }: RouteComponentProps) => {
               </div>
             )}
           </div>
+          <Categories />
           <OptionMintCreate />
         </div>
       </Around>

@@ -1,6 +1,5 @@
 import useFilePicker from 'hooks/useFilePicker'
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 import { FormGroup, Label } from 'reactstrap'
 import { useAppDispatch } from 'state/hooks'
 import { deleteFile, fileChange, ipfsHash, postItem } from 'state/mint/actions'
@@ -74,8 +73,6 @@ export default function UploadFile() {
       }
     }
   }
-
-  console.log(state.ipfsHash)
 
   const PreviewFile = () => {
     if (state.file) {

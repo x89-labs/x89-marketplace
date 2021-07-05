@@ -1,4 +1,4 @@
-export interface listItem {
+export interface Item {
   assetId: string
   categoryId: string
   contractAddress: string

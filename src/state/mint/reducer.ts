@@ -1,30 +1,25 @@
 import { createReducer, createSlice } from '@reduxjs/toolkit'
 import { client, Endpoint } from 'api'
 import { Ipfs } from 'client/ipfs'
-import { deleteFile, Field, fileChange, ipfsHash, postItem, resetMintState, typeInput } from './actions'
+import { Categories } from 'models/Categories'
+import { deleteFile, Field, fieldChange, fileChange, getCategories, ipfsHash, postItem } from './actions'
 export interface MintState {
   readonly independentField: Field
   readonly typedValue: string
   readonly otherTypedValue: string // for the case when there's no liquidity
-  readonly startPriceTypedValue: string // for the case when there's no liquidity
-  readonly leftRangeTypedValue: string
-  readonly rightRangeTypedValue: string
   readonly file?: any
-  readonly ipfsHash?: any
+  readonly ipfsHash?: string
+  readonly categories?: Categories[]
+  readonly categorie?: Categories[]
 }
 
 export const initialState: MintState = {
   independentField: Field.CURRENCY_A,
   typedValue: '',
   otherTypedValue: '',
-  startPriceTypedValue: '',
-  leftRangeTypedValue: '',
-  rightRangeTypedValue: '',
 }
 
-const URL = `${Endpoint.GET_ITEM}`
-
-const usersSlice = createSlice({
+const mintSlice = createSlice({
   name: 'users',
   initialState: initialState,
   reducers: {},
@@ -36,6 +31,12 @@ const usersSlice = createSlice({
           file: value,
         }
       })
+      .addCase(fieldChange, (state, { payload: { fieldName, fieldValue } }) => {
+        return {
+          ...state,
+          [fieldName]: fieldValue,
+        }
+      })
       .addCase(ipfsHash, (state, { payload: { value } }) => {
         return {
           ...state,
@@ -43,15 +44,16 @@ const usersSlice = createSlice({
         }
       })
       .addCase(deleteFile, (state, action) => {
-        const res = client.get(URL, {})
-        Promise.all([res]).then((response) => {
-          console.log(response)
-        })
         return {
           ...state,
           file: undefined,
         }
       })
+      .addCase(getCategories.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.categories = action.payload
+        }
+      })
   },
 })
-export default usersSlice.reducer
+export default mintSlice.reducer
