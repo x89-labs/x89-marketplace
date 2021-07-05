@@ -1,4 +1,4 @@
-import { createAction, createAsyncThunk, getDefaultMiddleware } from '@reduxjs/toolkit'
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { client, Endpoint } from 'api'
 import { useMintState } from './hooks'
 
@@ -14,7 +14,7 @@ export const fieldChange = createAction<{ fieldName: string; fieldValue: any }>(
 export const ipfsHash = createAction<{ value: string }>('mint/ipfsHash')
 export const deleteFile = createAction<{ value: any }>('mint/deleteFileMint')
 
-export const getCategories = createAsyncThunk('mint/getCategories', async (skip, take) => {
+export const getCategories = createAsyncThunk('mint/getCategories', async () => {
   const URL = `${Endpoint.CATEGORIES}`
   const response = await client.get(URL, {})
   if (response && response.status == 200) {
@@ -29,6 +29,8 @@ export const postItem = createAsyncThunk('mint/postItem', async () => {
     categorie: useMintState().categorie,
     image: useMintState().ipfsHash,
   }
+  console.log(body)
+
   const response = await client.post(URL, body)
   if (response && response.status == 200) {
     return response.data

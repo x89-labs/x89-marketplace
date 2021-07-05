@@ -11,7 +11,8 @@ import UploadFile from 'components/UploadFile'
 import ReactPlayer from 'react-player'
 import Categories from 'components/Categories'
 import { useDispatch } from 'react-redux'
-import { getCategories } from 'state/mint/actions'
+import { getCategories, postItem } from 'state/mint/actions'
+import { getListItems } from 'state/explore/actions'
 
 interface ico {
   icon: any
@@ -47,8 +48,6 @@ export const Single = ({ history }: RouteComponentProps) => {
     setSwitchType(SwitchType.FixedPrice)
     dispatch(getCategories())
   }, [])
-
-  console.log(state.categorie)
 
   const Around = styled.div`
     p {

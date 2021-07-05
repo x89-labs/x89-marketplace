@@ -1,7 +1,5 @@
 import { createReducer, createSlice } from '@reduxjs/toolkit'
-import { client, Endpoint } from 'api'
-import { Ipfs } from 'client/ipfs'
-import { Categories } from 'models/Categories'
+import { Categories } from 'models/categories'
 import { deleteFile, Field, fieldChange, fileChange, getCategories, ipfsHash, postItem } from './actions'
 export interface MintState {
   readonly independentField: Field

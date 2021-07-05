@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import React, { useState } from 'react'
 import * as Asset from 'assets'
 import { useIsDarkMode } from 'state/user/hooks'
+import { useDispatch } from 'react-redux'
+import { postItem } from 'state/mint/actions'
 
 const LableTitle = styled.h4`
   font-weight: 700;
@@ -97,6 +99,7 @@ const Create = styled.div`
 
 export default function OptionMintCreate() {
   const darkMode = useIsDarkMode()
+  const dispatch = useDispatch()
   const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
 
   const CreateCollection = () => {
@@ -174,7 +177,9 @@ export default function OptionMintCreate() {
         </TextInput>
       </div>
       <CreateItem>
-        <div className="createBtn">Create Item</div>
+        <div className="createBtn" onClick={() => dispatch(postItem())}>
+          Create Item
+        </div>
         <p>Unsaved changes </p>
       </CreateItem>
     </div>
