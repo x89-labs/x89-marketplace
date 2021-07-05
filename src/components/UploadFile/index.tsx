@@ -75,6 +75,8 @@ export default function UploadFile() {
     }
   }
 
+  console.log(state.ipfsHash)
+
   const PreviewFile = () => {
     if (state.file) {
       if (state.file.type.includes('image')) {

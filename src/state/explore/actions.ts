@@ -1,16 +1,13 @@
-import { createAction, getDefaultMiddleware } from '@reduxjs/toolkit'
+import { createAction, createAsyncThunk, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { client, Endpoint } from 'api'
 
 export const getItems = createAction<{ value?: any }>('explore/getItems')
-const URL = `${Endpoint.GET_ITEM}`
-export const getItem = createAction('explore/getItems', function (text) {
-  ;(async () => {
-    const res = await client.get(URL, {})
-    console.log(res)
-  })()
-  return {
-    payload: {
-      text,
-    },
+export const listItems = createAsyncThunk('explore/items', async (skip, take) => {
+  const URL = `${Endpoint.GET_ITEM}`
+  const response = await client.get(URL, {})
+  if (response && response.status == 200) {
+    return response.data
+  } else {
+    return []
   }
 })
