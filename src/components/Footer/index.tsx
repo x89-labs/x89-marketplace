@@ -111,7 +111,7 @@ const StyledNavLink = styled(NavLink).attrs({
 
 const StyledExternalLink = styled(ExternalLink).attrs({
   activeClassName,
-}) <{ isActive?: boolean }>`
+})<{ isActive?: boolean }>`
   outline: none;
   text-decoration: none;
   :hover {
@@ -163,7 +163,7 @@ export default function Footer() {
       </div>
       <SocialFooter>
         <div className="term">
-          <p> @Nmb, Inc. All rights reserved</p>
+          <p> @Polrare. All rights reserved</p>
           <p className="policy"> Terms</p>
           <p className="policy"> Private</p>
         </div>
