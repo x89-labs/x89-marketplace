@@ -33,7 +33,7 @@ const store = configureStore({
     stats,
   },
   middleware: [
-    ...getDefaultMiddleware({ thunk: true }),
+    ...getDefaultMiddleware({ thunk: true, serializableCheck: false }),
     thunkMiddleware,
     save({ states: PERSISTED_KEYS, debounce: 1000 }),
   ],

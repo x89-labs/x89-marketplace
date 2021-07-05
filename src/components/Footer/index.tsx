@@ -22,7 +22,6 @@ const InfoFooter = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-bottom: 4rem;
-  text-align: center;
 `
 const InfoWithSearch = styled.div`
   margin-bottom: 40px;
@@ -33,6 +32,7 @@ const InfoWithSearch = styled.div`
   .search {
     background: #f0f0f0;
     height: 48px;
+    width: 293px;
     border-radius: 48px;
     padding-left: 20px;
     display: flex;

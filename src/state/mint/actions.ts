@@ -24,6 +24,7 @@ export const getCategories = createAsyncThunk('mint/getCategories', async () => 
   }
 })
 export const postItem = createAsyncThunk('mint/postItem', async () => {
+  console.log('aaa')
   const URL = `${Endpoint.ITEM}`
   const body = {
     categorie: useMintState().categorie,

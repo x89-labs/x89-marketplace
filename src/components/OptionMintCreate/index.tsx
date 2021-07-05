@@ -118,6 +118,10 @@ export default function OptionMintCreate() {
       </div>
     )
   }
+  const onMint = () => {
+    console.log('hello')
+    dispatch(postItem())
+  }
   return (
     <div>
       <div style={{ marginTop: 20 }}>
@@ -177,9 +181,9 @@ export default function OptionMintCreate() {
         </TextInput>
       </div>
       <CreateItem>
-        <div className="createBtn" onClick={() => dispatch(postItem())}>
+        <a className="createBtn" onClick={onMint}>
           Create Item
-        </div>
+        </a>
         <p>Unsaved changes </p>
       </CreateItem>
     </div>

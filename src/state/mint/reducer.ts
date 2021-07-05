@@ -52,6 +52,9 @@ const mintSlice = createSlice({
           state.categories = action.payload
         }
       })
+      .addCase(postItem.fulfilled, (state, action) => {
+        console.log(action)
+      })
   },
 })
 export default mintSlice.reducer
