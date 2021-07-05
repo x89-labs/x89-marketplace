@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { FormGroup, Label } from 'reactstrap'
 import { useAppDispatch } from 'state/hooks'
-import { deleteFile, fileChange, postItem } from 'state/mint/actions'
+import { deleteFile, fileChange, ipfsHash, postItem } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
 import styled from 'styled-components'
 import * as Asset from 'assets'
@@ -65,8 +65,12 @@ export default function UploadFile() {
       const file = state.file
       const reader = new window.FileReader()
       reader.readAsArrayBuffer(file)
-      reader.onloadend = () => {
+      reader.onloadend = async () => {
         Ipfs.add(reader.result)
+        const hash = await Ipfs.GetHash(reader.result)
+        if (hash) {
+          dispatch(ipfsHash({ value: hash }))
+        }
       }
     }
   }

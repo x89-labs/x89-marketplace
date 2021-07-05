@@ -22,7 +22,7 @@ const IpfsClient = class {
     await mintNFT('https://ipfs.infura.io/ipfs/' + res.path)
   }
   GetHash = async (file) => {
-    const res = await ipfs.add(file)
+    const res = await ipfs.add(Buffer(file))
     return 'https://ipfs.infura.io/ipfs/' + res.path
   }
 }

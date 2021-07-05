@@ -1,6 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { client, Endpoint } from 'api'
-import { deleteFile, Field, fileChange, postItem, resetMintState, typeInput } from './actions'
+import { Ipfs } from 'client/ipfs'
+import { deleteFile, Field, fileChange, ipfsHash, postItem, resetMintState, typeInput } from './actions'
 export interface MintState {
   readonly independentField: Field
   readonly typedValue: string
@@ -9,6 +10,7 @@ export interface MintState {
   readonly leftRangeTypedValue: string
   readonly rightRangeTypedValue: string
   readonly file?: any
+  readonly ipfsHash?: any
 }
 
 export const initialState: MintState = {
@@ -28,6 +30,12 @@ export default createReducer<MintState>(initialState, (builder) =>
       return {
         ...state,
         file: value,
+      }
+    })
+    .addCase(ipfsHash, (state, { payload: { value } }) => {
+      return {
+        ...state,
+        ipfsHash: value,
       }
     })
     .addCase(deleteFile, (state, action) => {
