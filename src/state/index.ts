@@ -13,6 +13,7 @@ import burn from './burn/reducer'
 import burnV3 from './burn/v3/reducer'
 import multicall from './multicall/reducer'
 import explore from './explore/reducer'
+import stats from './stats/reducer'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
 
@@ -29,6 +30,7 @@ const store = configureStore({
     multicall,
     lists,
     explore,
+    stats,
   },
   middleware: [
     ...getDefaultMiddleware({ thunk: true }),

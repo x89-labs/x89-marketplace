@@ -10,8 +10,6 @@ const INFURA_KEY = process.env.REACT_APP_INFURA_KEY
 const NODE_URL = 'https://ropsten.infura.io/v3/5e4235dd371d43f0bbc8d252f58ac94c'
 
 export async function mintNFT(tokenURI?: string) {
-  console.log(NODE_URL)
-
   if (NODE_URL) {
     const web3 = new Web3(new Web3.providers.HttpProvider(NODE_URL))
     const nftContract = new web3.eth.Contract(contract.abi, contractAddress)
