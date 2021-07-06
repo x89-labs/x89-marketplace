@@ -1,6 +1,7 @@
 import { createReducer, createSlice } from '@reduxjs/toolkit'
+import { BodyItem } from 'models/bodyItem'
 import { Categories } from 'models/categories'
-import { deleteFile, Field, fieldChange, fileChange, getCategories, ipfsHash, postItem } from './actions'
+import { deleteFile, Field, fieldChange, fileChange, getCategories, getIpfsHash, postItem } from './actions'
 export interface MintState {
   readonly independentField: Field
   readonly typedValue: string
@@ -9,12 +10,26 @@ export interface MintState {
   readonly ipfsHash?: string
   readonly categories?: Categories[]
   readonly categorie?: string
+  readonly name?: string
+  readonly initValues: BodyItem
 }
 
 export const initialState: MintState = {
   independentField: Field.CURRENCY_A,
   typedValue: '',
   otherTypedValue: '',
+  initValues: {
+    categoryId: '',
+    name: 'A TREE',
+    description: 'aaaa',
+    price: 12,
+    contractAddress: '12324',
+    assetId: '1233',
+    symbol: 'ETH',
+    image: '',
+    totalQuantity: 1,
+    createdBy: 'Duy Anh',
+  },
 }
 
 const mintSlice = createSlice({
@@ -35,7 +50,7 @@ const mintSlice = createSlice({
           [fieldName]: fieldValue,
         }
       })
-      .addCase(ipfsHash, (state, { payload: { value } }) => {
+      .addCase(getIpfsHash, (state, { payload: { value } }) => {
         return {
           ...state,
           ipfsHash: value,

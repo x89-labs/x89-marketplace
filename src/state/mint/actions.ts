@@ -1,7 +1,5 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { client, Endpoint } from 'api'
-import { useAppSelector } from 'state/hooks'
-import { useMintState } from './hooks'
 
 export enum Field {
   CURRENCY_A = 'CURRENCY_A',
@@ -12,7 +10,7 @@ export const typeInput = createAction<{ field: Field; typedValue: string; noLiqu
 
 export const fileChange = createAction<{ value: any }>('mint/fileChangeMint')
 export const fieldChange = createAction<{ fieldName: string; fieldValue: any }>('mint/fieldChange')
-export const ipfsHash = createAction<{ value: string }>('mint/ipfsHash')
+export const getIpfsHash = createAction<{ value: string }>('mint/ipfsHash')
 export const deleteFile = createAction<{ value: any }>('mint/deleteFileMint')
 
 export const getCategories = createAsyncThunk('mint/getCategories', async () => {

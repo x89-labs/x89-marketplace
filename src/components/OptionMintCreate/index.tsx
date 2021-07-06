@@ -5,6 +5,9 @@ import { useIsDarkMode } from 'state/user/hooks'
 import { useDispatch } from 'react-redux'
 import { postItem } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
+import { BodyItem } from 'models/bodyItem'
+import Modal from 'components/Modal'
+import CreateForm from './createForm'
 
 const LableTitle = styled.h4`
   font-weight: 700;
@@ -102,30 +105,17 @@ export default function OptionMintCreate() {
   const darkMode = useIsDarkMode()
   const dispatch = useDispatch()
   const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
+  const [isopen, setOpen] = useState(false)
   const state = useMintState()
   const CreateCollection = () => {
     return (
-      <div className="marketplace" onClick={() => console.log('aa')}>
+      <div className="marketplace" onClick={() => setOpen(true)}>
         <Asset.Plus className="image" fill={darkMode ? '#ffffff' : '#000000'} />
         <h4>Create </h4>
       </div>
     )
   }
-  const DecreptionItem = () => {
-    return (
-      <div className="marketplace" style={{ border: '2px solid rgb(0, 102, 255)' }}>
-        <img src={Asset.SrcLogo} className="image" />
-        <h4>Unicon</h4>
-      </div>
-    )
-  }
-  const onMint = () => {
-    const body = {
-      categoryId: state.categorie,
-      image: state.ipfsHash,
-    }
-    dispatch(postItem(body))
-  }
+
   return (
     <div>
       <div style={{ marginTop: 20 }}>
@@ -135,10 +125,7 @@ export default function OptionMintCreate() {
       <LableTitle>Choose collection</LableTitle>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <Create>
-          <div>
-            <CreateCollection />
-            <DecreptionItem />
-          </div>
+          <CreateCollection />
         </Create>
       </div>
       <TextInput>
@@ -153,13 +140,6 @@ export default function OptionMintCreate() {
           <input type="input" placeholder="e.g.Remdemable T-Shirt with logo" />
         </div>
         <p>With preserved line-breaks</p>
-      </TextInput>
-      <TextInput>
-        <LableTitle>Royalties</LableTitle>
-        <div className="form__group ">
-          <input type="input" placeholder="Digital key, code to redeem or link to a file ..." />
-        </div>
-        <p>Suggested: 0%, 10%, 20%, 30%</p>
       </TextInput>
       <AdvancedSetting onClick={() => setShowBtnAdvanced(!showBtnAdvanced)}>
         {showBtnAdvanced == true ? 'Show Advenced Setting' : 'Hide Advenced Setting'}
@@ -176,20 +156,14 @@ export default function OptionMintCreate() {
             </div>
           </div>
         </TextInput>
-        <TextInput>
-          <LableTitle>Alternative text for NFT</LableTitle>
-          <div className="form__group ">
-            <input type="input" placeholder="Image Description in details (do not start with word image" />
-          </div>
-          <p>Text that will be used in VoiceOver for people with disabilities</p>
-        </TextInput>
       </div>
       <CreateItem>
-        <a className="createBtn" onClick={onMint}>
-          Create Item
-        </a>
+        <a className="createBtn">Create Item</a>
         <p>Unsaved changes </p>
       </CreateItem>
+      <Modal isOpen={isopen} onDismiss={() => setOpen(false)}>
+        <CreateForm />
+      </Modal>
     </div>
   )
 }
