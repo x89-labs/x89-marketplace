@@ -4,6 +4,7 @@ import * as Asset from 'assets'
 import { useIsDarkMode } from 'state/user/hooks'
 import { useDispatch } from 'react-redux'
 import { postItem } from 'state/mint/actions'
+import { getListItems } from 'state/explore/actions'
 
 const LableTitle = styled.h4`
   font-weight: 700;

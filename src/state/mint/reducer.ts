@@ -53,7 +53,7 @@ const mintSlice = createSlice({
         }
       })
       .addCase(postItem.fulfilled, (state, action) => {
-        console.log(action)
+        console.log('aaa')
       })
   },
 })
