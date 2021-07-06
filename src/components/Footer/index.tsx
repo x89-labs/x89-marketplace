@@ -153,7 +153,7 @@ export default function Footer() {
           <InfoWithText>
             <h4>Community</h4>
             <StyledNavLink id={`explore-nav-link`} to={'.'}>
-              <p>X89 Token</p>
+              <p>Polrare Token</p>
             </StyledNavLink>
             <p>Discussion</p>
             <p>Voting</p>
@@ -163,7 +163,7 @@ export default function Footer() {
       </div>
       <SocialFooter>
         <div className="term">
-          <p> @Nmb, Inc. All rights reserved</p>
+          <p> @Polrare. All rights reserved</p>
           <p className="policy"> Terms</p>
           <p className="policy"> Private</p>
         </div>
