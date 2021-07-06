@@ -4,6 +4,10 @@ import { getItem } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
 import styled from 'styled-components'
 
+const Container = styled.div`
+  width: 100%;
+  padding: 20px;
+`
 export default function DetailItem() {
   const dispatch = useDispatch()
   const state = useExploreState()
@@ -15,5 +19,5 @@ export default function DetailItem() {
   }, [])
   console.log(state.item)
 
-  return <div>DetailItem</div>
+  return <Container>DetailItem</Container>
 }

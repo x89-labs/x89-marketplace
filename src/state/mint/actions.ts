@@ -31,7 +31,7 @@ export const postItem = createAsyncThunk('mint/postItem', async () => {
   }
   console.log(body)
 
-  const response = await client.post(URL, body)
+  const response = await client.get(URL, {})
   if (response && response.status == 200) {
     return response.data
   } else {

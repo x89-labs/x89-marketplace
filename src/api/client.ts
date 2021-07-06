@@ -40,16 +40,17 @@ const RequestClient = class {
       axios.defaults.headers.common[key] = params[key]
     })
   }
-  async get(endpoint: string, params: any) {
+  async get(endpoint: string, params = {}) {
     try {
       const response = await axios.get(endpoint, { params: params })
+
       return response
     } catch (error) {
       this.handleError(error)
     }
   }
 
-  async post(endpoint: string, body: any, params?: any) {
+  async post(endpoint: string, body: {}, params = {}) {
     try {
       const response = await axios.post(endpoint, body, { params: params })
       return response
@@ -59,7 +60,7 @@ const RequestClient = class {
     }
   }
 
-  async put(endpoint: string, body: any, params: any) {
+  async put(endpoint: string, body: {}, params = {}) {
     try {
       const response = await axios.put(endpoint, body, { params: params })
       return response
@@ -69,7 +70,7 @@ const RequestClient = class {
     }
   }
 
-  async delete(endpoint: string, data?: any) {
+  async delete(endpoint: string, data?: {}) {
     try {
       const response = await axios.delete(endpoint, { data: data })
       return response
