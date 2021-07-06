@@ -8,7 +8,7 @@ export interface MintState {
   readonly file?: any
   readonly ipfsHash?: string
   readonly categories?: Categories[]
-  readonly categorie?: Categories[]
+  readonly categorie?: string
 }
 
 export const initialState: MintState = {
@@ -18,7 +18,7 @@ export const initialState: MintState = {
 }
 
 const mintSlice = createSlice({
-  name: 'users',
+  name: 'mint',
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -53,7 +53,7 @@ const mintSlice = createSlice({
         }
       })
       .addCase(postItem.fulfilled, (state, action) => {
-        console.log('aaa')
+        // console.log('aaa')
       })
   },
 })

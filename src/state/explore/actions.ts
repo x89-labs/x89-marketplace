@@ -1,6 +1,5 @@
 import { createAction, createAsyncThunk, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { client, Endpoint } from 'api'
-import { useMintState } from 'state/mint/hooks'
 
 export const getListItems = createAsyncThunk('explore/items', async (skip, take) => {
   const URL = `${Endpoint.ITEM}`
@@ -11,7 +10,7 @@ export const getListItems = createAsyncThunk('explore/items', async (skip, take)
     return []
   }
 })
-export const getItem = createAsyncThunk('explore/getItem', async (itemId: string) => {
+export const getItem = createAsyncThunk('explore/getItem', async (itemId: string, { getState }) => {
   const URL = `${Endpoint.ITEM}/${itemId}`
   const response = await client.get(URL, {})
   if (response && response.status == 200) {

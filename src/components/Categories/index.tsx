@@ -3,8 +3,7 @@ import * as Asset from 'assets'
 import styled from 'styled-components'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { fieldChange, getCategories } from 'state/mint/actions'
-import { useExploreState } from 'state/explore/hooks'
+import { fieldChange } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
 
 const Around = styled.div`

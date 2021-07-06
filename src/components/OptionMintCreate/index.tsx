@@ -4,7 +4,7 @@ import * as Asset from 'assets'
 import { useIsDarkMode } from 'state/user/hooks'
 import { useDispatch } from 'react-redux'
 import { postItem } from 'state/mint/actions'
-import { getListItems } from 'state/explore/actions'
+import { useMintState } from 'state/mint/hooks'
 
 const LableTitle = styled.h4`
   font-weight: 700;
@@ -102,7 +102,7 @@ export default function OptionMintCreate() {
   const darkMode = useIsDarkMode()
   const dispatch = useDispatch()
   const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
-
+  const state = useMintState()
   const CreateCollection = () => {
     return (
       <div className="marketplace" onClick={() => console.log('aa')}>
@@ -115,13 +115,16 @@ export default function OptionMintCreate() {
     return (
       <div className="marketplace" style={{ border: '2px solid rgb(0, 102, 255)' }}>
         <img src={Asset.SrcLogo} className="image" />
-        <h4>Unicon </h4>
+        <h4>Unicon</h4>
       </div>
     )
   }
   const onMint = () => {
-    console.log('hello')
-    dispatch(postItem())
+    const body = {
+      categoryId: state.categorie,
+      image: state.ipfsHash,
+    }
+    dispatch(postItem(body))
   }
   return (
     <div>

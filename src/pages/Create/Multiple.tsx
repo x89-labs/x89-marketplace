@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { FormGroup, Label, Input } from 'reactstrap'
 import * as Icon from 'react-feather'
 import * as Asset from '../../assets'
 import styled from 'styled-components'

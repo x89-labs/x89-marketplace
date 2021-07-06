@@ -1,5 +1,6 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { client, Endpoint } from 'api'
+import { useAppSelector } from 'state/hooks'
 import { useMintState } from './hooks'
 
 export enum Field {
@@ -23,19 +24,17 @@ export const getCategories = createAsyncThunk('mint/getCategories', async () => 
     return []
   }
 })
-export const postItem = createAsyncThunk('mint/postItem', async () => {
-  console.log('aaa')
-  const URL = `${Endpoint.ITEM}`
-  const body = {
-    categorie: useMintState().categorie,
-    image: useMintState().ipfsHash,
-  }
-  console.log(body)
+export const postItem = createAsyncThunk('mint/postItem', async (body?: any) => {
+  try {
+    const URL = `${Endpoint.ITEM}`
 
-  const response = await client.get(URL, {})
-  if (response && response.status == 200) {
-    return response.data
-  } else {
-    return []
+    const response = await client.post(URL, body)
+    if (response && response.status == 200) {
+      return response.data
+    } else {
+      return []
+    }
+  } catch (e) {
+    console.log(e)
   }
 })
