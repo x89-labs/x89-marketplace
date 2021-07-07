@@ -104,8 +104,20 @@ export default function CreateModal() {
     initialValues: state.initValues,
     // validationSchema:
     onSubmit: (values) => {
+      const body: BodyItem = {
+        categoryId: state.file ? state.file : '9c9debff-35d5-4276-ba59-d606c8ed9859',
+        name: values.name,
+        description: values.description,
+        price: 12,
+        contractAddress: '12324',
+        assetId: '1233',
+        symbol: values.symbol,
+        image: state.file ? state.file : '',
+        totalQuantity: 1,
+        createdBy: 'Duy Anh',
+      }
       console.log(values)
-      dispatch(postItem(values))
+      dispatch(postItem(body))
     },
   })
 
@@ -152,7 +164,6 @@ export default function CreateModal() {
       <ButtonCreate
         onClick={() => {
           formik.handleSubmit()
-          console.log(formik)
         }}
       >
         Create Collection
