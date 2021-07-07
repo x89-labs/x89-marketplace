@@ -5,7 +5,19 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { fieldChange } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
+import { theme } from 'theme'
 
+const Container = styled.div`
+  margin-top: 1.2rem;
+  align-self: center;
+  justify-content: center;
+  width: 50%;
+`
+const Title = styled.p`
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: ${({ theme }) => theme.text1};
+`
 const Around = styled.div`
   display: flex;
   color: #9c9292;
@@ -13,6 +25,7 @@ const Around = styled.div`
   cursor: pointer;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #ccc;
   &:hover {
     color: #000;
   }
@@ -55,17 +68,17 @@ export default function Categories() {
   const state = useMintState()
   const dispatch = useDispatch()
   const [show, setShow] = useState(true)
-  const [selected, setSelected] = useState('')
+  const [selected, setSelected] = useState<string>()
 
   return (
-    <div style={{ alignSelf: 'center', width: '80%', justifyContent: 'space-between', margin: '0 5px' }}>
-      Categories
+    <Container>
+      <Title>Categories</Title>
       <Around
         onClick={() => {
           setShow(false)
         }}
       >
-        <h4>{selected ? selected : ''}</h4>
+        <h4>{state.categorieId ? state.categorieId : ''}</h4>
         <Asset.DownArrow width={12} height={12} fill={'#9c9292'} />
       </Around>
       <DropDown hidden={show} className="dropdown">
@@ -75,7 +88,8 @@ export default function Categories() {
             key={index}
             onClick={() => {
               setSelected(item.categoryName)
-              dispatch(fieldChange({ fieldName: 'categorie', fieldValue: item.id }))
+              setShow(true)
+              dispatch(fieldChange({ fieldName: 'categorieId', fieldValue: item.id }))
             }}
           >
             <div className="itemName">
@@ -85,6 +99,6 @@ export default function Categories() {
           </div>
         ))}
       </DropDown>
-    </div>
+    </Container>
   )
 }

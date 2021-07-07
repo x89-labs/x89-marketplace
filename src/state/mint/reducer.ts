@@ -22,7 +22,7 @@ export const initialState: MintState = {
     categoryId: '',
     name: '',
     description: '',
-    price: 12,
+    price: 0,
     contractAddress: '12324',
     assetId: '1233',
     symbol: '',

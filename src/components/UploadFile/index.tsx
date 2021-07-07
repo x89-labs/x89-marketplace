@@ -57,22 +57,19 @@ export default function UploadFile() {
 
   useEffect(() => {
     plainFiles[0] && dispatch(fileChange({ value: plainFiles[0] }))
-  }, [plainFiles[0]])
-
-  const onSubmit = () => {
-    if (state.file) {
-      const file = state.file
+    if (plainFiles[0]) {
+      const file = plainFiles[0]
       const reader = new window.FileReader()
       reader.readAsArrayBuffer(file)
       reader.onloadend = async () => {
-        Ipfs.add(reader.result)
         const hash = await Ipfs.GetHash(reader.result)
+        console.log(hash)
         if (hash) {
           dispatch(getIpfsHash({ value: hash }))
         }
       }
     }
-  }
+  }, [plainFiles[0]])
 
   const PreviewFile = () => {
     if (state.file) {
@@ -110,6 +107,7 @@ export default function UploadFile() {
         </CloseBtn>
         <PreviewFile />
       </FormGroup>
+      {state.ipfsHash && <p>{state.ipfsHash}</p>}
     </Around>
   )
 }

@@ -9,6 +9,9 @@ import { BodyItem } from 'models/bodyItem'
 import Modal from 'components/Modal'
 import CreateForm from './createForm'
 
+type OptionMintCreate = {
+  formik?: any
+}
 const LableTitle = styled.h4`
   font-weight: 700;
   margin: 0;
@@ -101,7 +104,7 @@ const Create = styled.div`
   }
 `
 
-export default function OptionMintCreate() {
+export default function OptionMintCreate({ formik }: OptionMintCreate) {
   const darkMode = useIsDarkMode()
   const dispatch = useDispatch()
   const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
@@ -128,19 +131,6 @@ export default function OptionMintCreate() {
           <CreateCollection />
         </Create>
       </div>
-      <TextInput>
-        <LableTitle>Title</LableTitle>
-        <div className="form__group ">
-          <input type="input" placeholder="e.g.Remdemable T-Shirt with logo" />
-        </div>
-      </TextInput>
-      <TextInput>
-        <LableTitle>Descreption</LableTitle>
-        <div className="form__group ">
-          <input type="input" placeholder="e.g.Remdemable T-Shirt with logo" />
-        </div>
-        <p>With preserved line-breaks</p>
-      </TextInput>
       <AdvancedSetting onClick={() => setShowBtnAdvanced(!showBtnAdvanced)}>
         {showBtnAdvanced == true ? 'Show Advenced Setting' : 'Hide Advenced Setting'}
       </AdvancedSetting>
@@ -158,7 +148,14 @@ export default function OptionMintCreate() {
         </TextInput>
       </div>
       <CreateItem>
-        <a className="createBtn">Create Item</a>
+        <a
+          className="createBtn"
+          onClick={() => {
+            formik.handleSubmit()
+          }}
+        >
+          Create Item
+        </a>
         <p>Unsaved changes </p>
       </CreateItem>
       <Modal isOpen={isopen} onDismiss={() => setOpen(false)}>

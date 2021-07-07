@@ -12,7 +12,12 @@ import ReactPlayer from 'react-player'
 import Categories from 'components/Categories'
 import { useDispatch } from 'react-redux'
 import { getCategories, postItem } from 'state/mint/actions'
-import { getListItems } from 'state/explore/actions'
+import { useFormik } from 'formik'
+import { BodyItem } from 'models/bodyItem'
+import { useActiveWeb3React } from 'hooks/web3'
+import { contractAddress } from 'client/callSmContract'
+import { Forms } from './config'
+import { Type } from 'models/formInput'
 
 interface ico {
   icon: any
@@ -43,7 +48,32 @@ export const Single = ({ history }: RouteComponentProps) => {
   const dispatch = useDispatch()
   const state = useMintState()
   const darkMode = useIsDarkMode()
+  const { account } = useActiveWeb3React()
   const [switchType, setSwitchType] = useState<SwitchType>()
+
+  const formik = useFormik({
+    initialValues: state.initValues,
+    // validationSchema:
+    onSubmit: (values) => {
+      console.log(state.ipfsHash)
+      console.log(state.categorieId)
+      if (state.ipfsHash && state.categorieId) {
+        const body: BodyItem = {
+          categoryId: state.categorieId,
+          name: values.name,
+          description: values.description,
+          price: values.price,
+          contractAddress: contractAddress,
+          assetId: '1233',
+          symbol: values.symbol,
+          image: state.ipfsHash,
+          totalQuantity: 1,
+          createdBy: account!,
+        }
+        dispatch(postItem(body))
+      }
+    },
+  })
   useEffect(() => {
     setSwitchType(SwitchType.FixedPrice)
     dispatch(getCategories())
@@ -160,36 +190,6 @@ export const Single = ({ history }: RouteComponentProps) => {
       font-size: 0.8rem;
     }
   `
-  // const currency: Currency = [{ isNative: true, isToken: true }]
-  const optionsToken = [
-    {
-      name: 'USDS',
-      icon: <img src={Asset.SrcUSDC} width={20} height={20} />,
-      id: '1',
-    },
-    {
-      name: 'ETH',
-      icon: <Asset.Ethereum width={20} height={20} />,
-      id: '2',
-    },
-    {
-      name: 'BTC',
-      icon: <Asset.BitCoin width={20} height={20} />,
-      id: '3',
-    },
-  ]
-  const options = [
-    {
-      name: 'Right after listing',
-      id: '1',
-    },
-    {
-      name: 'Pick spicific date',
-      id: '2',
-      type: 'DatePicker',
-    },
-  ]
-  // const web3 = new Web3(Web3.givenProvider || 'ws://localhost:8545')
   const PreviewFile = () => {
     if (state.file) {
       if (state.file.type.includes('image')) {
@@ -259,6 +259,64 @@ export const Single = ({ history }: RouteComponentProps) => {
     )
   }
 
+  const FormInput = (location?: string) => {
+    return Forms.map((r, i) => {
+      if (location === r.location) {
+        return r.control?.map((f, index) => {
+          if (f.type === Type.Input) {
+            return (
+              <TextInput key={index}>
+                <LableTitle style={{ margin: 0 }}>{f.title}</LableTitle>
+                <div className="form__group ">
+                  <input
+                    id={f.id}
+                    type="input"
+                    placeholder={f.placeHolder}
+                    onChange={(e) => {
+                      if (e.target.value !== '') {
+                        formik.setFieldValue(f.id, e.target.value.trim())
+                      }
+                    }}
+                  />
+                </div>
+                <p>{f.panel}</p>
+              </TextInput>
+            )
+          } else if (f.type === Type.InputDropdown) {
+            return (
+              <TextInput key={index}>
+                <LableTitle style={{ margin: 0 }}>{f.title}</LableTitle>
+                <div className="form__group ">
+                  <input
+                    id={f.id}
+                    type="input"
+                    placeholder={f.placeHolder}
+                    onChange={(e) => {
+                      if (e.target.value !== '') {
+                        formik.setFieldValue('price', e.target.value.trim())
+                      }
+                    }}
+                  />
+                  <StableSelect option={f.option} />
+                </div>
+                <p>{f.panel}</p>
+              </TextInput>
+            )
+          } else if (f.type === Type.Dropdown) {
+            return (
+              <TextInput style={{ width: '50%' }}>
+                <h3 style={{ margin: 0 }}>{f.title}</h3>
+                <div className="form__group ">
+                  <StableSelect option={f.option} width={'100%'} />
+                </div>
+              </TextInput>
+            )
+          }
+        })
+      }
+    })
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <Around style={{ width: '516px' }}>
@@ -266,12 +324,13 @@ export const Single = ({ history }: RouteComponentProps) => {
         <h1>Create {CreateType()} collectible</h1>
         <LableTitle>UploadFile</LableTitle>
         <UploadFile />
+        <Categories />
         <div style={{ marginTop: 40 }}>
           <LableTitle>Put on marketplace</LableTitle>
           <div style={{ marginBottom: 20 }}>
-            {switchType === SwitchType.FixedPrice ? (
+            {switchType === 1 ? (
               <p>Enter price to allow users instantly purchase your NFT</p>
-            ) : switchType === SwitchType.TimedAuction ? (
+            ) : switchType === 2 ? (
               <p>Set a period of time for which buyers can place bids</p>
             ) : (
               <p>{`Put your new NFT on Rarible's marketplace`}</p>
@@ -289,45 +348,11 @@ export const Single = ({ history }: RouteComponentProps) => {
           </div>
 
           <div>
-            {switchType === SwitchType.FixedPrice && (
-              <TextInput>
-                <LableTitle style={{ margin: 0 }}>Price</LableTitle>
-                <div className="form__group ">
-                  <input type="input" placeholder="Enter price for one piece ..." name="name" id="name" />
-                  <StableSelect option={optionsToken} />
-                </div>
-                <p>Service fee 2.5%</p>
-                <p>You will receive 0 ETH0</p>
-              </TextInput>
-            )}
-            {switchType === SwitchType.TimedAuction && (
-              <div>
-                <TextInput>
-                  <h3 style={{ margin: 0 }}>Minimum bid</h3>
-                  <div className="form__group ">
-                    <input type="input" placeholder="Enter price for one piece ..." name="name" id="name" />
-                    <StableSelect option={optionsToken} />
-                  </div>
-                  <p>Bids below this amount won’t be allowed.</p>
-                </TextInput>
-                <div style={{ display: 'flex', width: '100%', justifyContent: 'space-around' }}>
-                  <TextInput style={{ width: '50%' }}>
-                    <h3 style={{ margin: 0 }}>Starting Date</h3>
-                    <div className="form__group ">
-                      <StableSelect option={options} width={'100%'} />
-                    </div>
-                  </TextInput>
-                  <TextInput style={{ width: '50%' }}>
-                    <h3 style={{ margin: 0 }}>Expiration Date</h3>
-                    <div className="form__group ">
-                      <StableSelect option={options} width={'100%'} />
-                    </div>
-                  </TextInput>
-                </div>
-              </div>
-            )}
+            {switchType === SwitchType.FixedPrice && FormInput('price')}
+            {switchType === SwitchType.TimedAuction && FormInput('bids')}
           </div>
-          <Categories />
+
+          {FormInput('infomation')}
           <OptionMintCreate />
         </div>
       </Around>

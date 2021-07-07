@@ -151,13 +151,31 @@ export default function CreateModal() {
         <TextInput>
           <BoldText>Symbol (required)</BoldText>
           <FormGroup>
-            <input id="symbol" type="input" placeholder="Enter Token Symbol" />
+            <input
+              id="symbol"
+              type="input"
+              placeholder="Enter Token Symbol"
+              onChange={(e) => {
+                if (e.target.value !== '') {
+                  formik.setFieldValue('symbol', e.target.value.trim())
+                }
+              }}
+            />
           </FormGroup>
         </TextInput>
         <TextInput>
           <BoldText>Description (optional)</BoldText>
           <FormGroup>
-            <input id="description" type="input" placeholder="Spread Some words about your token collection" />
+            <input
+              id="description"
+              type="input"
+              placeholder="Spread Some words about your token collection"
+              onChange={(e) => {
+                if (e.target.value !== '') {
+                  formik.setFieldValue('description', e.target.value.trim())
+                }
+              }}
+            />
           </FormGroup>
         </TextInput>
       </Content>
