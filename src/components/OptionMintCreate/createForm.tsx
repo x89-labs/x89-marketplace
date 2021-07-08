@@ -1,12 +1,16 @@
 import styled from 'styled-components'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useIsDarkMode } from 'state/user/hooks'
 import { useDispatch } from 'react-redux'
 import { useMintState } from 'state/mint/hooks'
 import useFilePicker from 'hooks/useFilePicker'
 import { BodyItem } from 'models/bodyItem'
-import { fieldChange, postItem } from 'state/mint/actions'
+import { fieldChange, fileChange, getIpfsHash, postItem } from 'state/mint/actions'
 import { useFormik } from 'formik'
+import { Ipfs } from 'client/ipfs'
+import { contractAddress } from 'client/callSmContract'
+import { useActiveWeb3React } from 'hooks/web3'
+import * as Yup from 'yup'
 
 const Container = styled.div`
   padding: 1rem;
@@ -95,29 +99,35 @@ const ButtonCreate = styled.div`
 export default function CreateModal() {
   const dispatch = useDispatch()
   const state = useMintState()
+  const { account } = useActiveWeb3React()
   const [openFileSelector, { plainFiles }] = useFilePicker({
     multiple: false,
     accept: ['.png', '.jpg'],
   })
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required('FieldRequired'),
+    symbol: Yup.string().required('FieldRequired'),
+  })
 
   const formik = useFormik({
     initialValues: state.initValues,
-    // validationSchema:
+    validationSchema: validationSchema,
     onSubmit: (values) => {
-      const body: BodyItem = {
-        categoryId: state.file ? state.file : '9c9debff-35d5-4276-ba59-d606c8ed9859',
-        name: values.name,
-        description: values.description,
-        price: 12,
-        contractAddress: '12324',
-        assetId: '1233',
-        symbol: values.symbol,
-        image: state.file ? state.file : '',
-        totalQuantity: 1,
-        createdBy: 'Duy Anh',
+      if (state.ipfsHash && state.categorieId) {
+        const body: BodyItem = {
+          categoryId: state.categorieId,
+          name: values.name,
+          description: values.description,
+          price: values.price,
+          contractAddress: contractAddress,
+          assetId: '1233',
+          symbol: values.symbol,
+          image: state.ipfsHash,
+          totalQuantity: 1,
+          createdBy: account!,
+        }
+        dispatch(postItem(body))
       }
-      console.log(values)
-      dispatch(postItem(body))
     },
   })
 
@@ -137,6 +147,7 @@ export default function CreateModal() {
           <FormGroup>
             <input
               id="name"
+              name="name"
               type="text"
               placeholder="Enter Token Name"
               onChange={(e) => {
