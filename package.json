@@ -155,6 +155,7 @@
     "ipfs-http-client": "^50.1.2",
     "react-infinite-scroll-component": "^6.1.0",
     "react-player": "^2.9.0",
-    "truffle-contract": "^4.0.31"
+    "truffle-contract": "^4.0.31",
+    "yup": "^0.32.9"
   }
 }

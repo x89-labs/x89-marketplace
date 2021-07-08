@@ -11,14 +11,14 @@ import UploadFile from 'components/UploadFile'
 import ReactPlayer from 'react-player'
 import Categories from 'components/Categories'
 import { useDispatch } from 'react-redux'
-import { getCategories, postItem } from 'state/mint/actions'
+import { fieldChange, getCategories, postItem } from 'state/mint/actions'
 import { useFormik } from 'formik'
 import { BodyItem } from 'models/bodyItem'
 import { useActiveWeb3React } from 'hooks/web3'
 import { contractAddress } from 'client/callSmContract'
 import { Forms } from './config'
 import { Type } from 'models/formInput'
-
+import MyInput from 'components/Input'
 interface ico {
   icon: any
   name: string
@@ -268,16 +268,7 @@ export const Single = ({ history }: RouteComponentProps) => {
               <TextInput key={index}>
                 <LableTitle style={{ margin: 0 }}>{f.title}</LableTitle>
                 <div className="form__group ">
-                  <input
-                    id={f.id}
-                    type="input"
-                    placeholder={f.placeHolder}
-                    onChange={(e) => {
-                      if (e.target.value !== '') {
-                        formik.setFieldValue(f.id, e.target.value.trim())
-                      }
-                    }}
-                  />
+                  <MyInput id={f.id} type={'input'} placeholder={f.placeHolder} formik={formik} />
                 </div>
                 <p>{f.panel}</p>
               </TextInput>
@@ -287,16 +278,7 @@ export const Single = ({ history }: RouteComponentProps) => {
               <TextInput key={index}>
                 <LableTitle style={{ margin: 0 }}>{f.title}</LableTitle>
                 <div className="form__group ">
-                  <input
-                    id={f.id}
-                    type="input"
-                    placeholder={f.placeHolder}
-                    onChange={(e) => {
-                      if (e.target.value !== '') {
-                        formik.setFieldValue('price', e.target.value.trim())
-                      }
-                    }}
-                  />
+                  <MyInput id={f.id} type={'input'} placeholder={f.placeHolder} formik={formik} />
                   <StableSelect option={f.option} />
                 </div>
                 <p>{f.panel}</p>

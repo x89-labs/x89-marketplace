@@ -23,12 +23,12 @@ export const initialState: MintState = {
     name: '',
     description: '',
     price: 0,
-    contractAddress: '12324',
+    contractAddress: '',
     assetId: '1233',
     symbol: '',
     image: '',
     totalQuantity: 1,
-    createdBy: '0x0C7c950F4dFb218328fFAC4ba54C6BaF51be820e',
+    createdBy: '',
   },
 }
 
