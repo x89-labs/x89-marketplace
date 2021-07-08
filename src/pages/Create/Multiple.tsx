@@ -9,6 +9,14 @@ import ReactPlayer from 'react-player'
 import { useMintState } from 'state/mint/hooks'
 import OptionMintCreate from 'components/OptionMintCreate'
 import StableSelect from 'components/StableSelect'
+import { Forms } from './config'
+import { Type } from 'models/formInput'
+import { useDispatch } from 'react-redux'
+import { useFormik } from 'formik'
+import { BodyItem } from 'models/bodyItem'
+import { contractAddress } from 'client/callSmContract'
+import { postItem } from 'state/mint/actions'
+import { useActiveWeb3React } from 'hooks/web3'
 
 interface ico {
   icon: any
@@ -35,6 +43,30 @@ enum SwitchType {
 export const Multiple = ({ history }: RouteComponentProps) => {
   const state = useMintState()
   const [switchType, setSwitchType] = useState<SwitchType>()
+  const dispatch = useDispatch()
+  const { account } = useActiveWeb3React()
+
+  const formik = useFormik({
+    initialValues: state.initValues,
+    // validationSchema:
+    onSubmit: (values) => {
+      if (state.ipfsHash && state.categorieId) {
+        const body: BodyItem = {
+          categoryId: state.categorieId,
+          name: values.name,
+          description: values.description,
+          price: values.price,
+          contractAddress: contractAddress,
+          assetId: '1233',
+          symbol: values.symbol,
+          image: state.ipfsHash,
+          totalQuantity: 1,
+          createdBy: account!,
+        }
+        dispatch(postItem(body))
+      }
+    },
+  })
   useEffect(() => {
     setSwitchType(SwitchType.FixedPrice)
   }, [])
@@ -55,6 +87,10 @@ export const Multiple = ({ history }: RouteComponentProps) => {
     .unlockOncePurchased {
       color: linear-gradient(to right, blue, pink);
     }
+  `
+  const LableTitle = styled.h4`
+    font-weight: 700;
+    margin: 0;
   `
   const Create = styled.div`
     * {
@@ -131,7 +167,6 @@ export const Multiple = ({ history }: RouteComponentProps) => {
     margin-right: 20px;
     .form__group {
       margin-top: 10px;
-      width: 90%;
       background: #f7f2f7;
       height: 48px;
       display: flex;
@@ -145,8 +180,9 @@ export const Multiple = ({ history }: RouteComponentProps) => {
       border: none;
       outline: none;
     }
-    input::placeholder {
-      color: #fff;
+    p {
+      font-weight: 700;
+      font-size: 0.8rem;
     }
   `
   const PreviewFile = () => {
@@ -168,6 +204,56 @@ export const Multiple = ({ history }: RouteComponentProps) => {
         )
       }
     } else return <></>
+  }
+
+  const FormInput = (location?: string) => {
+    return Forms.map((r, i) => {
+      if (location === r.location) {
+        return r.control?.map((f, index) => {
+          if (f.type === Type.Input) {
+            return (
+              <TextInput key={index}>
+                <LableTitle style={{ margin: 0 }}>{f.title}</LableTitle>
+                <div className="form__group ">
+                  <input
+                    id={f.id}
+                    type={'input'}
+                    placeholder={f.placeHolder}
+                    onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
+                  />
+                </div>
+                <p>{f.panel}</p>
+              </TextInput>
+            )
+          } else if (f.type === Type.InputDropdown) {
+            return (
+              <TextInput key={index}>
+                <LableTitle style={{ margin: 0 }}>{f.title}</LableTitle>
+                <div className="form__group ">
+                  <input
+                    id={f.id}
+                    type={'input'}
+                    placeholder={f.placeHolder}
+                    onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
+                  />
+                  <StableSelect option={f.option} />
+                </div>
+                <p>{f.panel}</p>
+              </TextInput>
+            )
+          } else if (f.type === Type.Dropdown) {
+            return (
+              <TextInput style={{ width: '50%' }}>
+                <h3 style={{ margin: 0 }}>{f.title}</h3>
+                <div className="form__group ">
+                  <StableSelect option={f.option} width={'100%'} />
+                </div>
+              </TextInput>
+            )
+          }
+        })
+      }
+    })
   }
   const CreateType = () => {
     return 'multiple'
@@ -203,23 +289,6 @@ export const Multiple = ({ history }: RouteComponentProps) => {
       </div>
     )
   }
-  const optionsToken = [
-    {
-      name: 'USDS',
-      icon: <img src={Asset.SrcUSDC} width={20} height={20} />,
-      id: '1',
-    },
-    {
-      name: 'ETH',
-      icon: <img src={Asset.SrcETH} width={20} height={20} />,
-      id: '2',
-    },
-    {
-      name: 'BTC',
-      icon: <img src={Asset.SrcETH} width={20} height={20} />,
-      id: '3',
-    },
-  ]
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -244,19 +313,9 @@ export const Multiple = ({ history }: RouteComponentProps) => {
                 </div>
               </Create>
             </div>
-            {switchType === SwitchType.FixedPrice && (
-              <TextInput>
-                <h3 style={{ margin: 0 }}>Price</h3>
-                <div className="form__group ">
-                  <input type="input" placeholder="Enter price for one piece ..." name="name" id="name" />
-                  <StableSelect option={optionsToken} />
-                </div>
-                <p>Service fee 2.5%</p>
-                <p>You will receive 0 ETH0</p>
-              </TextInput>
-            )}
+            {switchType === SwitchType.FixedPrice && FormInput('price')}
           </div>
-          <OptionMintCreate />
+          <OptionMintCreate formik={formik} />
         </div>
       </Around>
       <Preview>

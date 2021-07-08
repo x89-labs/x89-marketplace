@@ -18,7 +18,6 @@ import { useActiveWeb3React } from 'hooks/web3'
 import { contractAddress } from 'client/callSmContract'
 import { Forms } from './config'
 import { Type } from 'models/formInput'
-import MyInput from 'components/Input'
 interface ico {
   icon: any
   name: string
@@ -55,8 +54,6 @@ export const Single = ({ history }: RouteComponentProps) => {
     initialValues: state.initValues,
     // validationSchema:
     onSubmit: (values) => {
-      console.log(state.ipfsHash)
-      console.log(state.categorieId)
       if (state.ipfsHash && state.categorieId) {
         const body: BodyItem = {
           categoryId: state.categorieId,
@@ -268,7 +265,12 @@ export const Single = ({ history }: RouteComponentProps) => {
               <TextInput key={index}>
                 <LableTitle style={{ margin: 0 }}>{f.title}</LableTitle>
                 <div className="form__group ">
-                  <MyInput id={f.id} type={'input'} placeholder={f.placeHolder} formik={formik} />
+                  <input
+                    id={f.id}
+                    type={'input'}
+                    placeholder={f.placeHolder}
+                    onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
+                  />
                 </div>
                 <p>{f.panel}</p>
               </TextInput>
@@ -278,7 +280,12 @@ export const Single = ({ history }: RouteComponentProps) => {
               <TextInput key={index}>
                 <LableTitle style={{ margin: 0 }}>{f.title}</LableTitle>
                 <div className="form__group ">
-                  <MyInput id={f.id} type={'input'} placeholder={f.placeHolder} formik={formik} />
+                  <input
+                    id={f.id}
+                    type={'input'}
+                    placeholder={f.placeHolder}
+                    onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
+                  />
                   <StableSelect option={f.option} />
                 </div>
                 <p>{f.panel}</p>
@@ -335,7 +342,7 @@ export const Single = ({ history }: RouteComponentProps) => {
           </div>
 
           {FormInput('infomation')}
-          <OptionMintCreate />
+          <OptionMintCreate formik={formik} />
         </div>
       </Around>
       <Preview>
