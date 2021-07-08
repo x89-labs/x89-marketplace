@@ -9,7 +9,7 @@ export interface MintState {
   readonly file?: any
   readonly ipfsHash?: string
   readonly categories?: Categories[]
-  readonly categorie?: string
+  readonly categorieId?: string
   readonly name?: string
   readonly initValues: BodyItem
 }
@@ -20,15 +20,15 @@ export const initialState: MintState = {
   otherTypedValue: '',
   initValues: {
     categoryId: '',
-    name: 'A TREE',
-    description: 'aaaa',
-    price: 12,
+    name: '',
+    description: '',
+    price: 0,
     contractAddress: '12324',
     assetId: '1233',
-    symbol: 'ETH',
+    symbol: '',
     image: '',
     totalQuantity: 1,
-    createdBy: 'Duy Anh',
+    createdBy: '0x0C7c950F4dFb218328fFAC4ba54C6BaF51be820e',
   },
 }
 

@@ -1,4 +1,5 @@
 import StableSelect from 'components/StableSelect'
+import ItemView from 'components/ItemView'
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
@@ -6,6 +7,7 @@ import { getListItems } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
 import styled from 'styled-components'
 import * as Asset from 'assets'
+import { backgroundColor } from 'styled-system'
 
 const BodyExplore = styled.div`
   width: 100%;
@@ -20,6 +22,7 @@ const Item = styled(NavLink).attrs({
 })`
   width: 16rem;
   height: 16rem;
+  background-color: #fff;
   margin: 0 10px;
   position: relative;
   cursor: pointer;
@@ -28,7 +31,7 @@ const Item = styled(NavLink).attrs({
     position: absolute;
     width: 100%;
     transition: transform 0.2s;
-    height: 100%;
+    height: 16rem;
   }
   .image:hover {
     transform: scale(1.1);
@@ -49,6 +52,7 @@ const Item = styled(NavLink).attrs({
   }
 `
 const ItemContent = styled.div``
+const ItemFooter = styled.div``
 const TopSeller = styled.div``
 const Title = styled.div`
   margin-top: 20px;
@@ -98,15 +102,18 @@ export default function Explore() {
   return (
     <BodyExplore>
       <Header>
-        {state.listItem.map((item, index) => (
-          <Item key={index} id={`stats-nav-link`} to={`/detail/${item.id}`}>
-            <Image src={item.image} className="image" />
-            <ItemContent className="content">
-              <Text className="itemName">{item.name}</Text>
-              {item.createdBy !== '' && <Text className="author">By {item.createdBy}</Text>}
-            </ItemContent>
-          </Item>
-        ))}
+        {state.listItem.map(
+          (item, index) =>
+            index < 5 && (
+              <Item key={index} id={`stats-nav-link`} to={`/detail/${item.id}`}>
+                <Image src={item.image} className="image" />
+                <ItemContent className="content">
+                  <Text className="itemName">{item.name}</Text>
+                  {item.createdBy !== '' && <Text className="author">By {item.createdBy}</Text>}
+                </ItemContent>
+              </Item>
+            )
+        )}
       </Header>
       <TopSeller>
         <Title className=" title">
@@ -120,7 +127,13 @@ export default function Explore() {
         <Title>
           Live Auction <Asset.Fire width={20} height={20} />
         </Title>
+        <div style={{ display: 'flex' }}>
+          {state.listItem.map((item, index) => (
+            <ItemView item={item} key={index} />
+          ))}
+        </div>
       </LiveAuctions>
+
       <HotBids>
         <Title>
           Hot Bids <Asset.Fire width={20} height={20} />

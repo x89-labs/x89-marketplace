@@ -104,8 +104,20 @@ export default function CreateModal() {
     initialValues: state.initValues,
     // validationSchema:
     onSubmit: (values) => {
+      const body: BodyItem = {
+        categoryId: state.file ? state.file : '9c9debff-35d5-4276-ba59-d606c8ed9859',
+        name: values.name,
+        description: values.description,
+        price: 12,
+        contractAddress: '12324',
+        assetId: '1233',
+        symbol: values.symbol,
+        image: state.file ? state.file : '',
+        totalQuantity: 1,
+        createdBy: 'Duy Anh',
+      }
       console.log(values)
-      dispatch(postItem(values))
+      dispatch(postItem(body))
     },
   })
 
@@ -139,20 +151,37 @@ export default function CreateModal() {
         <TextInput>
           <BoldText>Symbol (required)</BoldText>
           <FormGroup>
-            <input id="symbol" type="input" placeholder="Enter Token Symbol" />
+            <input
+              id="symbol"
+              type="input"
+              placeholder="Enter Token Symbol"
+              onChange={(e) => {
+                if (e.target.value !== '') {
+                  formik.setFieldValue('symbol', e.target.value.trim())
+                }
+              }}
+            />
           </FormGroup>
         </TextInput>
         <TextInput>
           <BoldText>Description (optional)</BoldText>
           <FormGroup>
-            <input id="description" type="input" placeholder="Spread Some words about your token collection" />
+            <input
+              id="description"
+              type="input"
+              placeholder="Spread Some words about your token collection"
+              onChange={(e) => {
+                if (e.target.value !== '') {
+                  formik.setFieldValue('description', e.target.value.trim())
+                }
+              }}
+            />
           </FormGroup>
         </TextInput>
       </Content>
       <ButtonCreate
         onClick={() => {
           formik.handleSubmit()
-          console.log(formik)
         }}
       >
         Create Collection

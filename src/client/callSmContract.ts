@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import Web3 from 'web3'
 
 const contract = require('../abis/XNFT.json')
-const contractAddress = '0x398bcBcd555326A875C6e6A52907807303E6Af15'
+export const contractAddress = '0x398bcBcd555326A875C6e6A52907807303E6Af15'
 const PUBLIC_KEY = '0xAB1F741Bf4eF582873dC8A50C0560F4f0dC183eF'
 const PRIVATE_KEY = '0x65b18c8e4bd3d4c6e877a19d95f57ce03e321c4be4507038233e6f3e879b9883'
 const INFURA_KEY = process.env.REACT_APP_INFURA_KEY
