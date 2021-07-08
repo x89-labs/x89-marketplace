@@ -11,13 +11,14 @@ import UploadFile from 'components/UploadFile'
 import ReactPlayer from 'react-player'
 import Categories from 'components/Categories'
 import { useDispatch } from 'react-redux'
-import { fieldChange, getCategories, postItem } from 'state/mint/actions'
+import { fieldChange, getCategories, getIpfsHash, postItem } from 'state/mint/actions'
 import { useFormik } from 'formik'
 import { BodyItem } from 'models/bodyItem'
 import { useActiveWeb3React } from 'hooks/web3'
 import { contractAddress } from 'client/callSmContract'
 import { Forms } from './config'
 import { Type } from 'models/formInput'
+import { Ipfs } from 'client/ipfs'
 interface ico {
   icon: any
   name: string
@@ -54,6 +55,32 @@ export const Single = ({ history }: RouteComponentProps) => {
     initialValues: state.initValues,
     // validationSchema:
     onSubmit: (values) => {
+      if (state.file) {
+        const file = state.file
+        const reader = new window.FileReader()
+        reader.readAsArrayBuffer(file)
+        reader.onloadend = async () => {
+          const hash = await Ipfs.GetHash(reader.result)
+          console.log(hash)
+          if (state.categorie) {
+            const body: BodyItem = {
+              categoryId: state.categorie.id,
+              name: values.name,
+              description: values.description,
+              price: values.price,
+              contractAddress: contractAddress,
+              assetId: '1233',
+              symbol: values.symbol,
+              image: hash,
+              totalQuantity: 1,
+              createdBy: account!,
+            }
+            console.log(body)
+
+            dispatch(postItem(body))
+          }
+        }
+      }
       if (state.ipfsHash && state.categorieId) {
         const body: BodyItem = {
           categoryId: state.categorieId,
@@ -270,6 +297,7 @@ export const Single = ({ history }: RouteComponentProps) => {
                     type={'input'}
                     placeholder={f.placeHolder}
                     onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
+                    defaultValue={f.id === 'name' ? formik.values.name : formik.values.description}
                   />
                 </div>
                 <p>{f.panel}</p>
@@ -285,6 +313,7 @@ export const Single = ({ history }: RouteComponentProps) => {
                     type={'input'}
                     placeholder={f.placeHolder}
                     onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
+                    defaultValue={f.id === 'price' ? formik.values.price : formik.values.description}
                   />
                   <StableSelect option={f.option} />
                 </div>
