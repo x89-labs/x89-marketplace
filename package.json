@@ -150,6 +150,7 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "file-selector": "^0.2.4",
+    "formik": "^2.2.9",
     "ipfs-api": "^26.1.2",
     "ipfs-http-client": "^50.1.2",
     "react-infinite-scroll-component": "^6.1.0",

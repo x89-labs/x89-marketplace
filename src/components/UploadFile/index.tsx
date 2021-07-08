@@ -2,7 +2,7 @@ import useFilePicker from 'hooks/useFilePicker'
 import React, { useEffect } from 'react'
 import { FormGroup, Label } from 'reactstrap'
 import { useAppDispatch } from 'state/hooks'
-import { deleteFile, fileChange, ipfsHash } from 'state/mint/actions'
+import { deleteFile, fileChange, getIpfsHash } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
 import styled from 'styled-components'
 import * as Asset from 'assets'
@@ -68,7 +68,7 @@ export default function UploadFile() {
         Ipfs.add(reader.result)
         const hash = await Ipfs.GetHash(reader.result)
         if (hash) {
-          dispatch(ipfsHash({ value: hash }))
+          dispatch(getIpfsHash({ value: hash }))
         }
       }
     }
@@ -109,9 +109,6 @@ export default function UploadFile() {
           <Asset.Close width={8} height={8} className="closeBtn" fill={darkMode ? '#fff' : '#000'} />
         </CloseBtn>
         <PreviewFile />
-        <p onClick={() => onSubmit()} style={{ cursor: 'pointer' }}>
-          Ok
-        </p>
       </FormGroup>
     </Around>
   )
