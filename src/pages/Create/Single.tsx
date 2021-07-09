@@ -155,6 +155,7 @@ export const Single = ({ history }: RouteComponentProps) => {
 
   const Preview = styled.div`
     .preview {
+      margin-top: 4rem;
       position: relative;
       height: 390px;
       width: 240px;
