@@ -109,7 +109,9 @@
     "workbox-expiration": "^6.1.0",
     "workbox-precaching": "^6.1.0",
     "workbox-routing": "^6.1.0",
-    "workbox-strategies": "^6.1.0"
+    "workbox-strategies": "^6.1.0",
+    "yup":"^0.32.9",
+    "@types/yup": "0.29.12"
   },
   "scripts": {
     "compile-contract-types": "yarn compile-external-abi-types && yarn compile-v3-contract-types",
@@ -155,7 +157,6 @@
     "ipfs-http-client": "^50.1.2",
     "react-infinite-scroll-component": "^6.1.0",
     "react-player": "^2.9.0",
-    "truffle-contract": "^4.0.31",
-    "yup": "^0.32.9"
+    "truffle-contract": "^4.0.31"
   }
 }
