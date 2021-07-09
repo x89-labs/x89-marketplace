@@ -4,7 +4,7 @@ import * as Asset from 'assets'
 
 const optionsToken = [
   {
-    name: 'USDS',
+    name: 'USDC',
     icon: <img src={Asset.SrcUSDC} width={20} height={20} />,
     id: '1',
   },

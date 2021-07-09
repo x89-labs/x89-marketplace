@@ -352,7 +352,7 @@ export const Single = ({ history }: RouteComponentProps) => {
             ) : switchType === 2 ? (
               <p>Set a period of time for which buyers can place bids</p>
             ) : (
-              <p>{`Put your new NFT on Rarible's marketplace`}</p>
+              <p>{`Put your new NFT on Polrare's marketplace`}</p>
             )}
 
             <div style={{ display: 'flex', flexDirection: 'row' }}>
