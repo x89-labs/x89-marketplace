@@ -58,6 +58,7 @@ export default function App() {
         <BodyWrapper>
           <Web3ReactManager>
             <Switch>
+              <Route exact strict path="*" component={Explore} />
               <Route exact strict path="/explore" component={Explore} />
               <Route exact strict path="/stats" component={Stats} />
               <Route exact strict path="/create" component={Create} />
