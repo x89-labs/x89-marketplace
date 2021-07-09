@@ -74,16 +74,16 @@ export const Single = ({ history }: RouteComponentProps) => {
               image: hash,
               totalQuantity: 1,
               createdBy: account!,
+              type: state.fileType,
             }
             console.log(body)
-
             dispatch(postItem(body))
           }
         }
       }
-      if (state.ipfsHash && state.categorieId) {
+      if (state.ipfsHash && state.categorie) {
         const body: BodyItem = {
-          categoryId: state.categorieId,
+          categoryId: state.categorie.id,
           name: values.name,
           description: values.description,
           price: values.price,

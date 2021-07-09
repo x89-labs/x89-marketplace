@@ -327,8 +327,8 @@ export default function Header() {
         <StyledExternalLink id={`stake-nav-link`} href={'https://ink-studio.nmb.com.vn'}>
           <Trans>Studio</Trans>
         </StyledExternalLink>
-        <StyledExternalLink id={`stake-nav-link`} href={'https://vr-art.nmb.com.vn'}>
-          <Trans>Exhibitions</Trans>
+        <StyledExternalLink id={`stake-nav-link`} href={'https://museum.polrare.co'}>
+          <Trans>Exhibitons</Trans>
           <sup>↗</sup>
         </StyledExternalLink>
       </HeaderLinks>

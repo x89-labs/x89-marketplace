@@ -146,7 +146,7 @@ export default function Footer() {
             <StyledExternalLink id={`stake-nav-link`} href={'https://ink-studio.nmb.com.vn'}>
               <p>Studio</p>
             </StyledExternalLink>
-            <StyledExternalLink id={`stake-nav-link`} href={'https://vr-art.nmb.com.vn'}>
+            <StyledExternalLink id={`stake-nav-link`} href={'https://musuem.polrare.co'}>
               <p>Exhibitions</p>
             </StyledExternalLink>
           </InfoWithText>

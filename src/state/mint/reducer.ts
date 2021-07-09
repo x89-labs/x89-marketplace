@@ -7,10 +7,10 @@ export interface MintState {
   readonly typedValue: string
   readonly otherTypedValue: string // for the case when there's no liquidity
   readonly file?: any
+  readonly fileType?: any
   readonly ipfsHash?: string
   readonly categories?: Categories[]
   readonly categorie?: Categories
-  readonly categorieId?: string
   readonly name?: string
   readonly initValues: BodyItem
 }
@@ -30,6 +30,7 @@ export const initialState: MintState = {
     image: '',
     totalQuantity: 1,
     createdBy: '',
+    type: '',
   },
 }
 
