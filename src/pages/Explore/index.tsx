@@ -28,8 +28,8 @@ const Item = styled(NavLink).attrs({
   margin: 0 10px;
   position: relative;
   cursor: pointer;
-  text-overflow: ellipsis;
-  border-radius: 10px;
+  overflow: hidden;
+  border-radius: 12px;
   .image {
     border-radius: 10px;
     position: absolute;
