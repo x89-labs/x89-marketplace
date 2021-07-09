@@ -95,6 +95,7 @@ export const Single = ({ history }: RouteComponentProps) => {
           createdBy: account!,
         }
         dispatch(postItem(body))
+        window.location.reload(true)
       }
     },
   })

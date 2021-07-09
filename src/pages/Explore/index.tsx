@@ -16,6 +16,7 @@ const BodyExplore = styled.div`
 `
 const Header = styled.div`
   display: flex;
+  margin-top: 1rem;
 `
 const activeClassName = 'ACTIVE'
 const Item = styled(NavLink).attrs({
@@ -27,6 +28,8 @@ const Item = styled(NavLink).attrs({
   margin: 0 10px;
   position: relative;
   cursor: pointer;
+  text-overflow: ellipsis;
+  border-radius: 10px;
   .image {
     border-radius: 10px;
     position: absolute;
@@ -43,6 +46,7 @@ const Item = styled(NavLink).attrs({
     font-weight: bolder;
     .itemName {
       color: #fff;
+      max-width: 202px;
       margin: 0;
       font-size: 20px;
     }
@@ -63,36 +67,38 @@ const TopSellerItem = styled.div`
   padding: 10px;
   align-items: center;
   margin: 5px;
+  height: 5rem;
   &:hover {
-    box-shadow: 0 2px 5px rgba(255, 101, 47, 0.2);
+    box-shadow: 2px 4px 8px #f0f0f0;
   }
 `
 const ListItemSeller = styled.div`
   background-color: ${({ theme }) => theme.bg5};
   margin-top: 1rem;
+  padding: 1rem 0;
 `
-const Avatar = styled.div`
-  postiton: relative;
-`
-
 const ContentSeller = styled.div`
   margin-left: 20px;
 `
 const Title = styled.div`
-  margin-top: 20px;
+  margin: 30px 0;
   display: flex;
   font-size: 26px;
   font-weight: bold;
   align-items: center;
 `
+const Author = styled.div`
+  width: 12rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+`
 const Text = styled.p`
   margin: 0;
-  text-overflow: ellipsis;
 `
 const Image = styled.img``
 const LiveAuctions = styled.div``
 const HotBids = styled.div``
-const Explores = styled.div``
 const optionsSeller = [
   {
     name: 'Seller',
@@ -114,14 +120,12 @@ export default function Explore() {
   const GridList = () => {
     const matrix = new Array<Array<any>>()
     const list = optionsTopSeller
-    console.log(list)
     for (let i = 0, k = -1; i < list.length; i++) {
       if (i % 5 == 0) {
         k++
         matrix[k] = []
       }
       matrix[k].push(list[i])
-      console.log(matrix)
     }
     return matrix.map((mt, i) => (
       <div style={{ display: 'flex' }} key={i}>
@@ -153,7 +157,11 @@ export default function Explore() {
                 <Image src={item.image} className="image" />
                 <ItemContent className="content">
                   <Text className="itemName">{item.name}</Text>
-                  {item.createdBy !== '' && <Text className="author">By {item.createdBy}</Text>}
+                  {item.createdBy !== '' && (
+                    <Author>
+                      <p className="author">{'By ' + item.createdBy}</p>
+                    </Author>
+                  )}
                 </ItemContent>
               </Item>
             )
@@ -170,8 +178,8 @@ export default function Explore() {
         <Title>
           Live Auction <Asset.Fire width={20} height={20} />
         </Title>
-        <div style={{ display: 'flex' }}>
-          {state.listItem.map((item, index) => index < 4 && <ItemView item={item} key={index} />)}
+        <div style={{ display: 'flex', marginTop: 20 }}>
+          {state.listItem.map((item, index) => index < 5 && <ItemView item={item} key={index} />)}
         </div>
       </LiveAuctions>
 
@@ -179,10 +187,10 @@ export default function Explore() {
         <Title>
           Hot Bids <Asset.Fire width={20} height={20} />
         </Title>
+        <div style={{ display: 'flex', marginTop: 20 }}>
+          {state.listItem.map((item, index) => index < 5 && <ItemView item={item} key={index} />)}
+        </div>
       </HotBids>
-      <Explores>
-        <Title>Explore</Title>
-      </Explores>
     </BodyExplore>
   )
 }

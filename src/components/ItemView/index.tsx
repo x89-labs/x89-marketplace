@@ -12,10 +12,10 @@ const activeClassName = 'ACTIVE'
 const Container = styled(NavLink).attrs({
   activeClassName,
 })`
-  width: 280px;
+  width: ${(window.innerWidth - 80) / 5}px;
+  height: auto;
   color: #000;
   text-decoration: none;
-  height: auto;
   background-color: #fff;
   padding: 1rem;
   margin: 0 2px;
@@ -24,10 +24,16 @@ const Container = styled(NavLink).attrs({
   border-radius: 1rem;
   &:hover {
     box-shadow: 0 2px 5px rgba(255, 101, 47, 0.2);
-    border: 1px solid #f0f0f0;
+    border: 1px solid #4a4343;
   }
 `
-const ItemContent = styled.div``
+const ItemContent = styled.div`
+  width: 100%;
+  height: 8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
 
 const Text = styled.p`
   margin: 4px 0;
@@ -48,8 +54,8 @@ const Editor = styled.p`
 `
 const ImageDisPlay = styled.div`
   width: 100%;
-  height: 17rem;
   justify-content: center;
+  margin: 20px 0;
   align-items: center;
   display: flex;
 `
@@ -86,6 +92,12 @@ const Like = styled.div`
   align-items: center;
 `
 
+const Owner = styled.div`
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+`
+
 export default function ItemView({ index, item }: ItemView) {
   return (
     <Container key={index} id={`stats-nav-link`} to={`/detail/${item.id}`}>
@@ -95,7 +107,9 @@ export default function ItemView({ index, item }: ItemView) {
       </ImageDisPlay>
       <ItemContent>
         <ItemName>{item.name}</ItemName>
-        <Text>By {item.owner}</Text>
+        <Owner>
+          <Text> {'By ' + item.owner}</Text>
+        </Owner>
         <Tag>Art</Tag>
       </ItemContent>
       <FooterContent>

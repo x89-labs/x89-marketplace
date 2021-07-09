@@ -13,15 +13,17 @@ import { ReactComponent as Ethereum } from './svg/ethereum.svg'
 import { ReactComponent as BitCoin } from './svg/bitcoin.svg'
 import { ReactComponent as Fire } from './svg/fire.svg'
 import { ReactComponent as Heart } from './svg/heart.svg'
-import { ReactComponent as Avatar } from './svg/avatar.svg'
 import { ReactComponent as YellowCheck } from './svg/yellow-check.svg'
+import { ReactComponent as Avatar } from './svg/avatar.svg'
 import SrcLogo from './images/favicon.png'
 import SrcETH from './images/ic_eth.png'
 import SrcUSDC from './images/ic_USDC.png'
+import SrcAvatar from './images/avatar.png'
 
 export {
   SrcLogo,
   SrcETH,
+  SrcAvatar,
   SrcUSDC,
   Ethereum,
   BitCoin,

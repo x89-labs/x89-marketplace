@@ -18,19 +18,20 @@ const Container = styled.div`
 `
 const Image = styled.div`
   width: 65%;
-  height: 30rem;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  border-right: 1px solid #ccc;
   .image {
-    width: 25rem;
-    height: 25rem;
+    width: 70%;
+    height: 70%;
     border-radius: 10px;
   }
 `
 const ContentItem = styled.div`
+  color: #000;
+  background-color: #e6e6e6;
+  border-left: 1px solid #ccc;
   width: 35%;
 `
 const HeaderContent = styled.div`
@@ -58,8 +59,7 @@ const FooterContent = styled.div`
   display: flex;
   bottom: 0;
   height: 5rem;
-  background-color: #fff;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 `
 const TitleBold = styled.p`
@@ -100,6 +100,9 @@ const ButtonBid = styled.div`
     opacity: 0.8;
   }
 `
+const Descreption = styled.div`
+  margin-top: 1rem;
+`
 
 export default function DetailItem() {
   const [switchType, setSwitchType] = useState(SwitchType.Details)
@@ -125,8 +128,10 @@ export default function DetailItem() {
           <TitleBold>
             On sale for {item?.price} {item?.symbol}
           </TitleBold>
+          <Descreption>{item?.description}</Descreption>
           <Creator>
             <TitleNormal>Creator</TitleNormal>
+            <TitleNormal>{item?.owner}</TitleNormal>
           </Creator>
         </HeaderContent>
 
