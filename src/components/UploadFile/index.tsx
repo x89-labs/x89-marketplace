@@ -2,7 +2,7 @@ import useFilePicker from 'hooks/useFilePicker'
 import React, { useEffect } from 'react'
 import { FormGroup, Label } from 'reactstrap'
 import { useAppDispatch } from 'state/hooks'
-import { deleteFile, fileChange, getIpfsHash } from 'state/mint/actions'
+import { deleteFile, fieldChange, fileChange, getIpfsHash } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
 import styled from 'styled-components'
 import * as Asset from 'assets'
@@ -57,6 +57,7 @@ export default function UploadFile() {
 
   useEffect(() => {
     plainFiles[0] && dispatch(fileChange({ value: plainFiles[0] }))
+    plainFiles[0] && dispatch(fieldChange({ fieldName: 'fileType', fieldValue: plainFiles[0].type }))
   }, [plainFiles[0]])
 
   const PreviewFile = () => {

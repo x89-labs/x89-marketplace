@@ -50,9 +50,9 @@ export const Multiple = ({ history }: RouteComponentProps) => {
     initialValues: state.initValues,
     // validationSchema:
     onSubmit: (values) => {
-      if (state.ipfsHash && state.categorieId) {
+      if (state.ipfsHash && state.categorie) {
         const body: BodyItem = {
-          categoryId: state.categorieId,
+          categoryId: state.categorie.id,
           name: values.name,
           description: values.description,
           price: values.price,
