@@ -101,7 +101,7 @@ const Owner = styled.div`
 export default function ItemView({ index, item }: ItemView) {
   return (
     <Container key={index} id={`stats-nav-link`} to={`/detail/${item.id}`}>
-      <Editor>500 editor</Editor>
+      <Editor>500 edition</Editor>
       <ImageDisPlay>
         <Image src={item.image} />
       </ImageDisPlay>
