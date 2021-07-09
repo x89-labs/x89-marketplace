@@ -106,7 +106,12 @@
     "workbox-strategies": "^6.1.0",
     "reactstrap": "^8.9.0",
     "formik":"^2.2.9",
-    "react-player":"^2.9.0"
+    "react-player":"^2.9.0",
+    "ipfs-http-client":"^50.1.2",
+    "file-selector":"^0.2.4",
+    "@types/yup":"^0.29.13",
+    "yup":"^0.32.9",
+    "react-infinite-scroll-component":"^6.1.0"
 
   },
   "scripts": {
