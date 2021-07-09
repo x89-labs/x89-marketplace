@@ -9,6 +9,7 @@ export interface MintState {
   readonly file?: any
   readonly ipfsHash?: string
   readonly categories?: Categories[]
+  readonly categorie?: Categories
   readonly categorieId?: string
   readonly name?: string
   readonly initValues: BodyItem

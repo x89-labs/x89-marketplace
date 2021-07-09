@@ -51,6 +51,7 @@ const DropDown = styled.div`
     .itemName {
       display: flex;
       align-items: center;
+      margin-right: 1rem;
     }
     p {
       margin-left: 12px;
@@ -78,7 +79,11 @@ export default function Categories() {
           setShow(false)
         }}
       >
-        <h4>{state.categorieId ? state.categorieId : ''}</h4>
+        <h4>
+          {state.categorie?.categoryName
+            ? state.categorie?.categoryName
+            : state.categories && state.categories[0].categoryName}
+        </h4>
         <Asset.DownArrow width={12} height={12} fill={'#9c9292'} />
       </Around>
       <DropDown hidden={show} className="dropdown">
@@ -87,15 +92,15 @@ export default function Categories() {
             className="item"
             key={index}
             onClick={() => {
-              setSelected(item.categoryName)
+              setSelected(item.categoryName!)
               setShow(true)
-              dispatch(fieldChange({ fieldName: 'categorieId', fieldValue: item.id }))
+              dispatch(fieldChange({ fieldName: 'categorie', fieldValue: item }))
             }}
           >
             <div className="itemName">
               <p>{item.categoryName}</p>
             </div>
-            {selected === item.categoryName && <Asset.Check width={16} height={16}></Asset.Check>}
+            {state.categorie?.id === item.id && <Asset.Check width={16} height={16} />}
           </div>
         ))}
       </DropDown>

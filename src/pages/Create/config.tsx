@@ -42,10 +42,10 @@ export const Forms: FormInput[] = [
         panel: '',
       },
       {
-        title: 'Descreption',
+        title: 'description',
         type: Type.Input,
 
-        id: 'content',
+        id: 'desc',
         placeHolder: `e.g.After purchasing you'll be able to get the real T-shirt`,
 
         panel: 'With preserved line-breaks',
