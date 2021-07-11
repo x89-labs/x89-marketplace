@@ -11,4 +11,5 @@ export interface BodyItem {
   categoryId: string
   createdBy?: string
   type?: string
+  categoryName?: string
 }

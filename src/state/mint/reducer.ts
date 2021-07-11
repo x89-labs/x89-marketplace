@@ -11,7 +11,6 @@ export interface MintState {
   readonly ipfsHash?: string
   readonly categories?: Categories[]
   readonly categorie?: Categories
-  readonly name?: string
   readonly initValues: BodyItem
 }
 
@@ -26,11 +25,12 @@ export const initialState: MintState = {
     price: 0,
     contractAddress: '',
     assetId: '1233',
-    symbol: '',
+    symbol: 'ETH',
     image: '',
     totalQuantity: 1,
     createdBy: '',
     type: '',
+    categoryName: '',
   },
 }
 

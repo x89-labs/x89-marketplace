@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import * as Asset from 'assets'
 import { Item } from 'models/explore'
+import ReactPlayer from 'react-player'
 
 interface ItemView {
   index?: any
@@ -99,12 +100,28 @@ const Owner = styled.div`
 `
 
 export default function ItemView({ index, item }: ItemView) {
+  const PreviewFile = (item: Item) => {
+    if (item.type.includes('image')) {
+      return <Image src={item.image}></Image>
+    } else if (item.type.includes('video')) {
+      return (
+        <ReactPlayer
+          url={item.image}
+          muted={true}
+          playing={true}
+          width={'90%'}
+          height={'13rem'}
+          loop={true}
+          style={{ borderRadius: '10px' }}
+        />
+      )
+    }
+  }
+
   return (
     <Container key={index} id={`stats-nav-link`} to={`/detail/${item.id}`}>
       <Editor>500 edition</Editor>
-      <ImageDisPlay>
-        <Image src={item.image} />
-      </ImageDisPlay>
+      <ImageDisPlay>{PreviewFile(item)}</ImageDisPlay>
       <ItemContent>
         <ItemName>{item.name}</ItemName>
         <Owner>

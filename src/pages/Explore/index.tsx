@@ -7,8 +7,8 @@ import { getListItems } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
 import styled from 'styled-components'
 import * as Asset from 'assets'
-import { backgroundColor } from 'styled-system'
 import { optionsTopSeller } from './config'
+import ReactPlayer from 'react-player'
 
 const BodyExplore = styled.div`
   width: 100%;
@@ -147,6 +147,26 @@ export default function Explore() {
     ))
   }
 
+  const PreviewFile = (item: any) => {
+    if (item.type.includes('image')) {
+      return <Image src={item.image} className="image" />
+    } else if (item.type.includes('video')) {
+      return (
+        <div className="image">
+          <ReactPlayer
+            url={item.image}
+            muted={true}
+            playing={true}
+            width={'100%'}
+            loop={true}
+            height={'100%'}
+            style={{ borderRadius: '10px' }}
+          />
+        </div>
+      )
+    }
+  }
+
   return (
     <BodyExplore>
       <Header>
@@ -154,7 +174,7 @@ export default function Explore() {
           (item, index) =>
             index < 5 && (
               <Item key={index} id={`stats-nav-link`} to={`/detail/${item.id}`}>
-                <Image src={item.image} className="image" />
+                {PreviewFile(item)}
                 <ItemContent className="content">
                   <Text className="itemName">{item.name}</Text>
                   {item.createdBy !== '' && (

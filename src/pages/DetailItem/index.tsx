@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Bold } from 'react-feather'
+import ReactPlayer from 'react-player'
 import { useDispatch } from 'react-redux'
 import { getItem } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
@@ -22,7 +23,7 @@ const Image = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  .image {
+  .file {
     width: 70%;
     height: 70%;
     border-radius: 10px;
@@ -113,13 +114,29 @@ export default function DetailItem() {
     href = href.substring(href.lastIndexOf('/') + 1)
     dispatch(getItem(href))
   }, [])
-  console.log(item)
 
+  const PreviewFile = (item: any) => {
+    if (item.type.includes('image')) {
+      return <img src={item.image} className="file" />
+    } else if (item.type.includes('video')) {
+      return (
+        <div className="file">
+          <ReactPlayer
+            url={item.image}
+            muted={true}
+            playing={true}
+            controls={true}
+            width={'100%'}
+            height={'100%'}
+            style={{ borderRadius: '10px' }}
+          />
+        </div>
+      )
+    }
+  }
   return (
     <Container>
-      <Image>
-        <img src={item?.image} className="image" />
-      </Image>
+      <Image>{PreviewFile(item)}</Image>
       <ContentItem>
         <HeaderContent>
           <InfoItem>
