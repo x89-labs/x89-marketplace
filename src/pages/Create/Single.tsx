@@ -75,27 +75,12 @@ export const Single = ({ history }: RouteComponentProps) => {
               totalQuantity: 1,
               createdBy: account!,
               type: state.fileType,
+              categoryName: state.categorie.categoryName,
             }
             console.log(body)
             dispatch(postItem(body))
           }
         }
-      }
-      if (state.ipfsHash && state.categorie) {
-        const body: BodyItem = {
-          categoryId: state.categorie.id,
-          name: values.name,
-          description: values.description,
-          price: values.price,
-          contractAddress: contractAddress,
-          assetId: '1233',
-          symbol: values.symbol,
-          image: state.ipfsHash,
-          totalQuantity: 1,
-          createdBy: account!,
-        }
-        dispatch(postItem(body))
-        window.location.reload(true)
       }
     },
   })
