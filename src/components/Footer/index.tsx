@@ -111,7 +111,7 @@ const StyledNavLink = styled(NavLink).attrs({
 
 const StyledExternalLink = styled(ExternalLink).attrs({
   activeClassName,
-})<{ isActive?: boolean }>`
+}) <{ isActive?: boolean }>`
   outline: none;
   text-decoration: none;
   :hover {
@@ -133,7 +133,7 @@ export default function Footer() {
             </div>
           </InfoWithSearch>
           <InfoWithText>
-            <h4>MaketPlace</h4>
+            <h4>Polrare</h4>
             <StyledNavLink id={`explore-nav-link`} to={'/explore'}>
               <p>Explore</p>
             </StyledNavLink>
@@ -143,11 +143,14 @@ export default function Footer() {
             <StyledNavLink id={`explore-nav-link`} to={'/create'}>
               <p>Mint</p>
             </StyledNavLink>
-            <StyledExternalLink id={`stake-nav-link`} href={'https://ink-studio.nmb.com.vn'}>
-              <p>Studio</p>
+            <StyledExternalLink id={`stake-nav-link`} href={'https://builder.polrare.co'}>
+              <p>Builder</p>
             </StyledExternalLink>
             <StyledExternalLink id={`stake-nav-link`} href={'https://musuem.polrare.co'}>
-              <p>Exhibitions</p>
+              <p>Museum</p>
+            </StyledExternalLink>
+            <StyledExternalLink id={`stake-nav-link`} href={'#'}>
+              <p>Become a partner</p>
             </StyledExternalLink>
           </InfoWithText>
           <InfoWithText>
@@ -165,7 +168,7 @@ export default function Footer() {
         <div className="term">
           <p> @Polrare. All rights reserved</p>
           <p className="policy"> Terms</p>
-          <p className="policy"> Private</p>
+          <p className="policy"> Privacy</p>
         </div>
         <div className="social">
           <StyledExternalLink id={`stake-nav-link`} href={'https://twitter.com/x89_nft'}>

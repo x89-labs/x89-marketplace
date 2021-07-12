@@ -65,13 +65,17 @@ ReactDOM.render(
         <LanguageProvider>
           <Web3ReactProvider getLibrary={getLibrary}>
             <Web3ProviderNetwork getLibrary={getLibrary}>
-              <Blocklist>
+              {/* <Blocklist>
                 <Updaters />
                 <ThemeProvider>
                   <ThemedGlobalStyle />
                   <App />
                 </ThemeProvider>
-              </Blocklist>
+              </Blocklist> */}
+              <ThemeProvider>
+                <ThemedGlobalStyle />
+                <App />
+              </ThemeProvider>
             </Web3ProviderNetwork>
           </Web3ReactProvider>
         </LanguageProvider>
