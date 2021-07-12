@@ -1,16 +1,16 @@
 import { createReducer, createSlice } from '@reduxjs/toolkit'
 import { BodyItem } from 'models/bodyItem'
 import { Categories } from 'models/categories'
-import { deleteFile, Field, fieldChange, fileChange, getCategories, getIpfsHash, postItem } from './actions'
+import { deleteFile, Field, fieldChange, fileChange, getCategories, postItem } from './actions'
 export interface MintState {
   readonly independentField: Field
   readonly typedValue: string
   readonly otherTypedValue: string // for the case when there's no liquidity
   readonly file?: any
   readonly fileType?: any
-  readonly ipfsHash?: string
   readonly categories?: Categories[]
   readonly categorie?: Categories
+  readonly symbol?: string
   readonly initValues: BodyItem
 }
 
@@ -50,12 +50,6 @@ const mintSlice = createSlice({
         return {
           ...state,
           [fieldName]: fieldValue,
-        }
-      })
-      .addCase(getIpfsHash, (state, { payload: { value } }) => {
-        return {
-          ...state,
-          ipfsHash: value,
         }
       })
       .addCase(deleteFile, (state, action) => {

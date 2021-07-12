@@ -16,6 +16,7 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  border-bottom: 0.5px solid #ccc;
 `
 const Image = styled.div`
   width: 65%;

@@ -324,11 +324,11 @@ export default function Header() {
         >
           <Trans>Mint</Trans>
         </StyledNavLink>
-        <StyledExternalLink id={`stake-nav-link`} href={'https://ink-studio.nmb.com.vn'}>
-          <Trans>Studio</Trans>
+        <StyledExternalLink id={`stake-nav-link`} href={'https://builder.polrare.co'}>
+          <Trans>Builder</Trans>
         </StyledExternalLink>
         <StyledExternalLink id={`stake-nav-link`} href={'https://museum.polrare.co'}>
-          <Trans>Exhibitons</Trans>
+          <Trans>Museum</Trans>
           <sup>↗</sup>
         </StyledExternalLink>
       </HeaderLinks>

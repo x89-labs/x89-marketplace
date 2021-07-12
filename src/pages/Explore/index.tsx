@@ -22,9 +22,9 @@ const activeClassName = 'ACTIVE'
 const Item = styled(NavLink).attrs({
   activeClassName,
 })`
-  width: 16rem;
-  height: 16rem;
-  background-color: #fff;
+  width: ${(window.innerWidth - 120) / 5}px;
+  height: ${(window.innerWidth - 120) / 5}px;
+  background-color: #000;
   margin: 0 10px;
   position: relative;
   cursor: pointer;
@@ -35,7 +35,7 @@ const Item = styled(NavLink).attrs({
     position: absolute;
     width: 100%;
     transition: transform 0.2s;
-    height: 16rem;
+    height: 100%;
   }
   .image:hover {
     transform: scale(1.1);
@@ -63,10 +63,11 @@ const TopSellerItem = styled.div`
   cursor: pointer;
   border-radius: 10px;
   display: flex;
-  min-width: 242px;
+  min-width: ${(window.innerWidth - 120) / 5}px;
+  max-width: 230px;
   padding: 10px;
   align-items: center;
-  margin: 5px;
+  margin: 3px;
   height: 5rem;
   &:hover {
     box-shadow: 2px 4px 8px #f0f0f0;

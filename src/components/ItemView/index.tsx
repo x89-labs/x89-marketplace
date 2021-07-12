@@ -13,16 +13,18 @@ const activeClassName = 'ACTIVE'
 const Container = styled(NavLink).attrs({
   activeClassName,
 })`
-  width: ${(window.innerWidth - 80) / 4}px;
+  width: ${(window.innerWidth - 180) / 4}px;
   height: auto;
   color: #000;
   text-decoration: none;
   background-color: #fff;
   padding: 1rem;
-  margin: 0 2px;
+  margin: 0 1rem;
   position: relative;
   cursor: pointer;
   border-radius: 1rem;
+  border: 0.5px solid #ccc;
+
   &:hover {
     box-shadow: 0 2px 5px rgba(255, 101, 47, 0.2);
     border: 1px solid #4a4343;
@@ -37,7 +39,7 @@ const ItemContent = styled.div`
 `
 
 const Text = styled.p`
-  margin: 4px 0;
+  margin: 4px;
   align-self: center;
   color: #808080;
   font-size: 14px;
@@ -99,6 +101,32 @@ const Owner = styled.div`
   overflow: hidden;
 `
 
+const FooterItem = styled.div`
+  * {
+    position: absolute;
+    content: '';
+    height: 40px;
+    display: block;
+    background: rgb(255, 255, 255);
+    border-radius: 16px;
+    border: 1px solid #ccc;
+  }
+  .footer {
+    width: 98%;
+    left: 3px;
+    right: 3px;
+    bottom: -6px;
+    z-index: -1;
+  }
+  .footer2 {
+    width: 93%;
+    left: 9px;
+    right: 3px;
+    bottom: -10px;
+    z-index: -2;
+  }
+`
+
 export default function ItemView({ index, item }: ItemView) {
   const PreviewFile = (item: Item) => {
     if (item.type.includes('image')) {
@@ -120,7 +148,7 @@ export default function ItemView({ index, item }: ItemView) {
 
   return (
     <Container key={index} id={`stats-nav-link`} to={`/detail/${item.id}`}>
-      <Editor>500 edition</Editor>
+      <Editor>{item.totalQuantity === 1 ? 'Single Edition' : `${item.totalQuantity} Editions`}</Editor>
       <ImageDisPlay>{PreviewFile(item)}</ImageDisPlay>
       <ItemContent>
         <ItemName>{item.name}</ItemName>
@@ -136,6 +164,12 @@ export default function ItemView({ index, item }: ItemView) {
           <Asset.Heart width={16} height={16} />
         </Like>
       </FooterContent>
+      {item.totalQuantity > 1 && (
+        <FooterItem>
+          <div className="footer" />
+          <div className="footer2" />
+        </FooterItem>
+      )}
     </Container>
   )
 }

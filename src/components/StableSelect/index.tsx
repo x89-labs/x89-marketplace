@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import * as Asset from 'assets'
 import styled from 'styled-components'
 import { useState } from 'react'
@@ -6,11 +6,15 @@ import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import { useModalOpen, useToggleModal } from 'state/application/hooks'
 import { ApplicationModal } from 'state/application/actions'
 import { textColor } from 'styled-system'
+import { useDispatch } from 'react-redux'
+import { fieldChange } from 'state/mint/actions'
+import { useMintState } from 'state/mint/hooks'
 interface TableSelection {
   a?: string
   option?: any[]
   width?: any
   textColor?: string
+  id?: string
 }
 
 const Around = styled.div`
@@ -59,13 +63,19 @@ const DropDown = styled.div`
   }
 `
 
-export default function StableSelect({ option, width, textColor }: TableSelection) {
+export default function StableSelect({ option, width, textColor, id }: TableSelection) {
   const [show, setShow] = useState(true)
   const [selected, setSelected] = useState()
   const open = useModalOpen(ApplicationModal.DROPDOWN)
   const toggle = useToggleModal(ApplicationModal.DROPDOWN)
   const node = useRef<HTMLDivElement>()
   useOnClickOutside(node, open ? toggle : undefined)
+  const dispatch = useDispatch()
+  const state = useMintState()
+
+  useEffect(() => {
+    id && selected && dispatch(fieldChange({ fieldName: id, fieldValue: selected }))
+  }, [selected])
 
   return (
     <div
@@ -74,7 +84,6 @@ export default function StableSelect({ option, width, textColor }: TableSelectio
     >
       <Around
         onClick={() => {
-          // toggle()
           setShow(false)
         }}
       >

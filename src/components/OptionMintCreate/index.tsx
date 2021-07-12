@@ -46,7 +46,7 @@ const TextInput = styled.div`
 const AdvancedSetting = styled.div`
   padding: 10px 0;
   width: 100%;
-  margin-top: 4rem;
+  margin-top: 2rem;
   border: 1px solid #ccc;
   text-align: center;
   border-radius: 3rem;
@@ -91,7 +91,7 @@ const Create = styled.div`
     height: 140px;
     border: 2px solid lightgray;
     border-radius: 16px;
-    margin: 10px;
+    margin: 10px 0;
     cursor: pointer;
     justify-content: center;
     align-items: center;
@@ -106,7 +106,6 @@ const Create = styled.div`
 
 export default function OptionMintCreate({ formik }: OptionMintCreate) {
   const darkMode = useIsDarkMode()
-  const dispatch = useDispatch()
   const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
   const [isopen, setOpen] = useState(false)
   const state = useMintState()
@@ -121,10 +120,6 @@ export default function OptionMintCreate({ formik }: OptionMintCreate) {
 
   return (
     <div>
-      <div style={{ marginTop: 20 }}>
-        <h2 style={{ color: 'blue' }}>Unlock once purchased</h2>
-        <p>Content will be unlocked after successful transaction</p>
-      </div>
       <LableTitle>Choose collection</LableTitle>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <Create>

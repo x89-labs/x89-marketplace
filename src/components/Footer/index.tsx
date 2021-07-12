@@ -111,7 +111,7 @@ const StyledNavLink = styled(NavLink).attrs({
 
 const StyledExternalLink = styled(ExternalLink).attrs({
   activeClassName,
-}) <{ isActive?: boolean }>`
+})<{ isActive?: boolean }>`
   outline: none;
   text-decoration: none;
   :hover {

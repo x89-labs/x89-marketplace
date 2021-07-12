@@ -1,6 +1,7 @@
 import { FormInput, Option, Type } from 'models/formInput'
 import React from 'react'
 import * as Asset from 'assets'
+import * as Yup from 'yup'
 
 const optionsToken = [
   {
@@ -42,7 +43,7 @@ export const Forms: FormInput[] = [
         panel: '',
       },
       {
-        title: 'description',
+        title: 'Description',
         type: Type.Input,
 
         id: 'description',
@@ -83,10 +84,31 @@ export const Forms: FormInput[] = [
         title: 'Price',
         type: Type.InputDropdown,
         id: 'price',
+        idDropdown: 'symbol',
         placeHolder: 'Enter price for one piece ...',
         panel: 'Service fee 2.5%',
         option: optionsToken,
       },
     ],
   },
+  {
+    location: 'multiple',
+    control: [
+      {
+        title: 'Number of copies',
+        type: Type.Input,
+        id: 'totalQuantity',
+        placeHolder: 'E.g 10',
+        panel: 'Amount of tokens',
+      },
+    ],
+  },
 ]
+
+export const validationFormCreateSchema = Yup.object().shape({
+  name: Yup.string().required('* Field Required'),
+  bid: Yup.string().required('Field Required'),
+  price: Yup.string().required('Field Required'),
+  symbol: Yup.string().required('Field Required'),
+  description: Yup.string().required('Field Required'),
+})

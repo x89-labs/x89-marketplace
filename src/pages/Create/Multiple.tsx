@@ -9,14 +9,17 @@ import ReactPlayer from 'react-player'
 import { useMintState } from 'state/mint/hooks'
 import OptionMintCreate from 'components/OptionMintCreate'
 import StableSelect from 'components/StableSelect'
-import { Forms } from './config'
+import { Forms, validationFormCreateSchema } from './config'
 import { Type } from 'models/formInput'
 import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
 import { BodyItem } from 'models/bodyItem'
 import { contractAddress } from 'client/callSmContract'
-import { postItem } from 'state/mint/actions'
+import { getCategories, postItem } from 'state/mint/actions'
 import { useActiveWeb3React } from 'hooks/web3'
+import { Ipfs } from 'client/ipfs'
+import Categories from 'components/Categories'
+import Switch from 'react-switch'
 
 interface ico {
   icon: any
@@ -43,32 +46,46 @@ enum SwitchType {
 export const Multiple = ({ history }: RouteComponentProps) => {
   const state = useMintState()
   const [switchType, setSwitchType] = useState<SwitchType>()
+  const [checked, setChecked] = useState(true)
   const dispatch = useDispatch()
   const { account } = useActiveWeb3React()
 
   const formik = useFormik({
     initialValues: state.initValues,
-    // validationSchema:
+    validationSchema: validationFormCreateSchema,
     onSubmit: (values) => {
-      if (state.ipfsHash && state.categorie) {
-        const body: BodyItem = {
-          categoryId: state.categorie.id,
-          name: values.name,
-          description: values.description,
-          price: values.price,
-          contractAddress: contractAddress,
-          assetId: '1233',
-          symbol: values.symbol,
-          image: state.ipfsHash,
-          totalQuantity: 1,
-          createdBy: account!,
+      if (state.file) {
+        const file = state.file
+        const reader = new window.FileReader()
+        reader.readAsArrayBuffer(file)
+        reader.onloadend = async () => {
+          const hash = await Ipfs.GetHash(reader.result)
+          if (state.categorie && state.symbol) {
+            const body: BodyItem = {
+              categoryId: state.categorie.id,
+              name: values.name,
+              description: values.description,
+              price: values.price,
+              contractAddress: contractAddress,
+              assetId: '1233',
+              symbol: state.symbol,
+              image: hash,
+              totalQuantity: 1,
+              createdBy: account!,
+              type: state.fileType,
+              categoryName: state.categorie.categoryName,
+            }
+            console.log(body)
+            dispatch(postItem(body))
+          }
         }
-        dispatch(postItem(body))
       }
     },
   })
+
   useEffect(() => {
     setSwitchType(SwitchType.FixedPrice)
+    dispatch(getCategories())
   }, [])
   const Around = styled.div`
     p {
@@ -185,6 +202,26 @@ export const Multiple = ({ history }: RouteComponentProps) => {
       font-size: 0.8rem;
     }
   `
+  const UnlockPurchased = styled.div`
+    display: flex;
+  `
+  const UnlockTitle = styled.h2`
+    background-color: #ca4246;
+    width: 18rem;
+    margin: 0;
+    background-image: linear-gradient(
+      145deg,
+      rgb(12, 80, 255) 0%,
+      rgb(12, 80, 255) 13%,
+      rgb(91, 157, 255) 25.73%,
+      rgb(255, 116, 241) 75%,
+      rgb(255, 116, 241) 100%
+    );
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  `
+
   const PreviewFile = () => {
     if (state.file) {
       if (state.file.type.includes('image')) {
@@ -297,6 +334,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
         <h1>Create {CreateType()} collectible</h1>
         <h2>Upload file</h2>
         <UploadFile />
+        <Categories />
         <div>
           <h2>{`Put on marketplace`}</h2>
           <div>
@@ -315,6 +353,27 @@ export const Multiple = ({ history }: RouteComponentProps) => {
             </div>
             {switchType === SwitchType.FixedPrice && FormInput('price')}
           </div>
+          <UnlockPurchased>
+            <div>
+              <UnlockTitle>Unlock once purchased</UnlockTitle>
+              <p>Content will be unlocked after successful transaction</p>
+            </div>
+            <Switch
+              onChange={() => setChecked(!checked)}
+              checked={checked}
+              onColor="#86d3ff"
+              onHandleColor="#2693e6"
+              handleDiameter={20}
+              uncheckedIcon={false}
+              checkedIcon={false}
+              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+              height={20}
+              width={40}
+            />
+          </UnlockPurchased>
+          {FormInput('infomation')}
+          {FormInput('multiple')}
           <OptionMintCreate formik={formik} />
         </div>
       </Around>

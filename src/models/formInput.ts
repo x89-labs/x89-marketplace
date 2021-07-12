@@ -8,6 +8,7 @@ export interface FormDetail {
   type?: Type
   panel?: string
   id: string
+  idDropdown?: string
   placeHolder?: string
   required?: boolean
   multiple?: boolean
