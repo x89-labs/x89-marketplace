@@ -30,6 +30,9 @@ const Image = styled.div`
   }
 `
 const ContentItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   color: #000;
   background-color: #e6e6e6;
   border-left: 1px solid #ccc;
@@ -55,12 +58,11 @@ const Tab = styled.div`
   cursor: pointer;
 `
 const FooterContent = styled.div`
-  margin-top: 12rem;
   border-top: 1px solid #ccc;
   display: flex;
   bottom: 0;
   height: 5rem;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
 `
 const TitleBold = styled.p`
@@ -79,7 +81,7 @@ const NameItem = styled.p`
   margin-bottom: 0;
 `
 const ButtonBuy = styled.div`
-  background-color: rgb(0, 102, 255);
+  background-color: #787086;
   color: #fff;
   padding: 0 24px;
   border-radius: 48px;
@@ -91,8 +93,8 @@ const ButtonBuy = styled.div`
   }
 `
 const ButtonBid = styled.div`
-  background-color: #0066ff26;
-  color: #0066ff;
+  background-color: #292f3826;
+  color: #373d46;
   padding: 0 24px;
   border-radius: 48px;
   height: 48px;
@@ -115,65 +117,70 @@ export default function DetailItem() {
     dispatch(getItem(href))
   }, [])
 
-  const PreviewFile = (item: any) => {
-    if (item.type.includes('image')) {
-      return <img src={item.image} className="file" />
-    } else if (item.type.includes('video')) {
-      return (
-        <div className="file">
-          <ReactPlayer
-            url={item.image}
-            muted={true}
-            playing={true}
-            controls={true}
-            width={'100%'}
-            height={'100%'}
-            style={{ borderRadius: '10px' }}
-          />
-        </div>
-      )
+  const PreviewFile = () => {
+    if (item) {
+      if (item.type.includes('image')) {
+        return <img src={item.image} className="file" />
+      } else if (item.type.includes('video')) {
+        return (
+          <div className="file">
+            <ReactPlayer
+              url={item.image}
+              muted={true}
+              playing={true}
+              controls={true}
+              loop={true}
+              width={'100%'}
+              height={'100%'}
+              style={{ borderRadius: '10px' }}
+            />
+          </div>
+        )
+      }
     }
   }
   return (
     <Container>
-      <Image>{PreviewFile(item)}</Image>
+      <Image>{PreviewFile()}</Image>
       <ContentItem>
-        <HeaderContent>
-          <InfoItem>
-            <NameItem>{item?.name}</NameItem>
-          </InfoItem>
-          <TitleBold>
-            On sale for {item?.price} {item?.symbol}
-          </TitleBold>
-          <Descreption>{item?.description}</Descreption>
-          <Creator>
-            <TitleNormal>Creator</TitleNormal>
-            <TitleNormal>{item?.owner}</TitleNormal>
-          </Creator>
-        </HeaderContent>
+        <div>
+          <HeaderContent>
+            <InfoItem>
+              <NameItem>{item?.name}</NameItem>
+            </InfoItem>
+            <TitleBold>
+              On sale for {item?.price} {item?.symbol}
+            </TitleBold>
+            <Descreption>{item?.description}</Descreption>
+            <Creator>
+              <TitleNormal>Creator</TitleNormal>
+              <TitleNormal>{item?.owner}</TitleNormal>
+            </Creator>
+          </HeaderContent>
 
-        <BodyContent>
-          <SwitchTab>
-            <Tab
-              style={{ borderBottom: switchType === 1 ? '1px solid #000' : '' }}
-              onClick={() => setSwitchType(SwitchType.Details)}
-            >
-              Details
-            </Tab>
-            <Tab
-              style={{ borderBottom: switchType === 2 ? '1px solid #000' : '' }}
-              onClick={() => setSwitchType(SwitchType.Bids)}
-            >
-              Bids
-            </Tab>
-            <Tab
-              style={{ borderBottom: switchType === 3 ? '1px solid #000' : '' }}
-              onClick={() => setSwitchType(SwitchType.History)}
-            >
-              History
-            </Tab>
-          </SwitchTab>
-        </BodyContent>
+          <BodyContent>
+            <SwitchTab>
+              <Tab
+                style={{ borderBottom: switchType === 1 ? '1px solid #000' : '' }}
+                onClick={() => setSwitchType(SwitchType.Details)}
+              >
+                Details
+              </Tab>
+              <Tab
+                style={{ borderBottom: switchType === 2 ? '1px solid #000' : '' }}
+                onClick={() => setSwitchType(SwitchType.Bids)}
+              >
+                Bids
+              </Tab>
+              <Tab
+                style={{ borderBottom: switchType === 3 ? '1px solid #000' : '' }}
+                onClick={() => setSwitchType(SwitchType.History)}
+              >
+                History
+              </Tab>
+            </SwitchTab>
+          </BodyContent>
+        </div>
         <FooterContent>
           <ButtonBuy>
             <p style={{ marginBottom: 0, fontWeight: 'bold' }}>

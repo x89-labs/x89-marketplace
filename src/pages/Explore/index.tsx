@@ -199,7 +199,7 @@ export default function Explore() {
           Live Auction <Asset.Fire width={20} height={20} />
         </Title>
         <div style={{ display: 'flex', marginTop: 20 }}>
-          {state.listItem.map((item, index) => index < 5 && <ItemView item={item} key={index} />)}
+          {state.listItem.map((item, index) => index < 4 && <ItemView item={item} key={index} />)}
         </div>
       </LiveAuctions>
 
@@ -208,7 +208,7 @@ export default function Explore() {
           Hot Bids <Asset.Fire width={20} height={20} />
         </Title>
         <div style={{ display: 'flex', marginTop: 20 }}>
-          {state.listItem.map((item, index) => index < 5 && <ItemView item={item} key={index} />)}
+          {state.listItem.map((item, index) => index < 4 && <ItemView item={item} key={index} />)}
         </div>
       </HotBids>
     </BodyExplore>
