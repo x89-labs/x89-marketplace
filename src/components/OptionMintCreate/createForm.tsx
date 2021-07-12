@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { useMintState } from 'state/mint/hooks'
 import useFilePicker from 'hooks/useFilePicker'
 import { BodyItem } from 'models/bodyItem'
-import { fieldChange, fileChange, getIpfsHash, postItem } from 'state/mint/actions'
+import { fieldChange, fileChange, postItem } from 'state/mint/actions'
 import { useFormik } from 'formik'
 import { Ipfs } from 'client/ipfs'
 import { contractAddress } from 'client/callSmContract'
@@ -113,7 +113,7 @@ export default function CreateModal() {
     initialValues: state.initValues,
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      if (state.ipfsHash && state.categorie) {
+      if (state.categorie) {
         const body: BodyItem = {
           categoryId: state.categorie.id,
           name: values.name,
@@ -122,7 +122,7 @@ export default function CreateModal() {
           contractAddress: contractAddress,
           assetId: '1233',
           symbol: values.symbol,
-          image: state.ipfsHash,
+          image: '',
           totalQuantity: 1,
           createdBy: account!,
         }

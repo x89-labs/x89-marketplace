@@ -11,14 +11,16 @@ import UploadFile from 'components/UploadFile'
 import ReactPlayer from 'react-player'
 import Categories from 'components/Categories'
 import { useDispatch } from 'react-redux'
-import { fieldChange, getCategories, getIpfsHash, postItem } from 'state/mint/actions'
-import { useFormik } from 'formik'
+import { fieldChange, getCategories, postItem } from 'state/mint/actions'
+import { getIn, useFormik } from 'formik'
 import { BodyItem } from 'models/bodyItem'
 import { useActiveWeb3React } from 'hooks/web3'
 import { contractAddress } from 'client/callSmContract'
-import { Forms } from './config'
+import { Forms, validationFormCreateSchema } from './config'
 import { Type } from 'models/formInput'
 import { Ipfs } from 'client/ipfs'
+import Switch from 'react-switch'
+import { select } from '@lingui/macro'
 interface ico {
   icon: any
   name: string
@@ -50,10 +52,10 @@ export const Single = ({ history }: RouteComponentProps) => {
   const darkMode = useIsDarkMode()
   const { account } = useActiveWeb3React()
   const [switchType, setSwitchType] = useState<SwitchType>()
-
+  const [checked, setChecked] = useState(true)
   const formik = useFormik({
     initialValues: state.initValues,
-    // validationSchema:
+    validationSchema: validationFormCreateSchema,
     onSubmit: (values) => {
       if (state.file) {
         const file = state.file
@@ -62,7 +64,7 @@ export const Single = ({ history }: RouteComponentProps) => {
         reader.onloadend = async () => {
           const hash = await Ipfs.GetHash(reader.result)
           console.log(hash)
-          if (state.categorie) {
+          if (state.categorie && state.symbol) {
             const body: BodyItem = {
               categoryId: state.categorie.id,
               name: values.name,
@@ -70,7 +72,7 @@ export const Single = ({ history }: RouteComponentProps) => {
               price: values.price,
               contractAddress: contractAddress,
               assetId: '1233',
-              symbol: values.symbol,
+              symbol: state.symbol,
               image: hash,
               totalQuantity: 1,
               createdBy: account!,
@@ -84,6 +86,16 @@ export const Single = ({ history }: RouteComponentProps) => {
       }
     },
   })
+
+  const errorMessage = (fieldName: string) => {
+    const touched = getIn(formik.touched, fieldName)
+    const error = getIn(formik.errors, fieldName)
+    if (touched && error) {
+      return error
+    }
+    return undefined
+  }
+
   useEffect(() => {
     setSwitchType(SwitchType.FixedPrice)
     dispatch(getCategories())
@@ -201,6 +213,31 @@ export const Single = ({ history }: RouteComponentProps) => {
       font-size: 0.8rem;
     }
   `
+  const ErrorMessage = styled.div`
+    color: red;
+    font-weight: 700;
+    font-size: 0.8rem;
+  `
+  const UnlockPurchased = styled.div`
+    display: flex;
+  `
+  const UnlockTitle = styled.h2`
+    background-color: #ca4246;
+    width: 18rem;
+    margin: 0;
+    background-image: linear-gradient(
+      145deg,
+      rgb(12, 80, 255) 0%,
+      rgb(12, 80, 255) 13%,
+      rgb(91, 157, 255) 25.73%,
+      rgb(255, 116, 241) 75%,
+      rgb(255, 116, 241) 100%
+    );
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  `
+
   const PreviewFile = () => {
     if (state.file) {
       if (state.file.type.includes('image')) {
@@ -287,6 +324,7 @@ export const Single = ({ history }: RouteComponentProps) => {
                     defaultValue={f.id === 'name' ? formik.values.name : formik.values.description}
                   />
                 </div>
+                <ErrorMessage>{errorMessage(f.id)}</ErrorMessage>
                 <p>{f.panel}</p>
               </TextInput>
             )
@@ -302,7 +340,7 @@ export const Single = ({ history }: RouteComponentProps) => {
                     onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
                     defaultValue={f.id === 'price' ? formik.values.price : formik.values.description}
                   />
-                  <StableSelect option={f.option} />
+                  <StableSelect option={f.option} id={f.idDropdown} />
                 </div>
                 <p>{f.panel}</p>
               </TextInput>
@@ -312,7 +350,7 @@ export const Single = ({ history }: RouteComponentProps) => {
               <TextInput style={{ width: '50%' }}>
                 <h3 style={{ margin: 0 }}>{f.title}</h3>
                 <div className="form__group ">
-                  <StableSelect option={f.option} width={'100%'} />
+                  <StableSelect option={f.option} width={'100%'} key={f.id} />
                 </div>
               </TextInput>
             )
@@ -356,7 +394,25 @@ export const Single = ({ history }: RouteComponentProps) => {
             {switchType === SwitchType.FixedPrice && FormInput('price')}
             {switchType === SwitchType.TimedAuction && FormInput('bids')}
           </div>
-
+          <UnlockPurchased>
+            <div>
+              <UnlockTitle>Unlock once purchased</UnlockTitle>
+              <p>Content will be unlocked after successful transaction</p>
+            </div>
+            <Switch
+              onChange={() => setChecked(!checked)}
+              checked={checked}
+              onColor="#86d3ff"
+              onHandleColor="#2693e6"
+              handleDiameter={20}
+              uncheckedIcon={false}
+              checkedIcon={false}
+              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+              height={20}
+              width={40}
+            />
+          </UnlockPurchased>
           {FormInput('infomation')}
           <OptionMintCreate formik={formik} />
         </div>

@@ -36,6 +36,7 @@
     "@types/testing-library__cypress": "^5.0.5",
     "@types/ua-parser-js": "^0.7.35",
     "@types/wcag-contrast": "^3.0.0",
+    "@types/yup": "^0.29.13",
     "@typescript-eslint/eslint-plugin": "^4.1.0",
     "@typescript-eslint/parser": "^4.1.0",
     "@uniswap/default-token-list": "^2.0.0",
@@ -63,7 +64,10 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^4.0.0",
     "ethers": "^5.3.1",
+    "file-selector": "^0.2.4",
+    "formik": "^2.2.9",
     "inter-ui": "^3.13.1",
+    "ipfs-http-client": "^50.1.2",
     "lightweight-charts": "^3.3.0",
     "lodash.flatmap": "^4.5.0",
     "luxon": "^1.25.0",
@@ -79,7 +83,9 @@
     "react-dom": "^17.0.1",
     "react-feather": "^2.0.8",
     "react-ga": "^2.5.7",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-markdown": "^4.3.1",
+    "react-player": "^2.9.0",
     "react-popper": "^2.2.3",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.0.0",
@@ -88,6 +94,7 @@
     "react-use-gesture": "^9.1.3",
     "react-virtualized-auto-sizer": "^1.0.2",
     "react-window": "^1.8.6",
+    "reactstrap": "^8.9.0",
     "rebass": "^4.0.7",
     "redux-localstorage-simple": "^2.3.1",
     "serve": "^11.3.2",
@@ -104,15 +111,7 @@
     "workbox-precaching": "^6.1.0",
     "workbox-routing": "^6.1.0",
     "workbox-strategies": "^6.1.0",
-    "reactstrap": "^8.9.0",
-    "formik":"^2.2.9",
-    "react-player":"^2.9.0",
-    "ipfs-http-client":"^50.1.2",
-    "file-selector":"^0.2.4",
-    "@types/yup":"^0.29.13",
-    "yup":"^0.32.9",
-    "react-infinite-scroll-component":"^6.1.0"
-
+    "yup": "^0.32.9"
   },
   "scripts": {
     "compile-contract-types": "yarn compile-external-abi-types && yarn compile-v3-contract-types",
@@ -124,8 +123,9 @@
     "integration-test": "start-server-and-test 'serve build -l 3000' http://localhost:3000 'cypress run'",
     "postinstall": "yarn compile-contract-types",
     "start": "yarn compile-contract-types && react-scripts start",
+    "start:window": "react-scripts start",
     "test": "react-scripts test --env=jsdom",
-    "up":"docker compose up"
+    "up": "docker compose up"
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -147,5 +147,6 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "react-switch": "^6.0.0"
   }
 }

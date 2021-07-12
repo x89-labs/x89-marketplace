@@ -10,7 +10,6 @@ export const typeInput = createAction<{ field: Field; typedValue: string; noLiqu
 
 export const fileChange = createAction<{ value: any }>('mint/fileChangeMint')
 export const fieldChange = createAction<{ fieldName: string; fieldValue: any }>('mint/fieldChange')
-export const getIpfsHash = createAction<{ value: string }>('mint/ipfsHash')
 export const deleteFile = createAction<{ value: any }>('mint/deleteFileMint')
 
 export const getCategories = createAsyncThunk('mint/getCategories', async () => {
