@@ -13,7 +13,7 @@ const activeClassName = 'ACTIVE'
 const Container = styled(NavLink).attrs({
   activeClassName,
 })`
-  width: ${(window.innerWidth - 80) / 5}px;
+  width: ${(window.innerWidth - 80) / 4}px;
   height: auto;
   color: #000;
   text-decoration: none;
