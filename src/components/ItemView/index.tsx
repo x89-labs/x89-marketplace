@@ -187,7 +187,7 @@ export default function ItemView({ index, item, isLiveAuction }: ItemView) {
         {isLiveAuction === true && (
           <TimeLeft>
             <Time>
-              <Countdown date={Date.now() + 100000000} /> <Asset.Fire width={14} height={14} />
+              <Countdown date={Date.now() + Math.random() * 100000000} /> <Asset.Fire width={14} height={14} />
             </Time>
           </TimeLeft>
         )}
