@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { BookOpen, Code, Info, MessageCircle, PieChart } from 'react-feather'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
 import { useActiveWeb3React } from '../../hooks/web3'
@@ -114,6 +114,26 @@ const InternalMenuItem = styled(Link)`
     margin-right: 8px;
   }
 `
+const activeClassName = 'ACTIVE'
+
+const StyledNavLink = styled(NavLink).attrs({
+  activeClassName,
+})`
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.5rem 0.5rem;
+  text-decoration: none;
+  color: ${({ theme }) => theme.text2};
+  :hover {
+    color: ${({ theme }) => theme.text1};
+    cursor: pointer;
+  }
+  > svg {
+    margin-right: 8px;
+  }
+`
 
 const CODE_LINK = 'https://github.com/Uniswap/uniswap-interface'
 
@@ -153,6 +173,12 @@ export default function Menu() {
               <Trans>Code</Trans>
             </div>
           </MenuItem>
+          <StyledNavLink to={'/myitem'}>
+            <BookOpen size={14} />
+            <div>
+              <Trans>My Items</Trans>
+            </div>
+          </StyledNavLink>
           <MenuItem href="https://discord.gg/FCfyBSbCU5">
             <MessageCircle size={14} />
             <div>

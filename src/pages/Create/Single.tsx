@@ -20,7 +20,6 @@ import { Forms, validationFormCreateSchema } from './config'
 import { Type } from 'models/formInput'
 import { Ipfs } from 'client/ipfs'
 import Switch from 'react-switch'
-import { select } from '@lingui/macro'
 interface ico {
   icon: any
   name: string
@@ -63,8 +62,7 @@ export const Single = ({ history }: RouteComponentProps) => {
         reader.readAsArrayBuffer(file)
         reader.onloadend = async () => {
           const hash = await Ipfs.GetHash(reader.result)
-          console.log(hash)
-          if (state.categorie && state.symbol) {
+          if (state.categorie) {
             const body: BodyItem = {
               categoryId: state.categorie.id,
               name: values.name,
@@ -72,7 +70,7 @@ export const Single = ({ history }: RouteComponentProps) => {
               price: values.price,
               contractAddress: contractAddress,
               assetId: '1233',
-              symbol: state.symbol,
+              symbol: state.symbol ?? 'ETH',
               image: hash,
               totalQuantity: 1,
               createdBy: account!,
@@ -321,7 +319,7 @@ export const Single = ({ history }: RouteComponentProps) => {
                     type={'input'}
                     placeholder={f.placeHolder}
                     onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
-                    defaultValue={f.id === 'name' ? formik.values.name : formik.values.description}
+                    defaultValue={getIn(formik.values, f.id)}
                   />
                 </div>
                 <ErrorMessage>{errorMessage(f.id)}</ErrorMessage>
@@ -338,7 +336,7 @@ export const Single = ({ history }: RouteComponentProps) => {
                     type={'input'}
                     placeholder={f.placeHolder}
                     onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
-                    defaultValue={f.id === 'price' ? formik.values.price : formik.values.description}
+                    defaultValue={getIn(formik.values, f.id)}
                   />
                   <StableSelect option={f.option} id={f.idDropdown} />
                 </div>
@@ -347,10 +345,10 @@ export const Single = ({ history }: RouteComponentProps) => {
             )
           } else if (f.type === Type.Dropdown) {
             return (
-              <TextInput style={{ width: '50%' }}>
+              <TextInput style={{ width: '50%' }} key={f.id}>
                 <h3 style={{ margin: 0 }}>{f.title}</h3>
                 <div className="form__group ">
-                  <StableSelect option={f.option} width={'100%'} key={f.id} />
+                  <StableSelect option={f.option} width={'100%'} />
                 </div>
               </TextInput>
             )
@@ -359,6 +357,8 @@ export const Single = ({ history }: RouteComponentProps) => {
       }
     })
   }
+
+  console.log(state.isCompleted)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>

@@ -15,19 +15,32 @@ export const deleteFile = createAction<{ value: any }>('mint/deleteFileMint')
 export const getCategories = createAsyncThunk('mint/getCategories', async () => {
   const URL = `${Endpoint.CATEGORIES}`
   const response = await client.get(URL, {})
+
   if (response && response.status == 200) {
     return response.data
   } else {
     return []
   }
 })
+export const getMyItems = createAsyncThunk('mint/getMyitem', async (account?: string) => {
+  try {
+    const URL = `${Endpoint.ITEM}?createdBy=${account}`
+    const response = await client.get(URL, {})
+    console.log(response)
+    if (response && response.status == 200) {
+      return response.data
+    } else {
+      return []
+    }
+  } catch (e) {
+    console.log(e)
+  }
+})
 export const postItem = createAsyncThunk('mint/postItem', async (body?: any) => {
   try {
     const URL = `${Endpoint.ITEM}`
-
     const response = await client.post(URL, body)
     console.log(response)
-
     if (response && response.status == 200) {
       return response.data
     } else {

@@ -4,10 +4,12 @@ import styled from 'styled-components'
 import * as Asset from 'assets'
 import { Item } from 'models/explore'
 import ReactPlayer from 'react-player'
+import Countdown from 'react-countdown'
 
 interface ItemView {
   index?: any
   item: Item
+  isLiveAuction?: boolean
 }
 const activeClassName = 'ACTIVE'
 const Container = styled(NavLink).attrs({
@@ -56,6 +58,7 @@ const Editor = styled.p`
   font-weight: bold;
 `
 const ImageDisPlay = styled.div`
+  postition: relative;
   width: 100%;
   justify-content: center;
   margin: 20px 0;
@@ -126,8 +129,38 @@ const FooterItem = styled.div`
     z-index: -2;
   }
 `
+const TimeLeft = styled.div`
+  display: flex;
+  position: absolute;
+  width: 10rem;
+  height: 2rem;
+  margin-top: 200px;
+  margin-right: 85px;
+  border-radius: 1rem;
+  background-image: linear-gradient(
+    145deg,
+    rgb(12, 80, 255) 0%,
+    rgb(12, 80, 255) 13%,
+    rgb(91, 157, 255) 25.73%,
+    rgb(255, 116, 241) 75%,
+    rgb(255, 116, 241) 100%
+  );
+  background-size: 100%;
+`
+const Time = styled.div`
+  border-radius: 1rem;
+  border: 5px solid transparent;
+  background: rgb(255, 255, 255);
+  margin-top: 2px;
+  width: 154px;
+  margin-left: 3px;
+  height: 27px;
+  font-size: 14px;
+  font-weight: bold;
+  padding-left: 4px;
+`
 
-export default function ItemView({ index, item }: ItemView) {
+export default function ItemView({ index, item, isLiveAuction }: ItemView) {
   const PreviewFile = (item: Item) => {
     if (item.type.includes('image')) {
       return <Image src={item.image}></Image>
@@ -140,7 +173,7 @@ export default function ItemView({ index, item }: ItemView) {
           width={'90%'}
           height={'13rem'}
           loop={true}
-          style={{ borderRadius: '10px' }}
+          style={{ borderRadius: 10 }}
         />
       )
     }
@@ -149,7 +182,17 @@ export default function ItemView({ index, item }: ItemView) {
   return (
     <Container key={index} id={`stats-nav-link`} to={`/detail/${item.id}`}>
       <Editor>{item.totalQuantity === 1 ? 'Single Edition' : `${item.totalQuantity} Editions`}</Editor>
-      <ImageDisPlay>{PreviewFile(item)}</ImageDisPlay>
+      <ImageDisPlay>
+        {PreviewFile(item)}
+        {isLiveAuction === true && (
+          <TimeLeft>
+            <Time>
+              <Countdown date={Date.now() + Math.random() * 100000000} /> <Asset.Fire width={14} height={14} />
+            </Time>
+          </TimeLeft>
+        )}
+      </ImageDisPlay>
+
       <ItemContent>
         <ItemName>{item.name}</ItemName>
         <Owner>

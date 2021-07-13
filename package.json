@@ -147,6 +147,7 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "react-countdown": "^2.3.2",
     "react-switch": "^6.0.0"
   }
 }

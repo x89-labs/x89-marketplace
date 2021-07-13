@@ -24,7 +24,7 @@ const Item = styled(NavLink).attrs({
 })`
   width: ${(window.innerWidth - 120) / 5}px;
   height: ${(window.innerWidth - 120) / 5}px;
-  background-color: #000;
+  background-color: #fff;
   margin: 0 10px;
   position: relative;
   cursor: pointer;
@@ -72,6 +72,16 @@ const TopSellerItem = styled.div`
   &:hover {
     box-shadow: 2px 4px 8px #f0f0f0;
   }
+`
+
+const Avatar = styled.div`
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  postiton: relative;
+  background-size: cover;
+  background-position: center center;
+  background-image: url(${Asset.SrcAvatar});
 `
 const ListItemSeller = styled.div`
   background-color: ${({ theme }) => theme.bg5};
@@ -134,9 +144,13 @@ export default function Explore() {
           <TopSellerItem key={index}>
             <div style={{ display: 'flex' }}>
               <Text>{item.id}</Text>
-              <Asset.Avatar width={30} height={30} style={{ marginLeft: 10, position: 'relative' }}>
-                <Asset.YellowCheck width={10} height={10} style={{ position: 'absolute' }} />
-              </Asset.Avatar>
+              <Avatar>
+                <Asset.YellowCheck
+                  width={16}
+                  height={16}
+                  style={{ position: 'absolute', marginTop: 15, marginLeft: 17 }}
+                />
+              </Avatar>
             </div>
             <ContentSeller>
               <Text>{item.name}</Text>
@@ -158,7 +172,7 @@ export default function Explore() {
             url={item.image}
             muted={true}
             playing={true}
-            width={'100%'}
+            width={'14rem'}
             loop={true}
             height={'100%'}
             style={{ borderRadius: '10px' }}
@@ -200,7 +214,7 @@ export default function Explore() {
           Live Auction <Asset.Fire width={20} height={20} />
         </Title>
         <div style={{ display: 'flex', marginTop: 20 }}>
-          {state.listItem.map((item, index) => index < 4 && <ItemView item={item} key={index} />)}
+          {state.listItem.map((item, index) => index < 4 && <ItemView item={item} key={index} isLiveAuction={true} />)}
         </div>
       </LiveAuctions>
 

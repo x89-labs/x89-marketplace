@@ -1,7 +1,8 @@
 import { createReducer, createSlice } from '@reduxjs/toolkit'
 import { BodyItem } from 'models/bodyItem'
 import { Categories } from 'models/categories'
-import { deleteFile, Field, fieldChange, fileChange, getCategories, postItem } from './actions'
+import { Item } from 'models/explore'
+import { deleteFile, Field, fieldChange, fileChange, getCategories, getMyItems, postItem } from './actions'
 export interface MintState {
   readonly independentField: Field
   readonly typedValue: string
@@ -12,6 +13,8 @@ export interface MintState {
   readonly categorie?: Categories
   readonly symbol?: string
   readonly initValues: BodyItem
+  readonly listMyItem?: Item[]
+  readonly isCompleted: boolean
 }
 
 export const initialState: MintState = {
@@ -32,6 +35,7 @@ export const initialState: MintState = {
     type: '',
     categoryName: '',
   },
+  isCompleted: false,
 }
 
 const mintSlice = createSlice({
@@ -61,6 +65,12 @@ const mintSlice = createSlice({
       .addCase(getCategories.fulfilled, (state, action) => {
         if (action.payload) {
           state.categories = action.payload
+        }
+      })
+      .addCase(getMyItems.fulfilled, (state, action) => {
+        state.isCompleted = true
+        if (action.payload) {
+          state.listMyItem = action.payload.items
         }
       })
       .addCase(postItem.fulfilled, (state, action) => {

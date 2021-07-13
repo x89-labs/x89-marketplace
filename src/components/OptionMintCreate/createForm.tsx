@@ -11,6 +11,7 @@ import { Ipfs } from 'client/ipfs'
 import { contractAddress } from 'client/callSmContract'
 import { useActiveWeb3React } from 'hooks/web3'
 import * as Yup from 'yup'
+import { validationFormCreateSchema } from 'pages/Create/config'
 
 const Container = styled.div`
   padding: 1rem;
@@ -109,24 +110,40 @@ export default function CreateModal() {
     symbol: Yup.string().required('FieldRequired'),
   })
 
+  useEffect(() => {
+    plainFiles[0] && dispatch(fileChange({ value: plainFiles[0] }))
+    plainFiles[0] && dispatch(fieldChange({ fieldName: 'fileType', fieldValue: plainFiles[0].type }))
+  }, [plainFiles[0]])
+
   const formik = useFormik({
     initialValues: state.initValues,
-    validationSchema: validationSchema,
+    validationSchema: validationFormCreateSchema,
     onSubmit: (values) => {
-      if (state.categorie) {
-        const body: BodyItem = {
-          categoryId: state.categorie.id,
-          name: values.name,
-          description: values.description,
-          price: values.price,
-          contractAddress: contractAddress,
-          assetId: '1233',
-          symbol: values.symbol,
-          image: '',
-          totalQuantity: 1,
-          createdBy: account!,
+      if (state.file) {
+        const file = state.file
+        const reader = new window.FileReader()
+        reader.readAsArrayBuffer(file)
+        reader.onloadend = async () => {
+          const hash = await Ipfs.GetHash(reader.result)
+          if (state.symbol) {
+            const body: BodyItem = {
+              categoryId: '9c9debff-35d5-4276-ba59-d606c8ed9859',
+              name: values.name,
+              description: values.description,
+              price: values.price,
+              contractAddress: contractAddress,
+              assetId: '1233',
+              symbol: state.symbol,
+              image: hash,
+              totalQuantity: 1,
+              createdBy: account!,
+              type: state.fileType,
+              categoryName: 'string',
+            }
+            console.log(body)
+            dispatch(postItem(body))
+          }
         }
-        dispatch(postItem(body))
       }
     },
   })

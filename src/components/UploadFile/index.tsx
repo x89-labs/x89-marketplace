@@ -51,7 +51,7 @@ export default function UploadFile() {
   const darkMode = useIsDarkMode()
   const [openFileSelector, { plainFiles }] = useFilePicker({
     multiple: false,
-    accept: ['.png', '.jpg', '.mp4', '.mov'],
+    accept: ['.png', '.jpg', '.mp4', '.mov', '.gif'],
     readAs: 'DataURL',
   })
 

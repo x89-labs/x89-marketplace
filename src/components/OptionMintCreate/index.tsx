@@ -8,6 +8,7 @@ import { useMintState } from 'state/mint/hooks'
 import { BodyItem } from 'models/bodyItem'
 import Modal from 'components/Modal'
 import CreateForm from './createForm'
+import { NavLink } from 'react-router-dom'
 
 type OptionMintCreate = {
   formik?: any
@@ -103,12 +104,17 @@ const Create = styled.div`
     height: 40px;
   }
 `
+const activeClassName = 'ACTIVE'
 
+const StyledNavLink = styled(NavLink).attrs({
+  activeClassName,
+})``
 export default function OptionMintCreate({ formik }: OptionMintCreate) {
   const darkMode = useIsDarkMode()
   const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
   const [isopen, setOpen] = useState(false)
   const state = useMintState()
+
   const CreateCollection = () => {
     return (
       <div className="marketplace" onClick={() => setOpen(true)}>
@@ -143,14 +149,16 @@ export default function OptionMintCreate({ formik }: OptionMintCreate) {
         </TextInput>
       </div>
       <CreateItem>
-        <a
+        <StyledNavLink
+          id={`stats-nav-link`}
+          to={'/myitem'}
           className="createBtn"
           onClick={() => {
             formik.handleSubmit()
           }}
         >
           Create Item
-        </a>
+        </StyledNavLink>
         <p>Unsaved changes </p>
       </CreateItem>
       <Modal isOpen={isopen} onDismiss={() => setOpen(false)}>
