@@ -92,7 +92,6 @@ export default function Categories() {
             className="item"
             key={index}
             onClick={() => {
-              setSelected(item.categoryName!)
               setShow(true)
               dispatch(fieldChange({ fieldName: 'categorie', fieldValue: item }))
             }}

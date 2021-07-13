@@ -73,9 +73,7 @@ export default function StableSelect({ option, width, textColor, id }: TableSele
   const dispatch = useDispatch()
   const state = useMintState()
 
-  useEffect(() => {
-    id && selected && dispatch(fieldChange({ fieldName: id, fieldValue: selected }))
-  }, [selected])
+  console.log(state.symbol)
 
   return (
     <div
@@ -98,6 +96,7 @@ export default function StableSelect({ option, width, textColor, id }: TableSele
             onClick={() => {
               setSelected(item.name)
               setShow(true)
+              id && dispatch(fieldChange({ fieldName: id, fieldValue: item.name }))
             }}
           >
             <div className="itemName">

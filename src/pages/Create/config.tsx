@@ -62,6 +62,7 @@ export const Forms: FormInput[] = [
         id: 'bid',
         placeHolder: 'Enter price for one piece ...',
         panel: 'Bids below this amount won’t be allowed.',
+        option: optionsToken,
       },
       {
         title: 'Starting Date',
@@ -107,8 +108,7 @@ export const Forms: FormInput[] = [
 
 export const validationFormCreateSchema = Yup.object().shape({
   name: Yup.string().required('* Field Required'),
-  bid: Yup.string().required('Field Required'),
-  price: Yup.string().required('Field Required'),
-  symbol: Yup.string().required('Field Required'),
-  description: Yup.string().required('Field Required'),
+  price: Yup.string().required('* Field Required'),
+  symbol: Yup.string().required('* Field Required'),
+  description: Yup.string().required('* Field Required'),
 })

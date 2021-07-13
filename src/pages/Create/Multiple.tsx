@@ -12,7 +12,7 @@ import StableSelect from 'components/StableSelect'
 import { Forms, validationFormCreateSchema } from './config'
 import { Type } from 'models/formInput'
 import { useDispatch } from 'react-redux'
-import { useFormik } from 'formik'
+import { getIn, useFormik } from 'formik'
 import { BodyItem } from 'models/bodyItem'
 import { contractAddress } from 'client/callSmContract'
 import { getCategories, postItem } from 'state/mint/actions'
@@ -60,7 +60,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
         reader.readAsArrayBuffer(file)
         reader.onloadend = async () => {
           const hash = await Ipfs.GetHash(reader.result)
-          if (state.categorie && state.symbol) {
+          if (state.categorie) {
             const body: BodyItem = {
               categoryId: state.categorie.id,
               name: values.name,
@@ -68,9 +68,9 @@ export const Multiple = ({ history }: RouteComponentProps) => {
               price: values.price,
               contractAddress: contractAddress,
               assetId: '1233',
-              symbol: state.symbol,
+              symbol: state.symbol ?? 'ETH',
               image: hash,
-              totalQuantity: 1,
+              totalQuantity: values.totalQuantity,
               createdBy: account!,
               type: state.fileType,
               categoryName: state.categorie.categoryName,
@@ -83,6 +83,14 @@ export const Multiple = ({ history }: RouteComponentProps) => {
     },
   })
 
+  const errorMessage = (fieldName: string) => {
+    const touched = getIn(formik.touched, fieldName)
+    const error = getIn(formik.errors, fieldName)
+    if (touched && error) {
+      return error
+    }
+    return undefined
+  }
   useEffect(() => {
     setSwitchType(SwitchType.FixedPrice)
     dispatch(getCategories())
@@ -221,6 +229,11 @@ export const Multiple = ({ history }: RouteComponentProps) => {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   `
+  const ErrorMessage = styled.div`
+    color: red;
+    font-weight: 700;
+    font-size: 0.8rem;
+  `
 
   const PreviewFile = () => {
     if (state.file) {
@@ -257,8 +270,11 @@ export const Multiple = ({ history }: RouteComponentProps) => {
                     type={'input'}
                     placeholder={f.placeHolder}
                     onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
+                    defaultValue={getIn(formik.values, f.id)}
                   />
                 </div>
+                <ErrorMessage>{errorMessage(f.id)}</ErrorMessage>
+
                 <p>{f.panel}</p>
               </TextInput>
             )
@@ -272,6 +288,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
                     type={'input'}
                     placeholder={f.placeHolder}
                     onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
+                    defaultValue={getIn(formik.values, f.id)}
                   />
                   <StableSelect option={f.option} />
                 </div>
