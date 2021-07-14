@@ -9,6 +9,7 @@ import { BodyItem } from 'models/bodyItem'
 import Modal from 'components/Modal'
 import CreateForm from './createForm'
 import { NavLink } from 'react-router-dom'
+import useIsXNFTContract from 'hooks/useXNFTContract'
 
 type OptionMintCreate = {
   formik?: any
@@ -114,6 +115,7 @@ export default function OptionMintCreate({ formik }: OptionMintCreate) {
   const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
   const [isopen, setOpen] = useState(false)
   const state = useMintState()
+  const { addFee } = useIsXNFTContract()
 
   const CreateCollection = () => {
     return (
@@ -149,16 +151,14 @@ export default function OptionMintCreate({ formik }: OptionMintCreate) {
         </TextInput>
       </div>
       <CreateItem>
-        <StyledNavLink
-          id={`stats-nav-link`}
-          to={'/myitem'}
+        <div
           className="createBtn"
           onClick={() => {
             formik.handleSubmit()
           }}
         >
           Create Item
-        </StyledNavLink>
+        </div>
         <p>Unsaved changes </p>
       </CreateItem>
       <Modal isOpen={isopen} onDismiss={() => setOpen(false)}>

@@ -20,6 +20,7 @@ import { Unisocks } from 'abis/types/Unisocks'
 import UNISOCKS_ABI from 'abis/unisocks.json'
 import WETH_ABI from 'abis/weth.json'
 import EIP_2612 from 'abis/eip_2612.json'
+import XNFT_ABI from 'abis/XNFT.json'
 
 import {
   NONFUNGIBLE_POSITION_MANAGER_ADDRESSES,
@@ -33,6 +34,7 @@ import {
   V2_ROUTER_ADDRESS,
   ENS_REGISTRAR_ADDRESSES,
   SOCKS_CONTROLLER_ADDRESSES,
+  XNFT_ADDRESS,
 } from 'constants/addresses'
 import { abi as NFTPositionManagerABI } from '@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
 import { useMemo } from 'react'
@@ -43,6 +45,7 @@ import { getContract } from 'utils'
 import { Erc20, ArgentWalletDetector, EnsPublicResolver, EnsRegistrar, Multicall2, Weth } from '../abis/types'
 import { UNI, WETH9_EXTENDED } from '../constants/tokens'
 import { useActiveWeb3React } from './web3'
+import { XNFT, XNFTInterface } from 'abis/types/XNFT'
 
 // returns null on errors
 export function useContract<T extends Contract = Contract>(
@@ -151,4 +154,7 @@ export function useV3Pool(address: string | undefined) {
 
 export function useV3Quoter() {
   return useContract<Quoter>(QUOTER_ADDRESSES, QuoterABI)
+}
+export function useXNFTContract() {
+  return useContract<XNFT>(XNFT_ADDRESS, XNFT_ABI.abi)
 }

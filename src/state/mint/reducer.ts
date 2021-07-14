@@ -15,6 +15,7 @@ export interface MintState {
   readonly initValues: BodyItem
   readonly listMyItem?: Item[]
   readonly isCompleted: boolean
+  readonly ipfsHash?: string
 }
 
 export const initialState: MintState = {
