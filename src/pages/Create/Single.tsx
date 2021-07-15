@@ -11,7 +11,7 @@ import UploadFile from 'components/UploadFile'
 import ReactPlayer from 'react-player'
 import Categories from 'components/Categories'
 import { useDispatch } from 'react-redux'
-import { fieldChange, getCategories, postItem } from 'state/mint/actions'
+import { fieldChange, fileChange, getCategories, postItem } from 'state/mint/actions'
 import { getIn, useFormik } from 'formik'
 import { BodyItem } from 'models/bodyItem'
 import { useActiveWeb3React } from 'hooks/web3'
@@ -20,6 +20,7 @@ import { Forms, validationFormCreateSchema } from './config'
 import { Type } from 'models/formInput'
 import { Ipfs } from 'client/ipfs'
 import Switch from 'react-switch'
+import useIsXNFTContract from 'hooks/useXNFTContract'
 interface ico {
   icon: any
   name: string
@@ -52,6 +53,8 @@ export const Single = ({ history }: RouteComponentProps) => {
   const { account } = useActiveWeb3React()
   const [switchType, setSwitchType] = useState<SwitchType>()
   const [checked, setChecked] = useState(true)
+  const { addFee } = useIsXNFTContract()
+
   const formik = useFormik({
     initialValues: state.initValues,
     validationSchema: validationFormCreateSchema,
@@ -62,6 +65,7 @@ export const Single = ({ history }: RouteComponentProps) => {
         reader.readAsArrayBuffer(file)
         reader.onloadend = async () => {
           const hash = await Ipfs.GetHash(reader.result)
+          dispatch(fieldChange({ fieldName: 'ipfsHash', fieldValue: hash }))
           if (state.categorie) {
             const body: BodyItem = {
               categoryId: state.categorie.id,
@@ -78,6 +82,7 @@ export const Single = ({ history }: RouteComponentProps) => {
               categoryName: state.categorie.categoryName,
             }
             console.log(body)
+            addFee()
             dispatch(postItem(body))
           }
         }
@@ -357,8 +362,6 @@ export const Single = ({ history }: RouteComponentProps) => {
       }
     })
   }
-
-  console.log(state.isCompleted)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
