@@ -33,9 +33,9 @@ const Item = styled(NavLink).attrs({
   .image {
     border-radius: 10px;
     position: absolute;
-    width: 100%;
+    width: 16rem;
+    height: 106%;
     transition: transform 0.2s;
-    height: 100%;
   }
   .image:hover {
     transform: scale(1.1);
@@ -139,7 +139,7 @@ export default function Explore() {
       matrix[k].push(list[i])
     }
     return matrix.map((mt, i) => (
-      <div style={{ display: 'flex' }} key={i}>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }} key={i}>
         {mt.map((item, index) => (
           <TopSellerItem key={index}>
             <div style={{ display: 'flex' }}>
@@ -172,7 +172,7 @@ export default function Explore() {
             url={item.image}
             muted={true}
             playing={true}
-            width={'14rem'}
+            width={'103%'}
             loop={true}
             height={'100%'}
             style={{ borderRadius: '10px' }}
@@ -213,7 +213,7 @@ export default function Explore() {
         <Title>
           Live Auction <Asset.Fire width={20} height={20} />
         </Title>
-        <div style={{ display: 'flex', marginTop: 20 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: 20 }}>
           {state.listItem.map((item, index) => index < 4 && <ItemView item={item} key={index} isLiveAuction={true} />)}
         </div>
       </LiveAuctions>
@@ -222,7 +222,7 @@ export default function Explore() {
         <Title>
           Hot Bids <Asset.Fire width={20} height={20} />
         </Title>
-        <div style={{ display: 'flex', marginTop: 20 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: 20 }}>
           {state.listItem.map((item, index) => index < 4 && <ItemView item={item} key={index} />)}
         </div>
       </HotBids>
