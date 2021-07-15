@@ -1,6 +1,6 @@
 import StableSelect from 'components/StableSelect'
 import ItemView from 'components/ItemView'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { getListItems } from 'state/explore/actions'
@@ -9,6 +9,10 @@ import styled from 'styled-components'
 import * as Asset from 'assets'
 import { optionsTopSeller } from './config'
 import ReactPlayer from 'react-player'
+import { shortenAddress } from 'utils'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
+import Slider from 'components/Slider'
 
 const BodyExplore = styled.div`
   width: 100%;
@@ -24,7 +28,7 @@ const Item = styled(NavLink).attrs({
 })`
   width: ${(window.innerWidth - 120) / 5}px;
   height: ${(window.innerWidth - 120) / 5}px;
-  background-color: #fff;
+  background-color: #000;
   margin: 0 10px;
   position: relative;
   cursor: pointer;
@@ -63,7 +67,7 @@ const TopSellerItem = styled.div`
   cursor: pointer;
   border-radius: 10px;
   display: flex;
-  min-width: ${(window.innerWidth - 120) / 5}px;
+  min-width: ${(window.innerWidth - 140) / 5}px;
   max-width: 230px;
   padding: 10px;
   align-items: center;
@@ -87,6 +91,7 @@ const ListItemSeller = styled.div`
   background-color: ${({ theme }) => theme.bg5};
   margin-top: 1rem;
   padding: 1rem 0;
+  justify-content: center;
 `
 const ContentSeller = styled.div`
   margin-left: 20px;
@@ -110,6 +115,12 @@ const Text = styled.p`
 const Image = styled.img``
 const LiveAuctions = styled.div``
 const HotBids = styled.div``
+const ListItem = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  justify-content: center;
+`
 const optionsSeller = [
   {
     name: 'Seller',
@@ -127,7 +138,13 @@ export default function Explore() {
   useEffect(() => {
     dispatch(getListItems())
   }, [])
-
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  }
   const GridList = () => {
     const matrix = new Array<Array<any>>()
     const list = optionsTopSeller
@@ -139,7 +156,7 @@ export default function Explore() {
       matrix[k].push(list[i])
     }
     return matrix.map((mt, i) => (
-      <div style={{ display: 'flex', flexWrap: 'wrap' }} key={i}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }} key={i}>
         {mt.map((item, index) => (
           <TopSellerItem key={index}>
             <div style={{ display: 'flex' }}>
@@ -181,7 +198,6 @@ export default function Explore() {
       )
     }
   }
-
   return (
     <BodyExplore>
       <Header>
@@ -194,7 +210,7 @@ export default function Explore() {
                   <Text className="itemName">{item.name}</Text>
                   {item.createdBy !== '' && (
                     <Author>
-                      <p className="author">{'By ' + item.createdBy}</p>
+                      <p className="author">By {shortenAddress(item.createdBy)}</p>
                     </Author>
                   )}
                 </ItemContent>
@@ -213,18 +229,16 @@ export default function Explore() {
         <Title>
           Live Auction <Asset.Fire width={20} height={20} />
         </Title>
-        <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: 20 }}>
+        <ListItem>
           {state.listItem.map((item, index) => index < 4 && <ItemView item={item} key={index} isLiveAuction={true} />)}
-        </div>
+        </ListItem>
       </LiveAuctions>
 
       <HotBids>
         <Title>
           Hot Bids <Asset.Fire width={20} height={20} />
         </Title>
-        <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: 20 }}>
-          {state.listItem.map((item, index) => index < 4 && <ItemView item={item} key={index} />)}
-        </div>
+        <ListItem>{state.listItem.map((item, index) => index < 4 && <ItemView item={item} key={index} />)}</ListItem>
       </HotBids>
     </BodyExplore>
   )

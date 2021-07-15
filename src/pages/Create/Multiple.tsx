@@ -14,12 +14,14 @@ import { Type } from 'models/formInput'
 import { useDispatch } from 'react-redux'
 import { getIn, useFormik } from 'formik'
 import { BodyItem } from 'models/bodyItem'
-import { contractAddress } from 'client/callSmContract'
 import { getCategories, postItem } from 'state/mint/actions'
 import { useActiveWeb3React } from 'hooks/web3'
-import { Ipfs } from 'client/ipfs'
+import { Ipfs } from 'hooks/ipfs'
 import Categories from 'components/Categories'
 import Switch from 'react-switch'
+import { XNFT_ADDRESS } from 'constants/addresses'
+import { useXNFTContract } from 'hooks/useContract'
+import useIsXNFTContract from 'hooks/useXNFTContract'
 
 interface ico {
   icon: any
@@ -47,6 +49,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
   const state = useMintState()
   const [switchType, setSwitchType] = useState<SwitchType>()
   const [checked, setChecked] = useState(true)
+  const { addFee } = useIsXNFTContract()
   const dispatch = useDispatch()
   const { account } = useActiveWeb3React()
 
@@ -66,7 +69,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
               name: values.name,
               description: values.description,
               price: values.price,
-              contractAddress: contractAddress,
+              contractAddress: XNFT_ADDRESS[1],
               assetId: '1233',
               symbol: state.symbol ?? 'ETH',
               image: hash,
@@ -76,6 +79,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
               categoryName: state.categorie.categoryName,
             }
             console.log(body)
+            addFee()
             dispatch(postItem(body))
           }
         }

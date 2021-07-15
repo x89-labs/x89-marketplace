@@ -6,6 +6,7 @@ import { useMintState } from 'state/mint/hooks'
 import styled from 'styled-components'
 import ItemView from 'components/ItemView'
 import * as Asset from 'assets'
+import { shortenAddress } from 'utils'
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -43,13 +44,8 @@ const Name = styled.div`
   padding: 10px;
   margin-top: 3rem;
   color: #000;
-  width: 12rem;
   background-color: #ccc;
-  padding: 4px;
-  border-radius: 10px;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
+  border-radius: 20px;
 `
 const Menu = styled.div`
   margin-top: 2rem;
@@ -138,7 +134,7 @@ export default function MyItem() {
         <Avatar></Avatar>
         <Asset.YellowCheck style={{ position: 'absolute', width: 36, height: 36, marginLeft: 94, bottom: -28 }} />
       </Header>
-      <Name>{account}</Name>
+      <Name>{account ? shortenAddress(account) : ''}</Name>
       <Menu>
         <Setting>
           <EditProfile>Edit Profile</EditProfile>

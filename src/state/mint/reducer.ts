@@ -2,7 +2,7 @@ import { createReducer, createSlice } from '@reduxjs/toolkit'
 import { BodyItem } from 'models/bodyItem'
 import { Categories } from 'models/categories'
 import { Item } from 'models/explore'
-import { deleteFile, Field, fieldChange, fileChange, getCategories, getMyItems, postItem } from './actions'
+import { deleteFile, Field, fieldChange, fileChange, getCategories, getMyItems, postItem, resetForm } from './actions'
 export interface MintState {
   readonly independentField: Field
   readonly typedValue: string
@@ -76,6 +76,12 @@ const mintSlice = createSlice({
       })
       .addCase(postItem.fulfilled, (state, action) => {
         // console.log('aaa')
+      })
+      .addCase(resetForm, (state, action) => {
+        return {
+          ...state,
+          file: undefined,
+        }
       })
   },
 })

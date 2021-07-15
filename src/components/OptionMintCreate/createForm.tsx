@@ -7,11 +7,11 @@ import useFilePicker from 'hooks/useFilePicker'
 import { BodyItem } from 'models/bodyItem'
 import { fieldChange, fileChange, postItem } from 'state/mint/actions'
 import { useFormik } from 'formik'
-import { Ipfs } from 'client/ipfs'
-import { contractAddress } from 'client/callSmContract'
+import { Ipfs } from 'hooks/ipfs'
 import { useActiveWeb3React } from 'hooks/web3'
 import * as Yup from 'yup'
 import { validationFormCreateSchema } from 'pages/Create/config'
+import { XNFT_ADDRESS } from 'constants/addresses'
 
 const Container = styled.div`
   padding: 1rem;
@@ -105,10 +105,6 @@ export default function CreateModal() {
     multiple: false,
     accept: ['.png', '.jpg'],
   })
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().required('FieldRequired'),
-    symbol: Yup.string().required('FieldRequired'),
-  })
 
   useEffect(() => {
     plainFiles[0] && dispatch(fileChange({ value: plainFiles[0] }))
@@ -131,7 +127,7 @@ export default function CreateModal() {
               name: values.name,
               description: values.description,
               price: values.price,
-              contractAddress: contractAddress,
+              contractAddress: XNFT_ADDRESS[1],
               assetId: '1233',
               symbol: state.symbol,
               image: hash,
