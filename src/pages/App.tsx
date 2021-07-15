@@ -19,6 +19,7 @@ const AppWrapper = styled.div`
   height: 100vh;
   flex-flow: column;
   align-items: flex-start;
+  width: 100%;
 `
 const BodyWrapper = styled.div`
   display: flex;

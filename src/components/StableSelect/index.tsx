@@ -73,8 +73,6 @@ export default function StableSelect({ option, width, textColor, id }: TableSele
   const dispatch = useDispatch()
   const state = useMintState()
 
-  console.log(state.symbol)
-
   return (
     <div
       style={{ alignSelf: 'center', width: width, justifyContent: 'space-between', margin: '0 5px' }}

@@ -11,16 +11,16 @@ import UploadFile from 'components/UploadFile'
 import ReactPlayer from 'react-player'
 import Categories from 'components/Categories'
 import { useDispatch } from 'react-redux'
-import { fieldChange, fileChange, getCategories, postItem } from 'state/mint/actions'
+import { fieldChange, fileChange, getCategories, postItem, resetForm } from 'state/mint/actions'
 import { getIn, useFormik } from 'formik'
 import { BodyItem } from 'models/bodyItem'
 import { useActiveWeb3React } from 'hooks/web3'
-import { contractAddress } from 'client/callSmContract'
 import { Forms, validationFormCreateSchema } from './config'
 import { Type } from 'models/formInput'
-import { Ipfs } from 'client/ipfs'
+import { Ipfs } from 'hooks/ipfs'
 import Switch from 'react-switch'
 import useIsXNFTContract from 'hooks/useXNFTContract'
+import { XNFT_ADDRESS } from 'constants/addresses'
 interface ico {
   icon: any
   name: string
@@ -72,7 +72,7 @@ export const Single = ({ history }: RouteComponentProps) => {
               name: values.name,
               description: values.description,
               price: values.price,
-              contractAddress: contractAddress,
+              contractAddress: XNFT_ADDRESS[1],
               assetId: '1233',
               symbol: state.symbol ?? 'ETH',
               image: hash,
@@ -84,9 +84,12 @@ export const Single = ({ history }: RouteComponentProps) => {
             console.log(body)
             addFee()
             dispatch(postItem(body))
+            window.location.href = '/#/myitem'
           }
         }
       }
+      formik.resetForm()
+      dispatch(resetForm({ value: 'resetform' }))
     },
   })
 
@@ -364,7 +367,7 @@ export const Single = ({ history }: RouteComponentProps) => {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
       <Around style={{ width: '516px' }}>
         <h3 onClick={() => history.goBack()}>{FeatherIcon(icons)}</h3>
         <h1>Create {CreateType()} collectible</h1>

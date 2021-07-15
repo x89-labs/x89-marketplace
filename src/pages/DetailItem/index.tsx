@@ -1,3 +1,4 @@
+import { parse } from 'qs'
 import React, { useEffect, useState } from 'react'
 import { Bold } from 'react-feather'
 import ReactPlayer from 'react-player'
@@ -5,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { getItem } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
 import styled from 'styled-components'
+import { shortenAddress } from 'utils'
 
 enum SwitchType {
   Details = 1,
@@ -14,19 +16,19 @@ enum SwitchType {
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
   display: flex;
-  border-bottom: 0.5px solid #ccc;
+  border: 0.1px solid #f0f0f0;
 `
 const Image = styled.div`
   width: 65%;
+  max-height: 32rem;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   .file {
-    width: 70%;
-    height: 70%;
+    width: 60%;
+    height: 100%;
     border-radius: 10px;
   }
 `
@@ -104,10 +106,6 @@ const ButtonBid = styled.div`
     opacity: 0.8;
   }
 `
-const Descreption = styled.div`
-  margin-top: 1rem;
-`
-
 export default function DetailItem() {
   const [switchType, setSwitchType] = useState(SwitchType.Details)
   const dispatch = useDispatch()
@@ -117,6 +115,26 @@ export default function DetailItem() {
     href = href.substring(href.lastIndexOf('/') + 1)
     dispatch(getItem(href))
   }, [])
+  const [isReadMore, setIsReadMore] = useState(true)
+  const toggleReadMore = () => {
+    setIsReadMore(!isReadMore)
+  }
+  const ReadMore = (text: string) => {
+    return (
+      <div>
+        {isReadMore ? text.slice(0, 100) + '. . .' : text}
+        <span
+          onClick={toggleReadMore}
+          style={{
+            color: 'blue',
+            cursor: 'pointer',
+          }}
+        >
+          {isReadMore ? ' Read More' : ' Show Less'}
+        </span>
+      </div>
+    )
+  }
 
   const PreviewFile = () => {
     if (item) {
@@ -152,10 +170,14 @@ export default function DetailItem() {
             <TitleBold>
               On sale for {item?.price} {item?.symbol}
             </TitleBold>
-            <Descreption>{item?.description}</Descreption>
+            {item?.description && item?.description.length > 100 ? (
+              ReadMore(item.description)
+            ) : (
+              <p>{item?.description}</p>
+            )}
             <Creator>
               <TitleNormal>Creator</TitleNormal>
-              <TitleNormal>{item?.owner}</TitleNormal>
+              <TitleNormal>{item?.owner ? shortenAddress(item.owner) : ''}</TitleNormal>
             </Creator>
           </HeaderContent>
 

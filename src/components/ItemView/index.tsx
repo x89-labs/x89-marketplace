@@ -5,6 +5,7 @@ import * as Asset from 'assets'
 import { Item } from 'models/explore'
 import ReactPlayer from 'react-player'
 import Countdown from 'react-countdown'
+import { shortenAddress } from 'utils'
 
 interface ItemView {
   index?: any
@@ -15,13 +16,13 @@ const activeClassName = 'ACTIVE'
 const Container = styled(NavLink).attrs({
   activeClassName,
 })`
-  width: ${(window.innerWidth - 180) / 4}px;
+  max-width: 290px;
   height: auto;
   color: #000;
   text-decoration: none;
   background-color: #fff;
   padding: 1rem;
-  margin: 0 1rem;
+  margin: 0.5rem 0.8rem;
   position: relative;
   cursor: pointer;
   border-radius: 1rem;
@@ -34,8 +35,8 @@ const Container = styled(NavLink).attrs({
 `
 const ItemContent = styled.div`
   width: 100%;
-  height: 8rem;
   display: flex;
+  height: 7rem;
   flex-direction: column;
   justify-content: space-between;
 `
@@ -44,7 +45,7 @@ const Text = styled.p`
   margin: 4px;
   align-self: center;
   color: #808080;
-  font-size: 14px;
+  font-size: 16px;
 `
 const ItemName = styled.p`
   font-size: 1.2rem;
@@ -74,7 +75,7 @@ const Image = styled.img`
 const Tag = styled.div`
   display: block;
   background-color: #000;
-  width: 3rem;
+  max-width: 3.2rem;
   text-align: center;
   border-radius: 15px;
   color: #fff;
@@ -134,8 +135,8 @@ const TimeLeft = styled.div`
   position: absolute;
   width: 10rem;
   height: 2rem;
-  margin-top: 200px;
-  margin-right: 85px;
+  bottom: 160px;
+  left: 20px;
   border-radius: 1rem;
   background-image: linear-gradient(
     145deg,
@@ -196,9 +197,9 @@ export default function ItemView({ index, item, isLiveAuction }: ItemView) {
       <ItemContent>
         <ItemName>{item.name}</ItemName>
         <Owner>
-          <Text> {'By ' + item.owner}</Text>
+          <Text> By {shortenAddress(item.owner)}</Text>
         </Owner>
-        <Tag>Art</Tag>
+        <Tag>{item.categoryName}</Tag>
       </ItemContent>
       <FooterContent>
         <Bid>Bid Now</Bid>

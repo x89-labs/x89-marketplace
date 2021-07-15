@@ -1,6 +1,7 @@
 export interface Item {
   assetId: string
   categoryId: string
+  categoryName: string
   contractAddress: string
   createdAt: string
   createdBy: string

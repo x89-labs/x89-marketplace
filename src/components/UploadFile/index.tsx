@@ -7,7 +7,7 @@ import { useMintState } from 'state/mint/hooks'
 import styled from 'styled-components'
 import * as Asset from 'assets'
 import { useIsDarkMode } from 'state/user/hooks'
-import { Ipfs } from 'client/ipfs'
+import { Ipfs } from 'hooks/ipfs'
 import ReactPlayer from 'react-player'
 
 const Around = styled.div`
