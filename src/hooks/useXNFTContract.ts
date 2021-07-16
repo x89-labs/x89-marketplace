@@ -15,15 +15,19 @@ export default function useIsXNFTContract(): {
   const ipfsHash = useMintState().ipfsHash
   const inputs = useMemo(() => [account ?? undefined], [account])
   const call = useSingleCallResult(XNFT, 'balanceOf', inputs, NEVER_RELOAD)
+  const hash = Buffer.from(`${ipfsHash}`).toString('hex')
+  const data = `0x${hash}`
   const addFee = useCallback(() => {
     if (account && library) {
+      console.log(ipfsHash)
+      console.log(hash)
       library
         .getSigner()
         .sendTransaction({
           from: account,
           to: XNFT_ADDRESS[1],
-          data: ipfsHash,
-          gasLimit: 50000,
+          data: data,
+          gasLimit: 6000000,
         })
         .then((response) => {
           console.log(response)

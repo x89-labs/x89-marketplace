@@ -10,8 +10,6 @@ import * as Asset from 'assets'
 import { optionsTopSeller } from './config'
 import ReactPlayer from 'react-player'
 import { shortenAddress } from 'utils'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
 import Slider from 'components/Slider'
 
 const BodyExplore = styled.div`
