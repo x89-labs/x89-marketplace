@@ -156,5 +156,5 @@ export function useV3Quoter() {
   return useContract<Quoter>(QUOTER_ADDRESSES, QuoterABI)
 }
 export function useXNFTContract() {
-  return useContract<XNFT>(XNFT_ADDRESS, XNFT_ABI.abi)
+  return useContract<XNFT>(XNFT_ADDRESS[1], XNFT_ABI.abi)
 }

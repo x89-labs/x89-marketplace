@@ -57,5 +57,5 @@ export const V3_MIGRATOR_ADDRESSES: AddressMap = constructSameAddressMap(
   true
 )
 export const XNFT_ADDRESS: AddressMap = {
-  [SupportedChainId.MAINNET]: '0x398bcBcd555326A875C6e6A52907807303E6Af15',
+  [SupportedChainId.MAINNET]: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
 }

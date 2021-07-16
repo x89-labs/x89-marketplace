@@ -11,22 +11,19 @@ export default function useIsXNFTContract(): {
   addFee: () => void
 } {
   const { account, library } = useActiveWeb3React()
-  const XNFT = new Contract(XNFT_ADDRESS[1], XNFT_ABI.abi)
+  const XNFT = useXNFTContract()
   const ipfsHash = useMintState().ipfsHash
-  const inputs = useMemo(() => [account ?? undefined], [account])
-  const call = useSingleCallResult(XNFT, 'balanceOf', inputs, NEVER_RELOAD)
   const hash = Buffer.from(`${ipfsHash}`).toString('hex')
   const data = `0x${hash}`
   const addFee = useCallback(() => {
-    if (account && library) {
-      console.log(ipfsHash)
-      console.log(hash)
+    if (account && library && ipfsHash) {
       library
         .getSigner()
         .sendTransaction({
           from: account,
           to: XNFT_ADDRESS[1],
           data: data,
+          // data: XNFT?.mintNFT(account, ipfsHash).encodeABI(),
           gasLimit: 6000000,
         })
         .then((response) => {
