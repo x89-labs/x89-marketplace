@@ -68,28 +68,27 @@ export const Single = ({ history }: RouteComponentProps) => {
           if (hash) {
             dispatch(fieldChange({ fieldName: 'ipfsHash', fieldValue: hash }))
           }
-          addFee()
 
-          // if (state.categorie) {
-          //   const body: BodyItem = {
-          //     categoryId: state.categorie.id,
-          //     name: values.name,
-          //     description: values.description,
-          //     price: values.price,
-          //     contractAddress: XNFT_ADDRESS[1],
-          //     assetId: '1233',
-          //     symbol: state.symbol ?? 'ETH',
-          //     image: hash,
-          //     totalQuantity: 1,
-          //     createdBy: account!,
-          //     type: state.fileType,
-          //     categoryName: state.categorie.categoryName,
-          //   }
-          //   console.log(body)
-          //   addFee()
-          //   // dispatch(postItem(body))
-          //   // window.location.href = '/#/myitem'
-          // }
+          if (state.categorie) {
+            const body: BodyItem = {
+              categoryId: state.categorie.id,
+              name: values.name,
+              description: values.description,
+              price: values.price,
+              contractAddress: XNFT_ADDRESS[1],
+              assetId: '1233',
+              symbol: state.symbol ?? 'ETH',
+              image: hash,
+              totalQuantity: 1,
+              createdBy: account!,
+              type: state.fileType,
+              categoryName: state.categorie.categoryName,
+            }
+            console.log(body)
+            addFee()
+            dispatch(postItem(body))
+            window.location.href = '/#/myitem'
+          }
         }
       }
       // formik.resetForm()
@@ -108,7 +107,7 @@ export const Single = ({ history }: RouteComponentProps) => {
 
   useEffect(() => {
     setSwitchType(SwitchType.FixedPrice)
-    dispatch(getCategories())
+    // dispatch(getCategories())
   }, [])
 
   const Around = styled.div`
