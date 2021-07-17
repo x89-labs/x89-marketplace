@@ -65,31 +65,35 @@ export const Single = ({ history }: RouteComponentProps) => {
         reader.readAsArrayBuffer(file)
         reader.onloadend = async () => {
           const hash = await Ipfs.GetHash(reader.result)
-          dispatch(fieldChange({ fieldName: 'ipfsHash', fieldValue: hash }))
-          if (state.categorie) {
-            const body: BodyItem = {
-              categoryId: state.categorie.id,
-              name: values.name,
-              description: values.description,
-              price: values.price,
-              contractAddress: XNFT_ADDRESS[1],
-              assetId: '1233',
-              symbol: state.symbol ?? 'ETH',
-              image: hash,
-              totalQuantity: 1,
-              createdBy: account!,
-              type: state.fileType,
-              categoryName: state.categorie.categoryName,
-            }
-            console.log(body)
-            addFee()
-            dispatch(postItem(body))
-            window.location.href = '/#/myitem'
+          if (hash) {
+            dispatch(fieldChange({ fieldName: 'ipfsHash', fieldValue: hash }))
           }
+          addFee()
+
+          // if (state.categorie) {
+          //   const body: BodyItem = {
+          //     categoryId: state.categorie.id,
+          //     name: values.name,
+          //     description: values.description,
+          //     price: values.price,
+          //     contractAddress: XNFT_ADDRESS[1],
+          //     assetId: '1233',
+          //     symbol: state.symbol ?? 'ETH',
+          //     image: hash,
+          //     totalQuantity: 1,
+          //     createdBy: account!,
+          //     type: state.fileType,
+          //     categoryName: state.categorie.categoryName,
+          //   }
+          //   console.log(body)
+          //   addFee()
+          //   // dispatch(postItem(body))
+          //   // window.location.href = '/#/myitem'
+          // }
         }
       }
-      formik.resetForm()
-      dispatch(resetForm({ value: 'resetform' }))
+      // formik.resetForm()
+      // dispatch(resetForm({ value: 'resetform' }))
     },
   })
 
