@@ -38,7 +38,7 @@ import {
 } from 'constants/addresses'
 import { abi as NFTPositionManagerABI } from '@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
 import { useMemo } from 'react'
-import { Quoter, UniswapV3Factory, UniswapV3Pool } from 'types/v3'
+import { UniswapV3Factory, UniswapV3Pool } from 'types/v3'
 import { NonfungiblePositionManager } from 'types/v3/NonfungiblePositionManager'
 import { V3Migrator } from 'types/v3/V3Migrator'
 import { getContract } from 'utils'
@@ -152,9 +152,6 @@ export function useV3Pool(address: string | undefined) {
   return useContract<UniswapV3Pool>(address, V3PoolABI)
 }
 
-export function useV3Quoter() {
-  return useContract<Quoter>(QUOTER_ADDRESSES, QuoterABI)
-}
 export function useXNFTContract() {
   return useContract<XNFT>(XNFT_ADDRESS[1], XNFT_ABI.abi)
 }
