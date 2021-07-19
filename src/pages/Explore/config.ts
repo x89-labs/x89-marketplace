@@ -73,22 +73,27 @@ export const optionsTopSeller = [
     avt: '1',
     price: '345 ETH',
   },
+]
+
+export const ListDicovery = [
   {
-    id: '13',
-    name: 'happysnake594',
-    avt: '1',
-    price: '345 ETH',
+    id: '01',
+    name: 'All',
   },
   {
-    id: '14',
-    name: '@sadwolf227',
-    avt: '1',
-    price: '345 ETH',
+    id: '02',
+    name: 'Art',
   },
   {
-    id: '15',
-    name: '@beautiful112',
-    avt: '1',
-    price: '345 ETH',
+    id: '03',
+    name: 'Photography',
+  },
+  {
+    id: '04',
+    name: 'Games',
+  },
+  {
+    id: '05',
+    name: 'Music',
   },
 ]

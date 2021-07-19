@@ -10,24 +10,43 @@ const FooterFrame = styled.div`
   flex-direction: column;
   width: 100%;
   bottom: 0;
-  background-color: ${({ theme }) => theme.bg3};
+  background: linear-gradient(
+    133.84deg,
+    #4e4e4e -16.04%,
+    #333333 9.33%,
+    #1a1a1a 32.02%,
+    #1a1a1a 62.06%,
+    #262626 87.42%,
+    #4e4e4e 112.12%
+  );
+  padding: 0 120px;
 `
-const InfoFooter = styled.div`
-  margin-top: 3.2rem;
+const Header = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px dashed #ccc;
+`
+const Title = styled.p`
+  font-size: 24px;
+  margin: 0;
+  color: #35dfb1;
+  font-weight: bold;
+`
+const Content = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 4rem;
-  padding: 0 8rem;
+  margin-bottom: 2rem;
 `
 const InfoWithSearch = styled.div`
+  width: 344px;
   margin-bottom: 40px;
-  p {
-    color: #04040599;
-    cursor: pointer;
-  }
+  color: #fff;
   .search {
     justify-content: space-between;
     background: #f0f0f0;
@@ -35,7 +54,7 @@ const InfoWithSearch = styled.div`
     border-radius: 48px;
     padding-left: 20px;
     display: flex;
-    flex-direction: row;
+    margin-top: 1rem;
   }
   input {
     border: none;
@@ -53,44 +72,10 @@ const InfoWithSearch = styled.div`
   }
 `
 const InfoWithText = styled.div`
-  p {
-    color: ${({ theme }) => theme.text5};
-    cursor: pointer;
-    font-weight: 700;
-  }
-  p:hover {
-    opacity: 0.7;
-  }
-`
-const SocialFooter = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 0 20px;
-  border-top: 1px solid #ccc;
-  font-size: 12px;
-  * {
-    display: flex;
-    flex-direction: row;
-  }
-  .term {
-    padding: 12px;
-    width: 50%;
-    .policy {
-      margin-left: 20px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .policy:hover {
-      opacity: 0.5;
-    }
-  }
-  .social {
-    padding: 12px;
-    align-items: center;
-  }
+  flex-direction: column;
   .image {
-    margin: 0 10px;
+    margin-right: 10px;
     width: 20px;
     height: 20px;
     cursor: pointer;
@@ -98,6 +83,13 @@ const SocialFooter = styled.div`
   .image:hover {
     opacity: 0.5;
   }
+`
+const FooterPolicy = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 20px 0;
+  border-top: 1px dashed #ccc;
 `
 const activeClassName = 'ACTIVE'
 
@@ -113,75 +105,105 @@ const StyledExternalLink = styled(ExternalLink).attrs({
 })<{ isActive?: boolean }>`
   outline: none;
   text-decoration: none;
+  display: flex;
+  align-items: center;
   :hover {
     text-decoration: none;
   }
 `
+const Text = styled.p`
+  color: #777e90;
+  font-size: 14px;
+  margin: 8px 0;
+`
+const BoldText = styled.h4`
+  color: #fff;
+  margin: 24px 0;
+  font-size: 24px;
+`
+const Term = styled.p`
+  margin: 8px 20px;
+  color: #fff;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+`
 
 export default function Footer() {
-  const darkMode = useIsDarkMode()
   return (
     <FooterFrame>
-      <InfoFooter>
+      <Header>
+        <img src={Asset.SrcLogo} width={28} height={27} />
+        <Title style={{ margin: '0 40px 0 10px' }}>POLRARE </Title>
+        <Title>NFT Maketplace</Title>
+      </Header>
+      <Content>
         <InfoWithSearch>
-          <h4>Get the latest Maketplace updates</h4>
+          <BoldText>Join Maketplace</BoldText>
+          <Text>
+            Join our mailing list to stay in the loop with our newest feature releases, tips and tricks for NFT.
+          </Text>
           <div className="search">
             <input placeholder="Your e-mail"></input>
             <div className="btnSend">{`I'm in`}</div>
           </div>
         </InfoWithSearch>
         <InfoWithText>
-          <h4>Polrare</h4>
+          <BoldText>Polrare</BoldText>
           <StyledNavLink id={`explore-nav-link`} to={'/explore'}>
-            <p>Explore</p>
+            <Text>Explore</Text>
           </StyledNavLink>
           <StyledNavLink id={`explore-nav-link`} to={'/stats'}>
-            <p>Stats</p>
+            <Text>Stats</Text>
           </StyledNavLink>
           <StyledNavLink id={`explore-nav-link`} to={'/create'}>
-            <p>Mint</p>
+            <Text>Mint</Text>
           </StyledNavLink>
           <StyledExternalLink id={`stake-nav-link`} href={'https://builder.polrare.co'}>
-            <p>Builder</p>
+            <Text>Builder</Text>
           </StyledExternalLink>
           <StyledExternalLink id={`stake-nav-link`} href={'https://musuem.polrare.co'}>
-            <p>Museum</p>
+            <Text>Museum</Text>
           </StyledExternalLink>
           <StyledExternalLink id={`stake-nav-link`} href={'#'}>
-            <p>Become a partner</p>
+            <Text>Become a partner</Text>
           </StyledExternalLink>
         </InfoWithText>
         <InfoWithText>
-          <h4>Community</h4>
+          <BoldText>Community</BoldText>
           <StyledNavLink id={`explore-nav-link`} to={'.'}>
-            <p>Polrare Token</p>
+            <Text>Polrare Token</Text>
           </StyledNavLink>
-          <p>Discussion</p>
-          <p>Voting</p>
-          <p>Suggest feature</p>
+          <Text>Discussion</Text>
+          <Text>Voting</Text>
+          <Text>Suggest feature</Text>
         </InfoWithText>
-      </InfoFooter>
-      <SocialFooter>
-        <div className="term">
-          <p> @Polrare. All rights reserved</p>
-          <p className="policy"> Terms</p>
-          <p className="policy"> Privacy</p>
-        </div>
-        <div className="social">
+        <InfoWithText>
+          <BoldText>Find Us on</BoldText>
           <StyledExternalLink id={`stake-nav-link`} href={'https://twitter.com/x89_nft'}>
-            <Asset.Twitter className="image" fill={darkMode ? '#fff' : '#000'} />
+            <Asset.Twitter className="image" fill={'#fff'} />
+            <Text>Twitter</Text>
           </StyledExternalLink>
           <StyledExternalLink id={`stake-nav-link`} href={'https://t.me/joinchat/6oNOOAqXlJo0ZmM1'}>
-            <Asset.Telegram className="image" fill={darkMode ? '#fff' : '#000'} />
+            <Asset.Telegram className="image" fill={'#fff'} />
+            <Text>Telegram</Text>
           </StyledExternalLink>
           <StyledExternalLink id={`stake-nav-link`} href={''}>
-            <Asset.Instagram className="image" fill={darkMode ? '#fff' : '#000'} />
+            <Asset.Instagram className="image" fill={'#fff'} />
+            <Text>Instagram</Text>
           </StyledExternalLink>
           <StyledExternalLink id={`stake-nav-link`} href={''}>
-            <Asset.Youtube className="image" fill={darkMode ? '#fff' : '#000'} />
+            <Asset.Youtube className="image" fill={'#fff'} />
+            <Text>Youtube</Text>
           </StyledExternalLink>
-        </div>
-      </SocialFooter>
+        </InfoWithText>
+      </Content>
+      <FooterPolicy>
+        <Text> @ POLRARE | All rights reserved 2021</Text>
+        <Term> Privacy Policy</Term>
+        <Term> {`Term & Conditions`}</Term>
+      </FooterPolicy>
     </FooterFrame>
   )
 }
