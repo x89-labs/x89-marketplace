@@ -1,6 +1,7 @@
 import { createAction, createAsyncThunk, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { client, Endpoint } from 'api'
 
+export const fieldChange = createAction<{ fieldName: string; fieldValue: any }>('explore/fieldChange')
 export const getListItems = createAsyncThunk('explore/items', async (skip, take) => {
   const URL = `${Endpoint.ITEM}`
   const response = await client.get(URL, {})

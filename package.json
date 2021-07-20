@@ -90,6 +90,7 @@
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.0.0",
     "react-scripts": "^4.0.3",
+    "react-slick": "^0.15.4",
     "react-spring": "^8.0.27",
     "react-use-gesture": "^9.1.3",
     "react-virtualized-auto-sizer": "^1.0.2",
@@ -98,6 +99,7 @@
     "rebass": "^4.0.7",
     "redux-localstorage-simple": "^2.3.1",
     "serve": "^11.3.2",
+    "slick-carousel": "^1.8.1",
     "start-server-and-test": "^1.11.0",
     "styled-components": "^4.2.0",
     "styled-system": "^5.1.5",
@@ -111,8 +113,7 @@
     "workbox-precaching": "^6.1.0",
     "workbox-routing": "^6.1.0",
     "workbox-strategies": "^6.1.0",
-    "yup": "^0.32.9",
-    "slick-carousel":"^1.8.1"
+    "yup": "^0.32.9"
   },
   "scripts": {
     "compile-contract-types": "yarn compile-external-abi-types && yarn compile-v3-contract-types",
