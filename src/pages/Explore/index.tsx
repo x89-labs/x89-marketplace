@@ -2,123 +2,173 @@ import StableSelect from 'components/StableSelect'
 import ItemView from 'components/ItemView'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { NavLink } from 'react-router-dom'
 import { getListItems } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
 import styled from 'styled-components'
 import * as Asset from 'assets'
-import { optionsTopSeller } from './config'
-import ReactPlayer from 'react-player'
-import { shortenAddress } from 'utils'
-import Slider from 'components/Slider'
+import { optionsTopSeller, ListDicovery } from './config'
 
 const BodyExplore = styled.div`
   width: 100%;
-  padding: 0 38px;
+  padding: 0 80px;
 `
-const Header = styled.div`
+const WalletLayer = styled.div`
   display: flex;
-  margin-top: 1rem;
+  height: 340px;
+  width: 100%;
+  border-radius: 32px;
+  background: linear-gradient(
+    91.26deg,
+    rgba(29, 37, 112, 0.8) 12.36%,
+    rgba(132, 65, 144, 0.8) 36.84%,
+    rgba(136, 23, 82, 0.8) 69.13%,
+    rgba(226, 116, 45, 0.8) 94.13%
+  );
 `
-const activeClassName = 'ACTIVE'
-const Item = styled(NavLink).attrs({
-  activeClassName,
-})`
-  width: ${(window.innerWidth - 120) / 5}px;
-  height: ${(window.innerWidth - 120) / 5}px;
-  background-color: #000;
-  margin: 0 10px;
+const Wallet = styled.div`
+  display: flex;
+  justify-content: space-between;
+  height: 340px;
+  width: 100%;
+  border-radius: 32px;
+  border: 1px solid #280e5f;
+  background: ${({ theme }) => theme.bg4};
+  opacity: 0.75;
+`
+const LeftWallet = styled.div`
+  margin: 50px 30px;
+`
+const RightWallet = styled.div`
+  margin: 30px;
+`
+const ButtonWallet = styled.div`
+  background: linear-gradient(226.07deg, #02e879 8.39%, #279ea5 28.31%, #475ccc 47.69%, #5b34e4 61.69%, #6324ed 68.92%);
+  border-radius: 16px;
+  width: 166px;
+  text-align: center;
+  padding: 12px 0;
+  color: #fff;
+  margin-right: 20px;
+  cursor: pointer;
+`
+const ButtonBorder = styled.div`
   position: relative;
+  background: linear-gradient(226.07deg, #02e879 8.39%, #279ea5 28.31%, #475ccc 47.69%, #5b34e4 61.69%, #6324ed 68.92%);
+  border-radius: 16px;
+  width: 166px;
+  display: flex;
+  justify-content: center;
   cursor: pointer;
-  overflow: hidden;
-  border-radius: 12px;
-  .image {
-    border-radius: 10px;
-    position: absolute;
-    width: 16rem;
-    height: 106%;
-    transition: transform 0.2s;
-  }
-  .image:hover {
-    transform: scale(1.1);
-  }
-  .content {
-    position: absolute;
-    padding: 10px;
-    font-weight: bolder;
-    .itemName {
-      color: #fff;
-      max-width: 202px;
-      margin: 0;
-      font-size: 20px;
-    }
-    .author {
-      margin: 0;
-      color: rgba(255, 255, 255, 0.5);
-    }
-  }
+  align-items: center;
 `
-const ItemContent = styled.div``
-const TopSeller = styled.div``
+
+const ContentBtn = styled.div`
+  position: absolute;
+  width: 98%;
+  height: 90%;
+  padding: 8px;
+  background-color: #fff;
+  border-radius: 16px;
+  color: #35dfb1;
+  text-align: center;
+`
+
 const TopSellerItem = styled.div`
-  background-color: ${({ theme }) => theme.bg3};
+  background: ${({ theme }) => theme.bg3};
   cursor: pointer;
+  border: 1px solid #280e5f;
   border-radius: 10px;
   display: flex;
-  min-width: ${(window.innerWidth - 140) / 5}px;
-  max-width: 230px;
+  min-width: 255px;
   padding: 10px;
   align-items: center;
-  margin: 3px;
-  height: 5rem;
+  margin: 8px 15px;
+  height: 84px;
   &:hover {
     box-shadow: 2px 4px 8px #f0f0f0;
   }
 `
 
 const Avatar = styled.div`
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
+  border-radius: 5px;
   margin-left: 10px;
   postiton: relative;
   background-size: cover;
   background-position: center center;
   background-image: url(${Asset.SrcAvatar});
 `
-const ListItemSeller = styled.div`
-  background-color: ${({ theme }) => theme.bg5};
-  margin-top: 1rem;
-  padding: 1rem 0;
-  justify-content: center;
-`
+
 const ContentSeller = styled.div`
   margin-left: 20px;
 `
-const Title = styled.div`
-  margin: 30px 0;
-  display: flex;
-  font-size: 26px;
+const TitleGreen = styled.p`
+  font-size: 40px;
   font-weight: bold;
-  align-items: center;
-`
-const Author = styled.div`
-  width: 12rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-`
-const Text = styled.p`
+  color: #35dfb1;
   margin: 0;
 `
+const TitlePurple = styled.p`
+  font-size: 40px;
+  font-weight: bold;
+  color: #6324ed;
+  margin: 0;
+`
+const Title = styled.div`
+  display: flex;
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+`
+
+const Text = styled.p`
+  line-height: 1.2rem;
+  margin: 0;
+  font-size: 14px;
+`
 const Image = styled.img``
-const LiveAuctions = styled.div``
-const HotBids = styled.div``
+
+const ContentGroup = styled.div`
+  margin-top: 100px;
+`
+
+const Filter = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  * {
+    display: flex;
+    align-items: center;
+  }
+  .itemFilter {
+    cursor: pointer;
+    background: #000;
+    padding: 16px 24px;
+    border-radius: 8px;
+    color: #fff;
+    margin: 0 20px;
+    font-weight: bold;
+    &:hover {
+      color: #000;
+      background: #eeff4a;
+    }
+  }
+  .btnFilter {
+    cursor: pointer;
+    background: #353945;
+    padding: 4px 24px;
+    border-radius: 8px;
+    height: 60px;
+    color: #fff;
+  }
+`
 const ListItem = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin-top: 20px;
   justify-content: center;
 `
+
 const optionsSeller = [
   {
     name: 'Seller',
@@ -136,18 +186,12 @@ export default function Explore() {
   useEffect(() => {
     dispatch(getListItems())
   }, [])
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  }
+
   const GridList = () => {
     const matrix = new Array<Array<any>>()
     const list = optionsTopSeller
     for (let i = 0, k = -1; i < list.length; i++) {
-      if (i % 5 == 0) {
+      if (i % 4 == 0) {
         k++
         matrix[k] = []
       }
@@ -157,15 +201,9 @@ export default function Explore() {
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }} key={i}>
         {mt.map((item, index) => (
           <TopSellerItem key={index}>
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <Text>{item.id}</Text>
-              <Avatar>
-                <Asset.YellowCheck
-                  width={16}
-                  height={16}
-                  style={{ position: 'absolute', marginTop: 15, marginLeft: 17 }}
-                />
-              </Avatar>
+              <Avatar />
             </div>
             <ContentSeller>
               <Text>{item.name}</Text>
@@ -177,67 +215,69 @@ export default function Explore() {
     ))
   }
 
-  const PreviewFile = (item: any) => {
-    if (item.type.includes('image')) {
-      return <Image src={item.image} className="image" />
-    } else if (item.type.includes('video')) {
-      return (
-        <div className="image">
-          <ReactPlayer
-            url={item.image}
-            muted={true}
-            playing={true}
-            width={'103%'}
-            loop={true}
-            height={'100%'}
-            style={{ borderRadius: '10px' }}
-          />
-        </div>
-      )
-    }
-  }
   return (
     <BodyExplore>
-      <Header>
-        {state.listItem.map(
-          (item, index) =>
-            index < 5 && (
-              <Item key={index} id={`stats-nav-link`} to={`/detail/${item.id}`}>
-                {PreviewFile(item)}
-                <ItemContent className="content">
-                  <Text className="itemName">{item.name}</Text>
-                  {item.createdBy !== '' && (
-                    <Author>
-                      <p className="author">By {shortenAddress(item.createdBy)}</p>
-                    </Author>
-                  )}
-                </ItemContent>
-              </Item>
-            )
-        )}
-      </Header>
-      <TopSeller>
-        <Title className=" title">
+      <WalletLayer>
+        <Wallet>
+          <LeftWallet>
+            <TitlePurple>Discover & Collect </TitlePurple>
+            <TitleGreen>Extraordinary</TitleGreen>
+            <TitlePurple>NFTs </TitlePurple>
+            <Text>Marketplace for crypto collectibies non-fungible token (NFTs).</Text>
+            <div style={{ display: 'flex', margin: 10 }}>
+              <ButtonWallet>Explore more</ButtonWallet>
+              <ButtonBorder>
+                <ContentBtn>Start Create</ContentBtn>
+              </ButtonBorder>
+            </div>
+          </LeftWallet>
+          <RightWallet>
+            <div style={{ position: 'relative', width: 240, height: 280, background: '#ccc', borderRadius: 10 }}>
+              <Asset.WalletPicture width={240} height={280} style={{ position: 'absolute', top: -20, left: -20 }} />
+            </div>
+          </RightWallet>
+        </Wallet>
+      </WalletLayer>
+
+      <ContentGroup>
+        <Title>
           Top
           <StableSelect option={optionsSeller} textColor={'rgb(0, 102, 255)'} />
         </Title>
-      </TopSeller>
-      <ListItemSeller>{GridList()}</ListItemSeller>
-      <LiveAuctions>
+        {GridList()}
+      </ContentGroup>
+      <ContentGroup>
         <Title>
-          Live Auction <Asset.Fire width={20} height={20} />
+          Live Auction <Image src={Asset.SrcLive} />
         </Title>
         <ListItem>
           {state.listItem.map((item, index) => index < 4 && <ItemView item={item} key={index} isLiveAuction={true} />)}
         </ListItem>
-      </LiveAuctions>
+      </ContentGroup>
 
-      <HotBids>
+      <ContentGroup>
         <Title>
-          Hot Bids <Asset.Fire width={20} height={20} />
+          Hot Bids <Image src={Asset.SrcStar} />
         </Title>
         <ListItem>{state.listItem.map((item, index) => index < 4 && <ItemView item={item} key={index} />)}</ListItem>
-      </HotBids>
+      </ContentGroup>
+
+      <ContentGroup>
+        <Filter>
+          <div>
+            <Title>Discovery</Title>
+            {ListDicovery.map((item, index) => (
+              <div key={index} className="itemFilter">
+                {item.name}
+              </div>
+            ))}
+          </div>
+          <div className="btnFilter">
+            {`Filter & Sort`} <Image src={Asset.SrcFilter} />
+          </div>
+        </Filter>
+        <ListItem>{state.listItem.map((item, index) => index < 4 && <ItemView item={item} key={index} />)}</ListItem>
+      </ContentGroup>
     </BodyExplore>
   )
 }
