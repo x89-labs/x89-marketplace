@@ -1,15 +1,17 @@
 import { createReducer, createSlice } from '@reduxjs/toolkit'
-import { getItem, getListItems } from './actions'
+import { fieldChange, getItem, getListItems } from './actions'
 import { Item } from 'models/explore'
 import { useMintState } from 'state/mint/hooks'
 
 export interface ExploreState {
   listItem: Item[]
   item?: Item
+  limit: number
 }
 
 export const initialState: ExploreState = {
   listItem: [],
+  limit: 8,
 }
 
 const exploreSlice = createSlice({
@@ -17,16 +19,23 @@ const exploreSlice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getListItems.fulfilled, (state, action) => {
-      if (action.payload) {
-        state.listItem = action.payload.items
-      }
-    })
-    builder.addCase(getItem.fulfilled, (state, action) => {
-      if (action.payload) {
-        state.item = action.payload
-      }
-    })
+    builder
+      .addCase(getListItems.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.listItem = action.payload.items
+        }
+      })
+      .addCase(getItem.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.item = action.payload
+        }
+      })
+      .addCase(fieldChange, (state, { payload: { fieldName, fieldValue } }) => {
+        return {
+          ...state,
+          [fieldName]: fieldValue,
+        }
+      })
   },
 })
 export default exploreSlice.reducer

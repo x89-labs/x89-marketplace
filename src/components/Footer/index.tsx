@@ -4,21 +4,14 @@ import * as Asset from 'assets'
 import { useIsDarkMode } from 'state/user/hooks'
 import { NavLink } from 'react-router-dom'
 import { ExternalLink } from '../../theme'
+import { Color } from 'styles'
 
 const FooterFrame = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   bottom: 0;
-  background: linear-gradient(
-    133.84deg,
-    #4e4e4e -16.04%,
-    #333333 9.33%,
-    #1a1a1a 32.02%,
-    #1a1a1a 62.06%,
-    #262626 87.42%,
-    #4e4e4e 112.12%
-  );
+  background: ${({ theme }) => theme.bg2};
   padding: 0 120px;
 `
 const Header = styled.div`
@@ -33,7 +26,6 @@ const Title = styled.p`
   font-size: 24px;
   margin: 0;
   color: #35dfb1;
-  font-weight: bold;
 `
 const Content = styled.div`
   display: flex;
@@ -44,19 +36,22 @@ const Content = styled.div`
   margin-bottom: 2rem;
 `
 const InfoWithSearch = styled.div`
-  width: 344px;
+  width: 300px;
   margin-bottom: 40px;
   color: #fff;
   .search {
+    display: flex;
     justify-content: space-between;
+    align-items: center;
     background: #f0f0f0;
-    height: 48px;
     border-radius: 48px;
     padding-left: 20px;
-    display: flex;
     margin-top: 1rem;
   }
   input {
+    padding: 20px 0;
+    width: 80%;
+    height: 20px;
     border: none;
     outline: none;
     background: #f0f0f0;
@@ -117,13 +112,13 @@ const Text = styled.p`
   margin: 8px 0;
 `
 const BoldText = styled.h4`
-  color: #fff;
+  color: ${({ theme }) => theme.text1};
   margin: 24px 0;
   font-size: 24px;
 `
 const Term = styled.p`
   margin: 8px 20px;
-  color: #fff;
+  color: ${({ theme }) => theme.text1};
   cursor: pointer;
   &:hover {
     opacity: 0.8;
@@ -131,11 +126,12 @@ const Term = styled.p`
 `
 
 export default function Footer() {
+  const darkMode = useIsDarkMode()
   return (
     <FooterFrame>
       <Header>
         <img src={Asset.SrcLogo} width={28} height={27} />
-        <Title style={{ margin: '0 40px 0 10px' }}>POLRARE </Title>
+        <Title style={{ margin: '0 40px 0 10px', fontWeight: 'bold' }}>POLRARE </Title>
         <Title>NFT Maketplace</Title>
       </Header>
       <Content>
@@ -146,7 +142,7 @@ export default function Footer() {
           </Text>
           <div className="search">
             <input placeholder="Your e-mail"></input>
-            <div className="btnSend">{`I'm in`}</div>
+            <Asset.BtnFooter width={32} height={32} style={{ paddingRight: 5 }} />
           </div>
         </InfoWithSearch>
         <InfoWithText>
@@ -182,19 +178,19 @@ export default function Footer() {
         <InfoWithText>
           <BoldText>Find Us on</BoldText>
           <StyledExternalLink id={`stake-nav-link`} href={'https://twitter.com/x89_nft'}>
-            <Asset.Twitter className="image" fill={'#fff'} />
+            <Asset.Twitter className="image" fill={darkMode ? '#fff' : Color.neutral.green} />
             <Text>Twitter</Text>
           </StyledExternalLink>
           <StyledExternalLink id={`stake-nav-link`} href={'https://t.me/joinchat/6oNOOAqXlJo0ZmM1'}>
-            <Asset.Telegram className="image" fill={'#fff'} />
+            <Asset.Telegram className="image" fill={darkMode ? '#fff' : Color.neutral.green} />
             <Text>Telegram</Text>
           </StyledExternalLink>
           <StyledExternalLink id={`stake-nav-link`} href={''}>
-            <Asset.Instagram className="image" fill={'#fff'} />
+            <Asset.Instagram className="image" fill={darkMode ? '#fff' : Color.neutral.green} />
             <Text>Instagram</Text>
           </StyledExternalLink>
           <StyledExternalLink id={`stake-nav-link`} href={''}>
-            <Asset.Youtube className="image" fill={'#fff'} />
+            <Asset.Youtube className="image" fill={darkMode ? '#fff' : Color.neutral.green} />
             <Text>Youtube</Text>
           </StyledExternalLink>
         </InfoWithText>

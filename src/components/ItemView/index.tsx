@@ -6,6 +6,7 @@ import { Item } from 'models/explore'
 import ReactPlayer from 'react-player'
 import Countdown from 'react-countdown'
 import { shortenAddress } from 'utils'
+import { Color, Outline, Sizing, Typography } from 'styles'
 
 interface ItemView {
   index?: any
@@ -16,22 +17,14 @@ const activeClassName = 'ACTIVE'
 const Container = styled(NavLink).attrs({
   activeClassName,
 })`
-  width: 255px;
-  color: #000;
+  width: ${Sizing.x255}px;
+  color: ${Color.neutral.black};
+  background: ${Color.linearGradient.black};
   text-decoration: none;
-  background: linear-gradient(
-    133.84deg,
-    #4e4e4e -16.04%,
-    #333333 9.33%,
-    #1a1a1a 32.02%,
-    #1a1a1a 62.06%,
-    #262626 87.42%,
-    #4e4e4e 112.12%
-  );
-  margin: 0.5rem 0.8rem;
+  margin: 1rem 0;
   position: relative;
   cursor: pointer;
-  border-radius: 1rem;
+  border-radius: ${Outline.borderRadius.base}px;
   &:hover {
     box-shadow: 0 2px 5px rgba(255, 101, 47, 0.2);
   }
@@ -40,25 +33,24 @@ const ItemContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 8px;
+  padding: ${Sizing.x10}px;
 `
 const Text = styled.p`
-  margin: 4px;
-  color: #777e90;
-  font-size: 12px;
+  ${{ ...Typography.fontSize.x10 }}
+  margin: ${Sizing.x4}px;
+  color: ${Color.neutral.gray};
 `
 const ItemName = styled.p`
-  font-size: 14px;
-  line-height: 16px;
-  color: #fff;
+  ${{ ...Typography.fontSize.x20 }}
+  ${{ ...Typography.fontWeight.bold }}
+  color: ${Color.neutral.white};
   margin: 0;
-  font-weight: bold;
 `
 const ImageDisPlay = styled.div`
   postition: relative;
-  width: 255px;
-  height: 200px;
-  border-radius: 1rem;
+  width: ${Sizing.x255}px;
+  height: ${Sizing.x200}px;
+  border-radius: ${Outline.borderRadius.base}px;
   overflow: hidden;
   justify-content: center;
   align-items: center;
@@ -66,9 +58,9 @@ const ImageDisPlay = styled.div`
 `
 
 const Image = styled.img`
-  width: 255px;
-  border-radius: 10px;
-  height: 200px;
+  width: ${Sizing.x255}px;
+  border-radius: ${Outline.borderRadius.base}px;
+  height: ${Sizing.x200}px;
   transition: transform 0.2s;
   &:hover {
       transform: scale(1.1);
@@ -76,9 +68,9 @@ const Image = styled.img`
   }
 `
 const Tag = styled.div`
-  color: #6324ed;
-  font-size: 12px;
-  font-weight: bold;
+  color: ${Color.neutral.purple};
+  ${{ ...Typography.fontSize.x10 }}
+  ${{ ...Typography.fontWeight.bold }}
 `
 const FooterContent = styled.div`
   margin: 8px 0;
@@ -90,20 +82,20 @@ const InfoItem = styled.div`
 `
 
 const Bid = styled.div`
-  color: #35dfb1;
-  font-size: 16px;
-  font-weight: bold;
-  margin-top: 8px;
+  color: ${Color.neutral.green};
+  ${{ ...Typography.fontSize.x30 }}
+  ${{ ...Typography.fontWeight.bold }}
+  margin-top: ${Sizing.x10}px;
 `
 const Price = styled.div`
-  color: #fff;
-  font-size: 12px;
+  color: ${Color.neutral.white};
+  ${{ ...Typography.fontSize.x10 }}
   margin-right: 5px;
 `
 const Avatar = styled.img`
-  width: 24px;
-  height: 24px;
-  border-radius: 5px;
+  width: ${Sizing.x24}px;
+  height: ${Sizing.x24}px;
+  border-radius: ${Outline.borderRadius.small}px;
 `
 const Owner = styled.div`
   padding: 8px 0px;
@@ -114,7 +106,7 @@ const Owner = styled.div`
 const FooterItem = styled.div`
   * {
     position: absolute;
-    height: 40px;
+    height: ${Sizing.x40}px;
     display: block;
     background: #353945;
     border-radius: 16px;
@@ -149,10 +141,6 @@ const TimeLeft = styled.div`
   background-color: #141416;
   color: #fff;
 `
-const IconLive = styled.img`
-  width: 24px;
-  height: 24px;
-`
 const Time = styled.div``
 
 export default function ItemView({ index, item, isLiveAuction }: ItemView) {
@@ -180,7 +168,7 @@ export default function ItemView({ index, item, isLiveAuction }: ItemView) {
         {PreviewFile(item)}
         {isLiveAuction === true && (
           <TimeLeft>
-            <IconLive src={Asset.SrcLive} />
+            <Asset.Fire width={24} height={24} />
             <Time>
               <Text>Ending in</Text>
               <Countdown date={Date.now() + Math.random() * 10000000} />
