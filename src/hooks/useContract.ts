@@ -35,8 +35,6 @@ import {
 
 import { useMemo } from 'react'
 import { UniswapV3Factory, UniswapV3Pool } from 'types/v3'
-import { NonfungiblePositionManager } from 'types/v3/NonfungiblePositionManager'
-import { V3Migrator } from 'types/v3/V3Migrator'
 import { getContract } from 'utils'
 import { Erc20, ArgentWalletDetector, EnsPublicResolver, EnsRegistrar, Multicall2, Weth } from '../abis/types'
 import { UNI, WETH9_EXTENDED } from '../constants/tokens'
@@ -122,10 +120,6 @@ export function useStakingContract(stakingAddress?: string, withSignerIfPossible
 
 export function useSocksController(): Unisocks | null {
   return useContract<Unisocks>(SOCKS_CONTROLLER_ADDRESSES, UNISOCKS_ABI, false)
-}
-
-export function useV3NFTPositionManagerContract(withSignerIfPossible?: boolean): NonfungiblePositionManager | null {
-  return useContract<NonfungiblePositionManager>(NONFUNGIBLE_POSITION_MANAGER_ADDRESSES, null, withSignerIfPossible)
 }
 
 export function useV3Factory() {

@@ -6,7 +6,6 @@ import { UNI } from '../../constants/tokens'
 import { useActiveWeb3React } from '../../hooks/web3'
 import { useMerkleDistributorContract } from '../../hooks/useContract'
 import { calculateGasMargin } from '../../utils/calculateGasMargin'
-import { useSingleCallResult } from '../multicall/hooks'
 import { isAddress } from '../../utils'
 import { useTransactionAdder } from '../transactions/hooks'
 
@@ -125,9 +124,8 @@ export function useUserClaimData(account: string | null | undefined): UserClaimD
 export function useUserHasAvailableClaim(account: string | null | undefined): boolean {
   const userClaimData = useUserClaimData(account)
   const distributorContract = useMerkleDistributorContract()
-  const isClaimedResult = useSingleCallResult(distributorContract, 'isClaimed', [userClaimData?.index])
   // user is in blob and contract marks as unclaimed
-  return Boolean(userClaimData && !isClaimedResult.loading && isClaimedResult.result?.[0] === false)
+  return true;
 }
 
 export function useUserUnclaimedAmount(account: string | null | undefined): CurrencyAmount<Token> | undefined {

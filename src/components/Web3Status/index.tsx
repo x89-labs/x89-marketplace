@@ -9,7 +9,6 @@ import FortmaticIcon from '../../assets/images/fortmaticIcon.png'
 import { fortmatic, injected } from '../../connectors'
 import { NetworkContextName } from '../../constants/misc'
 import useENSName from '../../hooks/useENSName'
-import { useHasSocks } from '../../hooks/useSocksBalance'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 import { TransactionDetails } from '../../state/transactions/reducer'
@@ -157,7 +156,7 @@ function Web3StatusInner() {
   const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
 
   const hasPendingTransactions = !!pending.length
-  const hasSocks = useHasSocks()
+
   const toggleWalletModal = useWalletModalToggle()
 
   if (account) {
@@ -172,7 +171,6 @@ function Web3StatusInner() {
           </RowBetween>
         ) : (
           <>
-            {hasSocks ? <Sock /> : null}
             <Text>{ENSName || shortenAddress(account)}</Text>
           </>
         )}

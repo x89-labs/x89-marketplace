@@ -57,11 +57,11 @@ export default class ErrorBoundary extends React.Component<unknown, ErrorBoundar
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    ReactGA.exception({
-      ...error,
-      ...errorInfo,
-      fatal: true,
-    })
+    // ReactGA.exception({
+    //   ...error,
+    //   ...errorInfo,
+    //   fatal: true,
+    // })
   }
 
   render() {
@@ -122,14 +122,9 @@ function getRelevantState(): null | keyof AppState {
   }
   const pieces = path.substring(2).split(/[\/\\?]/)
   switch (pieces[0]) {
-    case 'swap':
-      return 'swap'
     case 'add':
       if (pieces[1] === 'v2') return 'mint'
-      else return 'mintV3'
-    case 'remove':
-      if (pieces[1] === 'v2') return 'burn'
-      else return 'burnV3'
+      return 'mint'
   }
   return null
 }

@@ -2,7 +2,6 @@ import { Currency, CurrencyAmount, Price, Token } from '@uniswap/sdk-core'
 import { useMemo } from 'react'
 import { SupportedChainId } from '../constants/chains'
 import { USDC } from '../constants/tokens'
-import { useV2TradeExactOut } from './useV2Trade'
 
 import { useActiveWeb3React } from './web3'
 
@@ -22,10 +21,6 @@ export default function useUSDCPrice(currency?: Currency): Price<Currency, Token
   const amountOut = chainId ? STABLECOIN_AMOUNT_OUT[chainId] : undefined
   const stablecoin = amountOut?.currency
 
-  const v2USDCTrade = useV2TradeExactOut(currency, amountOut, {
-    maxHops: 2,
-  })
-
   return useMemo(() => {
     if (!currency || !stablecoin) {
       return undefined
@@ -36,14 +31,8 @@ export default function useUSDCPrice(currency?: Currency): Price<Currency, Token
       return new Price(stablecoin, stablecoin, '1', '1')
     }
 
-    // use v2 price if available, v3 as fallback
-    if (v2USDCTrade) {
-      const { numerator, denominator } = v2USDCTrade.route.midPrice
-      return new Price(currency, stablecoin, denominator, numerator)
-    }
-
     return undefined
-  }, [currency, stablecoin, v2USDCTrade])
+  }, [currency, stablecoin])
 }
 
 export function useUSDCValue(currencyAmount: CurrencyAmount<Currency> | undefined | null) {

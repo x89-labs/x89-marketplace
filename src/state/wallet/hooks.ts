@@ -8,7 +8,6 @@ import { useMulticall2Contract } from '../../hooks/useContract'
 import { isAddress } from '../../utils'
 import { useUserUnclaimedAmount } from '../claim/hooks'
 import { useMultipleContractSingleData, useSingleContractMultipleData } from '../multicall/hooks'
-import { useTotalUniEarned } from '../stake/hooks'
 import { Interface } from '@ethersproject/abi'
 import ERC20ABI from 'abis/erc20.json'
 import { Erc20Interface } from 'abis/types/Erc20'
@@ -154,15 +153,12 @@ export function useAggregateUniBalance(): CurrencyAmount<Token> | undefined {
 
   const uniBalance: CurrencyAmount<Token> | undefined = useTokenBalance(account ?? undefined, uni)
   const uniUnclaimed: CurrencyAmount<Token> | undefined = useUserUnclaimedAmount(account)
-  const uniUnHarvested: CurrencyAmount<Token> | undefined = useTotalUniEarned()
+  // const uniUnHarvested: CurrencyAmount<Token> | undefined = useTotalUniEarned()
 
   if (!uni) return undefined
 
   return CurrencyAmount.fromRawAmount(
     uni,
-    JSBI.add(
-      JSBI.add(uniBalance?.quotient ?? JSBI.BigInt(0), uniUnclaimed?.quotient ?? JSBI.BigInt(0)),
-      uniUnHarvested?.quotient ?? JSBI.BigInt(0)
-    )
+    JSBI.add(JSBI.add(uniBalance?.quotient ?? JSBI.BigInt(0), uniUnclaimed?.quotient ?? JSBI.BigInt(0)), JSBI.BigInt(0))
   )
 }
