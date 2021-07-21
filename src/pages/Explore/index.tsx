@@ -8,45 +8,11 @@ import styled from 'styled-components'
 import * as Asset from 'assets'
 import { optionsTopSeller, ListDicovery } from './config'
 import { Color, Outline, Sizing, Button, Typography } from 'styles'
+import HeaderExplore from 'components/HeaderExplore'
 
 const BodyExplore = styled.div`
   width: 100%;
-  padding: 0 ${Sizing.x80}px;
-`
-const HeaderLayer = styled.div`
-  display: flex;
-  height: ${Sizing.x340}px;
-  width: ${Sizing.screen.width};
-  border-radius: ${Outline.borderRadius.large}px;
-  background: ${Color.linearGradient.layer};
-`
-const Header = styled.div`
-  ${{ ...Outline.border.purple }}
-  height: ${Sizing.x340}px;
-  width: ${Sizing.screen.width};
-  border-radius: ${Outline.borderRadius.large}px;
-  background: ${({ theme }) => theme.bg4};
-  display: flex;
-  justify-content: space-between;
-  opacity: 0.75;
-`
-const LeftHeader = styled.div`
-  margin: 50px 30px;
-`
-const RightHeader = styled.div`
-  margin: ${Sizing.x40}px;
-`
-const ButtonHeader = styled.div`
-  ${{ ...Button.btn.primary }};
-  width: ${Sizing.x240}px;
-  margin-right: ${Sizing.x40}px;
-  text-align: center;
-`
-const ButtonBorder = styled.div`
-  ${{ ...Button.btn.primary }};
-  width: ${Sizing.x240}px;
-  padding: 0;
-  position: relative;
+  padding: 0 ${Sizing.x140}px;
 `
 const BtnLoadmore = styled.div`
   ${{ ...Button.btn.primary }};
@@ -60,7 +26,8 @@ const ContentBtn = styled.div`
   ${{ ...Button.btn.secondary }};
   position: absolute;
   width: 99%;
-  height: 90%;
+  border-radius: 7px;
+  padding: 5px;
 `
 
 const TopSellerItem = styled.div`
@@ -70,9 +37,10 @@ const TopSellerItem = styled.div`
   border-radius: ${Outline.borderRadius.base}px;
   display: flex;
   min-width: ${Sizing.x255}px;
+  max-width: ${Sizing.x320}px;
   padding: ${Sizing.x10}px;
   align-items: center;
-  margin: 8px 15px;
+  margin: 8px 0;
   height: ${Sizing.x80}px;
   &:hover {
     box-shadow: 2px 4px 8px #f0f0f0;
@@ -93,23 +61,11 @@ const Avatar = styled.div`
 const ContentSeller = styled.div`
   margin-left: ${Sizing.x20}px;
 `
-const TitleGreen = styled.p`
-  ${{ ...Typography.fontSize.x70 }}
-  ${{ ...Typography.fontWeight.bold }}
-  color: ${Color.neutral.green}
-  margin: 0;
-`
-const TitlePurple = styled.p`
-  ${{ ...Typography.fontSize.x70 }}
-  ${{ ...Typography.fontWeight.bold }}
-  color: ${Color.neutral.purple}
-  margin: 0;
-`
+
 const Title = styled.div`
   display: flex;
   align-items: center;
-  ${{ ...Typography.fontSize.x70 }}
-  ${{ ...Typography.fontWeight.bold }}
+  ${{ ...Typography.header.x70 }}
   margin-bottom: 1rem;
 `
 
@@ -134,7 +90,7 @@ const Filter = styled.div`
   }
   .itemFilter {
     ${{ ...Typography.fontWeight.bold }}
-    background: ${Color.neutral.black};
+    background:#1D1D1D;
     padding: 12px 24px;
     border-radius: ${Outline.borderRadius.small}px;
     color: ${Color.neutral.white};
@@ -189,7 +145,7 @@ export default function Explore() {
       matrix[k].push(list[i])
     }
     return matrix.map((mt, i) => (
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }} key={i}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }} key={i}>
         {mt.map((item, index) => (
           <TopSellerItem key={index}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -212,27 +168,7 @@ export default function Explore() {
 
   return (
     <BodyExplore>
-      <HeaderLayer>
-        <Header>
-          <LeftHeader>
-            <TitlePurple>Discover & Collect </TitlePurple>
-            <TitleGreen>Extraordinary</TitleGreen>
-            <TitlePurple>NFTs </TitlePurple>
-            <Text>Marketplace for crypto collectibies non-fungible token (NFTs).</Text>
-            <div style={{ display: 'flex', margin: '14px 0' }}>
-              <ButtonHeader>Explore more</ButtonHeader>
-              <ButtonBorder>
-                <ContentBtn>Start Create</ContentBtn>
-              </ButtonBorder>
-            </div>
-          </LeftHeader>
-          <RightHeader>
-            <div style={{ position: 'relative', width: 240, height: 280, background: '#ccc', borderRadius: 10 }}>
-              <Asset.WalletPicture width={240} height={280} style={{ position: 'absolute', top: -20, left: -20 }} />
-            </div>
-          </RightHeader>
-        </Header>
-      </HeaderLayer>
+      <HeaderExplore />
 
       <ContentGroup>
         <Title>

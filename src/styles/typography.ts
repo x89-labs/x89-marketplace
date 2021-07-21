@@ -1,4 +1,5 @@
 import { CSSProperties } from 'styled-components'
+import { Color } from 'styles'
 
 type FontSize = 'x10' | 'x20' | 'x30' | 'x40' | 'x50' | 'x60' | 'x70'
 export const fontSize: Record<FontSize, CSSProperties> = {
@@ -73,38 +74,38 @@ type Header = 'x10' | 'x20' | 'x30' | 'x40' | 'x50' | 'x60' | 'x70'
 export const header: Record<Header, CSSProperties> = {
   x10: {
     ...fontSize.x10,
-    ...lineHeight.x10,
     ...fontWeight.bold,
+    margin: 0,
   },
   x20: {
     ...fontSize.x20,
-    ...lineHeight.x20,
     ...fontWeight.bold,
+    margin: 0,
   },
   x30: {
     ...fontSize.x30,
-    ...lineHeight.x30,
     ...fontWeight.bold,
+    margin: 0,
   },
   x40: {
     ...fontSize.x40,
-    ...lineHeight.x40,
     ...fontWeight.bold,
+    margin: 0,
   },
   x50: {
     ...fontSize.x50,
-    ...lineHeight.x50,
     ...fontWeight.bold,
+    margin: 0,
   },
   x60: {
     ...fontSize.x60,
-    ...lineHeight.x60,
     ...fontWeight.bold,
+    margin: 0,
   },
   x70: {
     ...fontSize.x70,
-    ...lineHeight.x70,
     ...fontWeight.bold,
+    margin: 0,
   },
 }
 
@@ -112,34 +113,45 @@ type Body = 'x10' | 'x20' | 'x30' | 'x40' | 'x50'
 export const body: Record<Body, CSSProperties> = {
   x10: {
     ...fontSize.x10,
-    ...lineHeight.x10,
     ...fontWeight.regular,
+    margin: 0,
   },
   x20: {
     ...fontSize.x20,
-    ...lineHeight.x20,
     ...fontWeight.regular,
+    margin: 0,
   },
   x30: {
     ...fontSize.x30,
-    ...lineHeight.x30,
     ...fontWeight.regular,
+    margin: 0,
   },
   x40: {
     ...fontSize.x40,
-    ...lineHeight.x40,
     ...fontWeight.regular,
+    margin: 0,
   },
   x50: {
     ...fontSize.x50,
-    ...lineHeight.x50,
     ...fontWeight.regular,
+    margin: 0,
   },
 }
 
-type Monospace = 'base'
-export const monospace: Record<Monospace, CSSProperties> = {
-  base: {
-    letterSpacing: letterSpacing.x30,
+type Text = 'grayText' | 'normalText' | 'blackText'
+export const text: Record<Text, CSSProperties> = {
+  grayText: {
+    ...fontSize.x30,
+    color: Color.neutral.gray,
+    margin: 0,
+  },
+  normalText: {
+    ...fontSize.x30,
+    margin: 0,
+  },
+  blackText: {
+    ...fontSize.x30,
+    color: Color.neutral.black,
+    margin: 0,
   },
 }

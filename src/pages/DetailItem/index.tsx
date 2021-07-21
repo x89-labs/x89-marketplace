@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux'
 import { getItem } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
 import styled from 'styled-components'
+import { display } from 'styled-system'
+import { Button, Color, Sizing, Typography } from 'styles'
 import { shortenAddress } from 'utils'
 
 enum SwitchType {
@@ -16,12 +18,11 @@ enum SwitchType {
 
 const Container = styled.div`
   width: 100%;
+  max-height: 32rem;
   display: flex;
-  border: 0.1px solid #f0f0f0;
 `
 const Image = styled.div`
-  width: 65%;
-  max-height: 32rem;
+  width: 60%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,75 +34,99 @@ const Image = styled.div`
   }
 `
 const ContentItem = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  color: #000;
-  background-color: #e6e6e6;
-  border-left: 1px solid #ccc;
-  width: 35%;
+  border-left: 1px solid ${Color.neutral.gray2};
+  width: 40%;
 `
 const HeaderContent = styled.div`
   padding: 0 1rem;
 `
-const InfoItem = styled.div`
-  display: flex;
-`
 const Creator = styled.div`
-  margin-top: 3rem;
+  margin-top: 20px;
 `
 const BodyContent = styled.div``
 const SwitchTab = styled.div`
   display: flex;
   margin-top: 1rem;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid ${Color.neutral.gray2};
 `
 const Tab = styled.div`
   padding: 5px 10px;
   cursor: pointer;
 `
 const FooterContent = styled.div`
-  border-top: 1px solid #ccc;
+  border-top: 2px solid ${Color.neutral.gray2};
+  height: 35%;
   display: flex;
   bottom: 0;
-  height: 5rem;
   justify-content: space-around;
   align-items: center;
 `
-const TitleBold = styled.p`
-  margin: 0;
-  font-weight: bold;
+const Author = styled.p`
+  display: flex;
+  margin: 12px 0 10px 0;
+  ${{ ...Typography.fontSize.x40 }};
+  ${{ ...Typography.fontWeight.regular }};
 `
-const TitleNormal = styled.p`
+
+const GrayText = styled.p`
+  ${{ ...Typography.text.grayText }}
+`
+
+const GreenText = styled.p`
+  color: ${Color.neutral.green};
+  margin: 0;
+`
+
+const Text = styled.p`
+  margin: 0;
+`
+const BoldText = styled.p`
+  ${{ ...Typography.fontWeight.bold }}
+  ${{ ...Typography.fontSize.x30 }}
   display: flex;
   margin: 0;
-  color: rgba(4, 4, 5, 0.4);
-  font-weight: bold;
 `
+
+const Edition = styled.div``
+
+const HighBid = styled.div`
+  margin-left: 20px;
+  display: flex;
+`
+
+const Collection = styled.div``
+
 const NameItem = styled.p`
-  font-size: 2rem;
-  font-weight: bolder;
-  margin-bottom: 0;
+  ${{ ...Typography.fontSize.x70 }};
+  ${{ ...Typography.fontWeight.bold }};
+  margin: 0;
+`
+
+const ContentBtn = styled.div`
+  ${{ ...Button.btn.secondary }};
+  position: absolute;
+  width: 98%;
+  height: 90%;
 `
 const ButtonBuy = styled.div`
-  background-color: #787086;
-  color: #fff;
-  padding: 0 24px;
-  border-radius: 48px;
-  height: 48px;
-  margin-right: 1rem;
-  cursor: pointer;
+  ${{ ...Button.btn.primary }};
+  width: ${Sizing.x240}px;
+  margin-right: ${Sizing.x40}px;
+  text-align: center;
   &:hover {
     opacity: 0.8;
   }
 `
 const ButtonBid = styled.div`
-  background-color: #292f3826;
-  color: #373d46;
-  padding: 0 24px;
-  border-radius: 48px;
+  ${{ ...Button.btn.primary }};
+  width: ${Sizing.x240}px;
   height: 48px;
-  cursor: pointer;
+  padding: 0;
+  position: relative;
   &:hover {
     opacity: 0.8;
   }
@@ -130,7 +155,7 @@ export default function DetailItem() {
             cursor: 'pointer',
           }}
         >
-          {isReadMore ? ' Read More' : ' Show Less'}
+          <GreenText>{isReadMore ? ' Read More' : ' Show Less'}</GreenText>
         </span>
       </div>
     )
@@ -162,23 +187,41 @@ export default function DetailItem() {
     <Container>
       <Image>{PreviewFile()}</Image>
       <ContentItem>
-        <div>
+        <div style={{ overflowY: 'scroll', height: '65%' }}>
           <HeaderContent>
-            <InfoItem>
-              <NameItem>{item?.name}</NameItem>
-            </InfoItem>
-            <TitleBold>
-              On sale for {item?.price} {item?.symbol}
-            </TitleBold>
+            <NameItem>{item?.name}</NameItem>
+            <Author>
+              <GrayText>By</GrayText> {item?.owner && shortenAddress(item?.owner)}
+            </Author>
+            <div style={{ display: 'flex' }}>
+              {item?.totalQuantity && item?.totalQuantity > 1 ? (
+                <BoldText>
+                  Multiple Edition <GrayText>1/{item?.totalQuantity}</GrayText>
+                </BoldText>
+              ) : (
+                <div>
+                  <BoldText>
+                    Single Edition <GrayText>1/{item?.totalQuantity}</GrayText>
+                  </BoldText>
+                </div>
+              )}
+              <HighBid>
+                <GrayText>Highest bid</GrayText> <GreenText>0,21 ETH</GreenText>
+              </HighBid>
+            </div>
             {item?.description && item?.description.length > 100 ? (
               ReadMore(item.description)
             ) : (
-              <p>{item?.description}</p>
+              <Text>{item?.description}</Text>
             )}
-            <Creator>
-              <TitleNormal>Creator</TitleNormal>
-              <TitleNormal>{item?.owner ? shortenAddress(item.owner) : ''}</TitleNormal>
-            </Creator>
+            <div style={{ display: 'flex' }}>
+              <Creator>
+                <GrayText>Creator</GrayText>
+                <Text>{item?.owner ? shortenAddress(item.owner) : ''}</Text>
+              </Creator>
+
+              <Collection></Collection>
+            </div>
           </HeaderContent>
 
           <BodyContent>
@@ -204,14 +247,20 @@ export default function DetailItem() {
             </SwitchTab>
           </BodyContent>
         </div>
+        <div
+          style={{
+            width: '100%',
+            height: 2,
+            background:
+              'linear-gradient(226.07deg, #02E879 8.39%, #279EA5 28.31%, #475CCC 47.69%, #5B34E4 61.69%, #6324ED 68.92%)',
+          }}
+        />
         <FooterContent>
           <ButtonBuy>
-            <p style={{ marginBottom: 0, fontWeight: 'bold' }}>
-              Buy for {item?.price} {item?.symbol}
-            </p>
+            Buy for {item?.price} {item?.symbol}
           </ButtonBuy>
           <ButtonBid>
-            <p style={{ marginBottom: 0, fontWeight: 'bold' }}>Place a Bids</p>
+            <ContentBtn>Place a Bids</ContentBtn>
           </ButtonBid>
         </FooterContent>
       </ContentItem>
