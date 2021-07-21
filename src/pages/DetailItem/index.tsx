@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react'
 import { Bold } from 'react-feather'
 import ReactPlayer from 'react-player'
 import { useDispatch } from 'react-redux'
-import { getItem } from 'state/explore/actions'
+import { fieldChange, getItem } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
 import styled from 'styled-components'
 import { display } from 'styled-system'
 import { Button, Color, Outline, Sizing, Typography } from 'styles'
 import { shortenAddress } from 'utils'
 import * as Asset from 'assets'
+import { useIsDarkMode } from 'state/user/hooks'
 
 enum SwitchType {
   Details = 1,
@@ -57,6 +58,7 @@ const SwitchTab = styled.div`
 `
 const Tab = styled.div`
   padding: 5px 10px;
+  ${{ ...Typography.fontWeight.bold }}
   cursor: pointer;
 `
 const FooterContent = styled.div`
@@ -136,14 +138,17 @@ const ButtonBid = styled.div`
 
 const Detail = styled.div`
   height: 200px;
+  padding: 10px;
 `
 export default function DetailItem() {
   const [switchType, setSwitchType] = useState(SwitchType.Details)
   const dispatch = useDispatch()
+  const darkMode = useIsDarkMode()
   const item = useExploreState().item
   useEffect(() => {
     let href = window.location.href
     href = href.substring(href.lastIndexOf('/') + 1)
+    dispatch(fieldChange({ fieldName: 'href', fieldValue: window.location.href }))
     dispatch(getItem(href))
   }, [])
   const [isReadMore, setIsReadMore] = useState(true)
@@ -242,27 +247,36 @@ export default function DetailItem() {
           <BodyContent>
             <SwitchTab>
               <Tab
-                style={{ borderBottom: switchType === 1 ? '1px solid #000' : '' }}
+                style={{
+                  borderBottom: switchType === 1 ? (darkMode ? '1px solid #fff' : '1px solid #000') : '',
+                  color: switchType === 1 ? (darkMode ? Color.neutral.white : Color.neutral.black) : Color.neutral.gray,
+                }}
                 onClick={() => setSwitchType(SwitchType.Details)}
               >
                 Details
               </Tab>
               <Tab
-                style={{ borderBottom: switchType === 2 ? '1px solid #000' : '' }}
+                style={{
+                  borderBottom: switchType === 2 ? (darkMode ? '1px solid #fff' : '1px solid #000') : '',
+                  color: switchType === 2 ? (darkMode ? Color.neutral.white : Color.neutral.black) : Color.neutral.gray,
+                }}
                 onClick={() => setSwitchType(SwitchType.Bids)}
               >
                 Bids
               </Tab>
               <Tab
-                style={{ borderBottom: switchType === 3 ? '1px solid #000' : '' }}
+                style={{
+                  borderBottom: switchType === 3 ? (darkMode ? '1px solid #fff' : '1px solid #000') : '',
+                  color: switchType === 3 ? (darkMode ? Color.neutral.white : Color.neutral.black) : Color.neutral.gray,
+                }}
                 onClick={() => setSwitchType(SwitchType.History)}
               >
                 History
               </Tab>
             </SwitchTab>
-            {switchType === 1 && <Detail>aaaaaaaaaaaaaaaa</Detail>}
-            {switchType === 2 && <Detail>bbbbb</Detail>}
-            {switchType === 3 && <Detail>ccc</Detail>}
+            {switchType === 1 && <Detail>Detail</Detail>}
+            {switchType === 2 && <Detail>Bids</Detail>}
+            {switchType === 3 && <Detail>History</Detail>}
           </BodyContent>
         </div>
         <div

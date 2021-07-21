@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 
 import * as Icon from 'react-feather'
@@ -6,6 +6,8 @@ import singger_create from '../../assets/images/nft-create/singger_create.png'
 import singger_create_timed_auctions from '../../assets/images/nft-create/singger_create_timed_auctions.png'
 import multi_create from '../../assets/images/nft-create/multi_create.png'
 import styled from 'styled-components'
+import { useDispatch } from 'react-redux'
+import { fieldChange } from 'state/explore/actions'
 
 interface ico {
   icon: any
@@ -27,6 +29,10 @@ const FeatherIcon = (icon: ico) => {
 }
 
 export default function Create({ history }: RouteComponentProps) {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(fieldChange({ fieldName: 'href', fieldValue: window.location.href }))
+  }, [])
   const Create = styled.div`
     .create {
       position: relative;
