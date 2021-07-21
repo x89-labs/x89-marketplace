@@ -9,7 +9,6 @@ import * as Asset from 'assets'
 import { optionsTopSeller, ListDicovery } from './config'
 import { Color, Outline, Sizing, Button, Typography } from 'styles'
 import HeaderExplore from 'components/HeaderExplore'
-
 const BodyExplore = styled.div`
   width: 100%;
   padding: 0 ${Sizing.x140}px;

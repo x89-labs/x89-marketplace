@@ -53,6 +53,7 @@
     "@web3-react/core": "^6.0.9",
     "@web3-react/fortmatic-connector": "^6.0.9",
     "@web3-react/injected-connector": "^6.0.7",
+    "@types/react-slick": "^0.23.5",
     "ajv": "^6.12.3",
     "cids": "^1.0.0",
     "copy-to-clipboard": "^3.2.0",

@@ -7,8 +7,9 @@ import { getItem } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
 import styled from 'styled-components'
 import { display } from 'styled-system'
-import { Button, Color, Sizing, Typography } from 'styles'
+import { Button, Color, Outline, Sizing, Typography } from 'styles'
 import { shortenAddress } from 'utils'
+import * as Asset from 'assets'
 
 enum SwitchType {
   Details = 1,
@@ -20,6 +21,9 @@ const Container = styled.div`
   width: 100%;
   max-height: 32rem;
   display: flex;
+  p {
+    margin: 0 5px;
+  }
 `
 const Image = styled.div`
   width: 60%;
@@ -44,9 +48,7 @@ const ContentItem = styled.div`
 const HeaderContent = styled.div`
   padding: 0 1rem;
 `
-const Creator = styled.div`
-  margin-top: 20px;
-`
+const Creator = styled.div``
 const BodyContent = styled.div``
 const SwitchTab = styled.div`
   display: flex;
@@ -65,45 +67,45 @@ const FooterContent = styled.div`
   justify-content: space-around;
   align-items: center;
 `
-const Author = styled.p`
+const Author = styled.div`
   display: flex;
-  margin: 12px 0 10px 0;
+  margin: 12px 0;
   ${{ ...Typography.fontSize.x40 }};
   ${{ ...Typography.fontWeight.regular }};
 `
-
+const Avatar = styled.img`
+  width: ${Sizing.icons.x25}px;
+  height: ${Sizing.icons.x25}px;
+  border-radius: ${Outline.borderRadius.small};
+  margin-right: 10px;
+`
 const GrayText = styled.p`
   ${{ ...Typography.text.grayText }}
+  margin-right: 5px;
 `
 
 const GreenText = styled.p`
   color: ${Color.neutral.green};
-  margin: 0;
 `
 
-const Text = styled.p`
-  margin: 0;
-`
+const Text = styled.p``
 const BoldText = styled.p`
   ${{ ...Typography.fontWeight.bold }}
   ${{ ...Typography.fontSize.x30 }}
   display: flex;
-  margin: 0;
 `
-
-const Edition = styled.div``
 
 const HighBid = styled.div`
   margin-left: 20px;
   display: flex;
 `
 
-const Collection = styled.div``
-
+const Collection = styled.div`
+  margin-left: 40px;
+`
 const NameItem = styled.p`
   ${{ ...Typography.fontSize.x70 }};
   ${{ ...Typography.fontWeight.bold }};
-  margin: 0;
 `
 
 const ContentBtn = styled.div`
@@ -131,6 +133,10 @@ const ButtonBid = styled.div`
     opacity: 0.8;
   }
 `
+
+const Detail = styled.div`
+  height: 200px;
+`
 export default function DetailItem() {
   const [switchType, setSwitchType] = useState(SwitchType.Details)
   const dispatch = useDispatch()
@@ -147,7 +153,7 @@ export default function DetailItem() {
   const ReadMore = (text: string) => {
     return (
       <div>
-        {isReadMore ? text.slice(0, 100) + '. . .' : text}
+        {isReadMore ? text.slice(0, 230) + '. . .' : text}
         <span
           onClick={toggleReadMore}
           style={{
@@ -214,13 +220,22 @@ export default function DetailItem() {
             ) : (
               <Text>{item?.description}</Text>
             )}
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', marginTop: 20 }}>
               <Creator>
                 <GrayText>Creator</GrayText>
-                <Text>{item?.owner ? shortenAddress(item.owner) : ''}</Text>
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: 10 }}>
+                  <Avatar src={Asset.SrcAvatar} />
+                  <Text>{item?.owner ? shortenAddress(item.owner) : ''}</Text>
+                </div>
               </Creator>
 
-              <Collection></Collection>
+              <Collection>
+                <GrayText>Collection</GrayText>
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: 10 }}>
+                  <Avatar src={Asset.SrcLogo} />
+                  <Text>Polrare</Text>
+                </div>
+              </Collection>
             </div>
           </HeaderContent>
 
@@ -245,6 +260,9 @@ export default function DetailItem() {
                 History
               </Tab>
             </SwitchTab>
+            {switchType === 1 && <Detail>aaaaaaaaaaaaaaaa</Detail>}
+            {switchType === 2 && <Detail>bbbbb</Detail>}
+            {switchType === 3 && <Detail>ccc</Detail>}
           </BodyContent>
         </div>
         <div
