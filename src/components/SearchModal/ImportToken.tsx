@@ -11,7 +11,6 @@ import { ArrowLeft, AlertCircle } from 'react-feather'
 import { transparentize } from 'polished'
 import useTheme from 'hooks/useTheme'
 import { ButtonPrimary } from 'components/Button'
-import { SectionBreak } from 'components/swap/styleds'
 import { useAddUserToken } from 'state/user/hooks'
 import { useActiveWeb3React } from 'hooks/web3'
 import { ExternalLink } from '../../theme/components'
@@ -66,7 +65,6 @@ export function ImportToken({ tokens, list, onBack, onDismiss, handleCurrencySel
           {onDismiss ? <CloseIcon onClick={onDismiss} /> : <div />}
         </RowBetween>
       </PaddedColumn>
-      <SectionBreak />
       <AutoColumn gap="md" style={{ marginBottom: '32px', padding: '1rem' }}>
         <AutoColumn justify="center" style={{ textAlign: 'center', gap: '16px', padding: '1rem' }}>
           <AlertCircle size={48} stroke={theme.text2} strokeWidth={1} />

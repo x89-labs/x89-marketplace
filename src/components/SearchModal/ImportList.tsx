@@ -9,7 +9,7 @@ import { ArrowLeft, AlertTriangle } from 'react-feather'
 import useTheme from 'hooks/useTheme'
 import { transparentize } from 'polished'
 import { ButtonPrimary } from 'components/Button'
-import { SectionBreak } from 'components/swap/styleds'
+
 import { ExternalLink } from '../../theme/components'
 import ListLogo from 'components/ListLogo'
 import { PaddedColumn, Checkbox, TextDot } from './styleds'
@@ -87,7 +87,7 @@ export function ImportList({ listURL, list, setModalView, onDismiss }: ImportPro
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
       </PaddedColumn>
-      <SectionBreak />
+
       <PaddedColumn gap="md">
         <AutoColumn gap="md">
           <Card backgroundColor={theme.bg2} padding="12px 20px">
