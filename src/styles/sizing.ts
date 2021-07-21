@@ -5,6 +5,7 @@ export const screen: Record<Screen, any> = {
 }
 
 type Layout =
+  | 'x1'
   | 'x2'
   | 'x4'
   | 'x10'
@@ -25,8 +26,10 @@ type Layout =
   | 'x200'
   | 'x240'
   | 'x255'
+  | 'x320'
   | 'x340'
 export const layout: Record<Layout, number> = {
+  x1: 1,
   x2: 2,
   x4: 5,
   x10: 10,
@@ -47,9 +50,10 @@ export const layout: Record<Layout, number> = {
   x200: 200,
   x240: 240,
   x255: 255,
+  x320: 320,
   x340: 340,
 }
-
+export const x1 = layout.x1
 export const x2 = layout.x2
 export const x4 = layout.x4
 export const x10 = layout.x10
@@ -70,6 +74,7 @@ export const x160 = layout.x160
 export const x200 = layout.x200
 export const x240 = layout.x240
 export const x255 = layout.x255
+export const x320 = layout.x320
 export const x340 = layout.x340
 
 type Icons = 'x10' | 'x15' | 'x20' | 'x25' | 'x30' | 'x40'

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import Header from '../components/Header'
@@ -18,11 +18,14 @@ const AppWrapper = styled.div`
   display: flex;
   height: 100vh;
   flex-flow: column;
-  align-items: flex-start;
+  align-items: center;
+  max-width: 1400px;
   width: 100%;
+  margin: auto;
 `
 const BodyWrapper = styled.div`
   display: flex;
+  justify-content: center;
   flex-direction: column;
   width: 100%;
   padding-top: 80px;
@@ -44,11 +47,12 @@ const HeaderWrapper = styled.div`
   z-index: 2;
 `
 
-const Marginer = styled.div`
-  margin-top: 5rem;
-`
-
 export default function App() {
+  const href = useMemo(() => {
+    const href = window.location.href
+    return href
+  }, [window.location.href])
+
   return (
     <ErrorBoundary>
       <Route component={DarkModeQueryParamReader} />
@@ -70,9 +74,8 @@ export default function App() {
               <Route exact strict path={`/myitem`} component={MyItem} />
             </Switch>
           </Web3ReactManager>
-          <Marginer />
         </BodyWrapper>
-        <Footer />
+        {href.includes('detail') ? <></> : <Footer />}
       </AppWrapper>
     </ErrorBoundary>
   )

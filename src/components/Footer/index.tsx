@@ -4,7 +4,7 @@ import * as Asset from 'assets'
 import { useIsDarkMode } from 'state/user/hooks'
 import { NavLink } from 'react-router-dom'
 import { ExternalLink } from '../../theme'
-import { Color } from 'styles'
+import { Color, Outline, Typography } from 'styles'
 
 const FooterFrame = styled.div`
   display: flex;
@@ -13,6 +13,7 @@ const FooterFrame = styled.div`
   bottom: 0;
   background: ${({ theme }) => theme.bg2};
   padding: 0 120px;
+  margin-top: 4rem;
 `
 const Header = styled.div`
   display: flex;
@@ -23,9 +24,9 @@ const Header = styled.div`
   border-bottom: 1px dashed #ccc;
 `
 const Title = styled.p`
-  font-size: 24px;
+  ${{ ...Typography.fontSize.x50 }};
+  color: ${Color.neutral.green};
   margin: 0;
-  color: #35dfb1;
 `
 const Content = styled.div`
   display: flex;
@@ -43,27 +44,20 @@ const InfoWithSearch = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #f0f0f0;
+    background: ${({ theme }) => theme.bg3};
     border-radius: 48px;
     padding-left: 20px;
     margin-top: 1rem;
+    ${{ ...Outline.border.gray }}
   }
   input {
+    color: ${({ theme }) => theme.text1};
     padding: 20px 0;
     width: 80%;
     height: 20px;
     border: none;
     outline: none;
-    background: #f0f0f0;
-  }
-  .btnSend {
-    cursor: pointer;
-    background: #7d7272;
-    align-self: center;
-    font-weight: 700;
-    color: #fff;
-    padding: 14px 24px;
-    border-radius: 48px;
+    background: ${({ theme }) => theme.bg3};
   }
 `
 const InfoWithText = styled.div`
@@ -107,14 +101,14 @@ const StyledExternalLink = styled(ExternalLink).attrs({
   }
 `
 const Text = styled.p`
-  color: #777e90;
-  font-size: 14px;
+  color: ${Color.neutral.gray};
+  ${{ ...Typography.fontSize.x20 }};
   margin: 8px 0;
 `
 const BoldText = styled.h4`
   color: ${({ theme }) => theme.text1};
+  ${{ ...Typography.fontSize.x50 }};
   margin: 24px 0;
-  font-size: 24px;
 `
 const Term = styled.p`
   margin: 8px 20px;

@@ -1,11 +1,12 @@
-type Neutral = 'white' | 'purple' | 'black' | 'green' | 'yellow' | 'gray'
+type Neutral = 'white' | 'purple' | 'black' | 'green' | 'yellow' | 'gray' | 'gray2'
 export const neutral: Record<Neutral, string> = {
   white: '#ffffff',
   black: '#000000',
-  purple: '#280e5f',
+  purple: '#6324ED',
   green: '#35dfb1',
   yellow: '#eeff4a',
   gray: '#777e90',
+  gray2: '#353945',
 }
 
 type Primary = 'brand' | 's200' | 's600'

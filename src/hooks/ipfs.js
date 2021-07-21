@@ -19,8 +19,6 @@ const IpfsClient = class {
   }
   GetHash = async (file) => {
     const res = await ipfs.add(Buffer(file))
-    console.log(Buffer(file))
-    console.log(res)
     return 'https://ipfs.infura.io/ipfs/' + res.path
   }
 }
