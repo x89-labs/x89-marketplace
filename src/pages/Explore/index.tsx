@@ -9,7 +9,6 @@ import * as Asset from 'assets'
 import { optionsTopSeller, ListDicovery } from './config'
 import { Color, Outline, Sizing, Button, Typography } from 'styles'
 import HeaderExplore from 'components/HeaderExplore'
-
 const BodyExplore = styled.div`
   width: 100%;
   padding: 0 ${Sizing.x140}px;
@@ -25,9 +24,9 @@ const BtnLoadmore = styled.div`
 const ContentBtn = styled.div`
   ${{ ...Button.btn.secondary }};
   position: absolute;
-  width: 99%;
+  width: 99.6%;
   border-radius: 7px;
-  padding: 5px;
+  padding: 5.5px;
 `
 
 const TopSellerItem = styled.div`
@@ -132,6 +131,7 @@ export default function Explore() {
   const state = useExploreState()
   useEffect(() => {
     dispatch(getListItems())
+    dispatch(fieldChange({ fieldName: 'href', fieldValue: window.location.href }))
   }, [])
 
   const GridList = () => {

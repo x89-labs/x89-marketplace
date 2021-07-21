@@ -14,6 +14,7 @@ import Explore from './Explore'
 import DetailItem from './DetailItem'
 import Stats from './Stats'
 import MyItem from './MyItems'
+import { useExploreState } from 'state/explore/hooks'
 const AppWrapper = styled.div`
   display: flex;
   height: 100vh;
@@ -48,10 +49,7 @@ const HeaderWrapper = styled.div`
 `
 
 export default function App() {
-  const href = useMemo(() => {
-    const href = window.location.href
-    return href
-  }, [window.location.href])
+  const href = useExploreState().href
 
   return (
     <ErrorBoundary>

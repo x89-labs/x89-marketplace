@@ -7,11 +7,13 @@ export interface ExploreState {
   listItem: Item[]
   item?: Item
   limit: number
+  href: string
 }
 
 export const initialState: ExploreState = {
   listItem: [],
   limit: 8,
+  href: '',
 }
 
 const exploreSlice = createSlice({
