@@ -1,7 +1,7 @@
 /* eslint @typescript-eslint/no-var-requires: "off" */
-const projectId = '5e4235dd371d43f0bbc8d252f58ac94c'
-const projectSecret = '9d9b22eac02e4576a1ba727b3682fd16'
-const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64')
+const INFURA_PROJECT_ID = process.env.REACT_APP_INFURA_PROJECT_ID
+const INFURA_PROJECT_SECRET = process.env.INFURA_PROJECT_SECRET
+const auth = 'Basic ' + Buffer.from(INFURA_PROJECT_ID + ':' + INFURA_PROJECT_SECRET).toString('base64')
 const IPFS = require('ipfs-http-client')
 
 const ipfs = IPFS.create({

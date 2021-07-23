@@ -126,7 +126,8 @@
     "start": "yarn compile-contract-types &&  react-scripts start",
     "dev": "react-scripts start",
     "test": "react-scripts test --env=jsdom",
-    "up": "docker compose up"
+    "up": "docker compose up",
+    "deve": "react-scripts start"
   },
   "eslintConfig": {
     "extends": "react-app",

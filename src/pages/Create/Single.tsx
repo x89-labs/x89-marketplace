@@ -15,8 +15,8 @@ import { Forms, validationFormCreateSchema } from './config'
 import { Type } from 'models/formInput'
 import { Ipfs } from 'hooks/ipfs'
 import Switch from 'react-switch'
-import useIsXNFTContract from 'hooks/useXNFTContract'
-import { XNFT_ADDRESS } from 'constants/addresses'
+import useIsXNFTContract from 'hooks/usePolrareNft'
+import { POLRARE_ADDRESS } from 'constants/addresses'
 import { Color, Typography } from 'styles'
 import Categories from 'components/Mint/categories'
 import UploadFile from 'components/Mint/UploadFile'
@@ -76,7 +76,7 @@ export const Single = ({ history }: RouteComponentProps) => {
               name: values.name,
               description: values.description,
               price: values.price,
-              contractAddress: XNFT_ADDRESS[1],
+              contractAddress: POLRARE_ADDRESS[1],
               assetId: '1233',
               symbol: state.symbol ?? 'ETH',
               image: hash,

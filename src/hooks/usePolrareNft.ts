@@ -1,13 +1,10 @@
 import { useCallback, useMemo } from 'react'
-import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
 import { useActiveWeb3React } from './web3'
 import { useXNFTContract } from './useContract'
-import { XNFT_ADDRESS } from 'constants/addresses'
+import { POLRARE_ADDRESS } from 'constants/addresses'
 import { useMintState } from 'state/mint/hooks'
-import { Contract } from 'ethers'
-import XNFT_ABI from 'abis/XNFT.json'
 
-export default function useIsXNFTContract(): {
+export default function usePolrareNft(): {
   addFee: () => void
 } {
   const { account, library } = useActiveWeb3React()
@@ -21,7 +18,7 @@ export default function useIsXNFTContract(): {
         .getSigner()
         .sendTransaction({
           from: account,
-          to: XNFT_ADDRESS[1],
+          to: POLRARE_ADDRESS[1],
           data: data,
           gasLimit: 6000000,
         })

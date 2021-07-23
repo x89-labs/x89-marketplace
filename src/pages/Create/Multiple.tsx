@@ -15,9 +15,8 @@ import { getCategories, postItem } from 'state/mint/actions'
 import { useActiveWeb3React } from 'hooks/web3'
 import { Ipfs } from 'hooks/ipfs'
 import Switch from 'react-switch'
-import { XNFT_ADDRESS } from 'constants/addresses'
-import { useXNFTContract } from 'hooks/useContract'
-import useIsXNFTContract from 'hooks/useXNFTContract'
+import { POLRARE_ADDRESS } from 'constants/addresses'
+import usePolrareNft from 'hooks/usePolrareNft'
 import Categories from 'components/Mint/categories'
 import UploadFile from 'components/Mint/UploadFile'
 import StableSelect from 'components/Mint/stableSelect'
@@ -49,7 +48,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
   const state = useMintState()
   const [switchType, setSwitchType] = useState<SwitchType>()
   const [checked, setChecked] = useState(true)
-  const { addFee } = useIsXNFTContract()
+  const { addFee } = usePolrareNft()
   const dispatch = useDispatch()
   const { account } = useActiveWeb3React()
 
@@ -69,7 +68,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
               name: values.name,
               description: values.description,
               price: values.price,
-              contractAddress: XNFT_ADDRESS[1],
+              contractAddress: POLRARE_ADDRESS[1],
               assetId: '1233',
               symbol: state.symbol ?? 'ETH',
               image: hash,

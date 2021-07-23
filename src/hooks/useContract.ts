@@ -16,21 +16,17 @@ import { Unisocks } from 'abis/types/Unisocks'
 import UNISOCKS_ABI from 'abis/unisocks.json'
 import WETH_ABI from 'abis/weth.json'
 import EIP_2612 from 'abis/eip_2612.json'
-import XNFT_ABI from 'abis/XNFT.json'
+import XNFT_ABI from 'abis/polrare.json'
 
 import {
-  NONFUNGIBLE_POSITION_MANAGER_ADDRESSES,
-  QUOTER_ADDRESSES,
   V3_CORE_FACTORY_ADDRESSES,
-  V3_MIGRATOR_ADDRESSES,
   ARGENT_WALLET_DETECTOR_ADDRESS,
   GOVERNANCE_ADDRESS,
   MERKLE_DISTRIBUTOR_ADDRESS,
   MULTICALL2_ADDRESSES,
-  V2_ROUTER_ADDRESS,
   ENS_REGISTRAR_ADDRESSES,
   SOCKS_CONTROLLER_ADDRESSES,
-  XNFT_ADDRESS,
+  POLRARE_ADDRESS,
 } from 'constants/addresses'
 
 import { useMemo } from 'react'
@@ -132,5 +128,5 @@ export function useV3Pool(address: string | undefined) {
 }
 
 export function useXNFTContract() {
-  return useContract<XNFT>(XNFT_ADDRESS[1], XNFT_ABI.abi)
+  return useContract<XNFT>(POLRARE_ADDRESS[1], XNFT_ABI.abi)
 }

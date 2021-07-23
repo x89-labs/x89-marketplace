@@ -69,7 +69,7 @@ export default function App() {
               <Route exact strict path={`/create/erc721`} component={Single} />
               <Route exact strict path="/create/erc1155" component={Multiple} />
               <Route exact strict path={`/detail/:itemid`} component={DetailItem} />
-              <Route exact strict path={`/myitem`} component={MyItem} />
+              <Route exact strict path={`/profile`} component={MyItem} />
             </Switch>
           </Web3ReactManager>
         </BodyWrapper>
