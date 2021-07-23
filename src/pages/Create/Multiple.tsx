@@ -6,8 +6,6 @@ import styled from 'styled-components'
 import { useIsDarkMode } from 'state/user/hooks'
 import ReactPlayer from 'react-player'
 import { useMintState } from 'state/mint/hooks'
-import OptionMintCreate from 'components/OptionMintCreate'
-import StableSelect from 'components/StableSelect'
 import { Forms, validationFormCreateSchema } from './config'
 import { Type } from 'models/formInput'
 import { useDispatch } from 'react-redux'
@@ -22,6 +20,8 @@ import { useXNFTContract } from 'hooks/useContract'
 import useIsXNFTContract from 'hooks/useXNFTContract'
 import Categories from 'components/Mint/categories'
 import UploadFile from 'components/Mint/UploadFile'
+import StableSelect from 'components/Mint/stableSelect'
+import OptionMintCreate from 'components/Mint/OptionMintCreate'
 
 interface ico {
   icon: any
@@ -154,6 +154,9 @@ export const Multiple = ({ history }: RouteComponentProps) => {
       justify-content: center;
       align-items: center;
       text-align: center;
+      @media only screen and (max-width: 700px) {
+        width: 160px;
+      }
     }
 
     .image {
@@ -164,9 +167,13 @@ export const Multiple = ({ history }: RouteComponentProps) => {
 
   const Preview = styled.div`
     .preview {
+      margin-left: 2rem;
       position: relative;
       height: 390px;
       width: 240px;
+      @media only screen and (max-width: 700px) {
+        display: none;
+      }
     }
 
     .pr {
@@ -350,7 +357,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <Around style={{ width: '516px' }}>
+      <Around>
         <h3 onClick={() => history.goBack()}>{FeatherIcon(icons)}</h3>
         <h1>Create {CreateType()} collectible</h1>
         <h2>Upload file</h2>

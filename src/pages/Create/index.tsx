@@ -34,56 +34,17 @@ export default function Create({ history }: RouteComponentProps) {
       background-color: white;
       cursor: pointer;
     }
-
-    @media (min-width: 360px and (max-width: 700px)) {
-      .create {
-        position: relative;
-        width: 230px;
-        height: 220px;
-        border: 1px solid lightgray;
-        border-radius: 16px;
-        margin: 8px;
-        padding: 49px 16px 33px 16px;
-        background-color: white;
-        cursor: pointer;
-      }
-    }
-
-    @media (max-width: 550px) {
-      .create {
-        position: relative;
-        width: 190px;
-        height: 220px;
-        border: 1px solid lightgray;
-        border-radius: 16px;
-        margin: 8px;
-        padding: 49px 16px 33px 16px;
-        background-color: white;
-        cursor: pointer;
-      }
-    }
-
     .createComponent {
       width: 214px;
       height: 220px;
       padding: auto;
     }
-
-    @media (max-width: 550px) {
-      .createComponent {
-        width: 170px;
-        height: 220px;
-        padding: auto;
-      }
-    }
-
     .imageCreate {
       width: 85px;
       height: 135px;
       margin: auto;
       display: block;
     }
-
     .timedAuction {
       ${{ ...Typography.header.x10 }}
       position: absolute;
@@ -100,7 +61,9 @@ export default function Create({ history }: RouteComponentProps) {
       border: 1px solid #939393;
     }
   `
+
   const Title = styled.p`
+    text-align: center;
     ${{ ...Typography.header.x70 }}
   `
   const Text = styled.p`
@@ -111,15 +74,30 @@ export default function Create({ history }: RouteComponentProps) {
   `
 
   const Around = styled.div`
+    width: 580px;
     display: flex;
     align-items: center;
     flex-direction: column;
+    @media only screen and (max-width: 700px) {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
     h4 {
       text-align: center;
       color: ${({ theme }) => theme.text1};
     }
     h3:hover {
       cursor: pointer;
+    }
+  `
+
+  const CreateMint = styled.div`
+    display: flex;
+    flex-direction: row;
+    @media only screen and (max-width: 700px) {
+      display: flex;
+      flex-direction: column;
     }
   `
 
@@ -161,16 +139,16 @@ export default function Create({ history }: RouteComponentProps) {
 
   return (
     <>
-      <Around style={{ width: '580px' }}>
+      <Around>
         <Title>Create collectible</Title>
         <Text>
           Choose “Single” if you want your collectible to be one of a kind or “Multiple” if you want to sell one
           collectible multiple times
         </Text>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <CreateMint>
           <SingleComponent />
           <MultipleComponent />
-        </div>
+        </CreateMint>
         <Text>We do not own your private keys and cannot access your funds without your confirmation</Text>
       </Around>
     </>
