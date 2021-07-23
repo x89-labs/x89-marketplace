@@ -2,12 +2,12 @@ import { ReactComponent as FixedPrice } from './svg/fixedprice.svg'
 import { ReactComponent as TimedAuction } from './svg/timed-auction.svg'
 import { ReactComponent as UnlimitedAuction } from './svg/unlimited-auction.svg'
 import { ReactComponent as Close } from './svg/ic_close.svg'
-import { ReactComponent as Plus } from './svg/ic_plus.svg'
+import { ReactComponent as Plus } from './svg/math-plus.svg'
 import { ReactComponent as Telegram } from './svg/telegram.svg'
 import { ReactComponent as Youtube } from './svg/youtube.svg'
 import { ReactComponent as Instagram } from './svg/instagram.svg'
 import { ReactComponent as Twitter } from './svg/twitter.svg'
-import { ReactComponent as DownArrow } from './svg/down-arrow.svg'
+import { ReactComponent as DownArrow } from './svg/arrow-down.svg'
 import { ReactComponent as Check } from './svg/check.svg'
 import { ReactComponent as Ethereum } from './svg/ethereum.svg'
 import { ReactComponent as BitCoin } from './svg/bitcoin.svg'
@@ -18,6 +18,10 @@ import { ReactComponent as WalletPicture } from './svg/wallet-picture.svg'
 import { ReactComponent as Avatar } from './svg/avatar.svg'
 import { ReactComponent as Star } from './svg/ic_star.svg'
 import { ReactComponent as BtnFooter } from './svg/button-footer.svg'
+import { ReactComponent as SingleCreateDark } from './svg/single-create-dark.svg'
+import { ReactComponent as SingleCreateLight } from './svg/single-create-light.svg'
+import { ReactComponent as MultiCreateDark } from './svg/multi-create-dark.svg'
+import { ReactComponent as MultiCreateLight } from './svg/multi-create-light.svg'
 import SrcLogo from './images/favicon.png'
 import SrcLive from './images/ic_live.png'
 import SrcETH from './images/ic_eth.png'
@@ -52,4 +56,8 @@ export {
   WalletPicture,
   Star,
   BtnFooter,
+  SingleCreateDark,
+  SingleCreateLight,
+  MultiCreateDark,
+  MultiCreateLight,
 }

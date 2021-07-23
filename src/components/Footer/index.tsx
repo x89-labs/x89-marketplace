@@ -10,9 +10,10 @@ const FooterFrame = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: auto;
   bottom: 0;
   background: ${({ theme }) => theme.bg2};
-  padding: 0 120px;
+  padding: 0 10%;
   margin-top: 4rem;
 `
 const Header = styled.div`

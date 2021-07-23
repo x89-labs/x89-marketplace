@@ -1,5 +1,5 @@
 import { CSSProperties } from 'styled-components'
-import { Outline, Sizing } from 'styles'
+import { Color, Outline, Sizing } from 'styles'
 
 import * as Colors from './color'
 import * as Typography from './typography'
@@ -15,18 +15,19 @@ export const btn: Record<Button, CSSProperties> = {
     ...Typography.fontSize.x30,
     ...Typography.fontWeight.semibold,
     color: Colors.neutral.white,
-    padding: `${Sizing.x15}px 0`,
+    padding: 8,
     cursor: 'pointer',
   },
   secondary: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: Colors.neutral.white,
-    borderRadius: Outline.borderRadius.base,
-    cursor: 'pointer',
+    textAlign: 'center',
+    background: `linear-gradient(#fff, #fff) padding-box, ${Color.linearGradient.button} border-box`,
+    color: Color.neutral.green,
     ...Typography.fontSize.x30,
-    ...Typography.fontWeight.bold,
-    color: Colors.neutral.green,
+    ...Typography.fontWeight.semibold,
+    padding: 8,
+    border: `2.5px solid transparent`,
+    borderRadius: Outline.borderRadius.base,
+    display: `inline-block`,
+    cursor: 'pointer',
   },
 }
