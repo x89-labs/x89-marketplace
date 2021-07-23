@@ -21,6 +21,9 @@ const Around = styled.div`
   border-radius: 16px;
   position: relative;
   background: ${({ theme }) => theme.bg3};
+  @media only screen and (max-width: 700px) {
+    width: 100%;
+  }
 `
 const CloseBtn = styled.div`
   width: 40px;
@@ -35,13 +38,17 @@ const CloseBtn = styled.div`
   .closeBtn {
     margin: 10px;
   }
+  @media only screen and (max-width: 700px) {
+    right: 14px;
+    top: 10px;
+  }
 `
 const ChooseFile = styled.div`
   width: 60px;
   height: 60px;
   border-radius: 30px;
+  margin: 14px auto;
   display: flex;
-  margin: auto;
   padding: 20px;
   border: 1px solid ${Color.neutral.gray};
   background: ${({ theme }) => theme.bg2};

@@ -124,6 +124,7 @@
     "integration-test": "start-server-and-test 'serve build -l 3000' http://localhost:3000 'cypress run'",
     "postinstall": "yarn compile-contract-types",
     "start": "yarn compile-contract-types &&  react-scripts start",
+    "dev": "react-scripts start",
     "test": "react-scripts test --env=jsdom",
     "up": "docker compose up",
     "deve": "react-scripts start"

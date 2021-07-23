@@ -12,7 +12,6 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 2rem;
   align-items: center;
 `
 const Header = styled.div`
@@ -82,6 +81,7 @@ const Option = styled.div`
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid #ccc;
+  flex-wrap: wrap;
 `
 
 const OptionItem = styled.div`
@@ -90,7 +90,7 @@ const OptionItem = styled.div`
 `
 
 const Content = styled.div`
-  margin-top: 2rem;
+  margin: 1rem;
   display: flex;
 `
 
@@ -116,7 +116,7 @@ export default function MyItem() {
         matrix[k].push(list[i])
       }
       return matrix.map((mt, i) => (
-        <div style={{ display: 'flex' }} key={i}>
+        <div style={{ display: 'flex', flexWrap: 'wrap' }} key={i}>
           {mt.map((item, index) => (
             <Content key={index}>
               <ItemView item={item} key={index} />
