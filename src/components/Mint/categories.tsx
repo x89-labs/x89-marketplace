@@ -6,39 +6,40 @@ import { useDispatch } from 'react-redux'
 import { fieldChange } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
 import { theme } from 'theme'
+import { Color, Outline, Typography } from 'styles'
+import { useModalOpen } from 'state/application/hooks'
+import { ApplicationModal } from 'state/application/actions'
 
 const Container = styled.div`
   margin-top: 1.2rem;
   align-self: center;
   justify-content: center;
-  width: 50%;
+  width: 200px;
 `
 const Title = styled.p`
-  font-size: 1.2rem;
-  font-weight: bold;
+  ${{ ...Typography.fontSize.x30 }}
+  ${{ ...Typography.fontWeight.bold }}
   color: ${({ theme }) => theme.text1};
 `
 const Around = styled.div`
   display: flex;
-  color: #9c9292;
+  color: ${Color.neutral.gray};
+  padding: 10px;
+  border-radius: ${Outline.borderRadius.base}px;
   margin: 0;
   cursor: pointer;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #ccc;
-  &:hover {
-    color: #000;
-  }
+  border: 1px solid ${Color.neutral.gray};
   h4 {
     margin: 2px;
   }
 `
 const DropDown = styled.div`
   margin-top: 0.6rem;
-  background-color: #fff;
-  box-shadow: rgb(4 4 5 / 20%) 0px 7px 36px -8px;
+  background: ${({ theme }) => theme.bg2};
   border-radius: 5px;
-  width: auto;
+  width: 200px;
   padding: 12px;
   height: auto;
   position: absolute;
@@ -54,14 +55,14 @@ const DropDown = styled.div`
       margin-right: 1rem;
     }
     p {
+      ${{ ...Typography.fontSize.x30 }}
+      ${{ ...Typography.fontWeight.bold }}
       margin-left: 12px;
-      font-size: 16px;
-      color: #000;
-      font-weight: 700;
+      color: ${({ theme }) => theme.text1};
     }
   }
   .item:hover {
-    background-color: #f0f0f0;
+    background: ${({ theme }) => theme.bg6};
   }
 `
 

@@ -34,12 +34,13 @@ import {
 } from 'constants/addresses'
 
 import { useMemo } from 'react'
-import { UniswapV3Factory, UniswapV3Pool } from 'types/v3'
 import { getContract } from 'utils'
 import { Erc20, ArgentWalletDetector, EnsPublicResolver, EnsRegistrar, Multicall2, Weth } from '../abis/types'
 import { UNI, WETH9_EXTENDED } from '../constants/tokens'
 import { useActiveWeb3React } from './web3'
 import { XNFT, XNFTInterface } from 'abis/types/XNFT'
+import { UniswapV3Factory } from 'types/v3/UniswapV3Factory'
+import { UniswapV3Pool } from 'types/v3/UniswapV3Pool'
 
 // returns null on errors
 export function useContract<T extends Contract = Contract>(

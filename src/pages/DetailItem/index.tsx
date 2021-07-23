@@ -25,6 +25,11 @@ const Container = styled.div`
   p {
     margin: 0 5px;
   }
+  @media only screen and (max-width: 700px) {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
 `
 const Image = styled.div`
   width: 60%;
@@ -36,6 +41,12 @@ const Image = styled.div`
     width: 60%;
     height: 100%;
     border-radius: 10px;
+    @media only screen and (max-width: 700px) {
+      width: 100%;
+    }
+  }
+  @media only screen and (max-width: 700px) {
+    width: 100%;
   }
 `
 const ContentItem = styled.div`
@@ -45,6 +56,9 @@ const ContentItem = styled.div`
   justify-content: space-between;
   border-left: 1px solid ${Color.neutral.gray2};
   width: 40%;
+  @media only screen and (max-width: 700px) {
+    width: 100%;
+  }
 `
 const HeaderContent = styled.div`
   padding: 0 1rem;
@@ -110,12 +124,6 @@ const NameItem = styled.p`
   ${{ ...Typography.fontWeight.bold }};
 `
 
-const ContentBtn = styled.div`
-  ${{ ...Button.btn.secondary }};
-  position: absolute;
-  width: 98%;
-  height: 90%;
-`
 const ButtonBuy = styled.div`
   ${{ ...Button.btn.primary }};
   width: ${Sizing.x240}px;
@@ -126,11 +134,8 @@ const ButtonBuy = styled.div`
   }
 `
 const ButtonBid = styled.div`
-  ${{ ...Button.btn.primary }};
+  ${{ ...Button.btn.secondary }};
   width: ${Sizing.x240}px;
-  height: 48px;
-  padding: 0;
-  position: relative;
   &:hover {
     opacity: 0.8;
   }
@@ -291,9 +296,7 @@ export default function DetailItem() {
           <ButtonBuy>
             Buy for {item?.price} {item?.symbol}
           </ButtonBuy>
-          <ButtonBid>
-            <ContentBtn>Place a Bids</ContentBtn>
-          </ButtonBid>
+          <ButtonBid>Place a Bids</ButtonBid>
         </FooterContent>
       </ContentItem>
     </Container>

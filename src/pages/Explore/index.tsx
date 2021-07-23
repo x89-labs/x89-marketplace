@@ -1,5 +1,3 @@
-import StableSelect from 'components/StableSelect'
-import ItemView from 'components/ItemView'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { fieldChange, getListItems } from 'state/explore/actions'
@@ -8,27 +6,18 @@ import styled from 'styled-components'
 import * as Asset from 'assets'
 import { optionsTopSeller, ListDicovery } from './config'
 import { Color, Outline, Sizing, Button, Typography } from 'styles'
-import HeaderExplore from 'components/HeaderExplore'
+import HeaderExplore from 'components/Header/Explore'
+import ItemView from './ItemView'
+import StableSelect from 'components/Mint/stableSelect'
+
 const BodyExplore = styled.div`
-  width: 100%;
-  padding: 0 ${Sizing.x140}px;
-`
-const BtnLoadmore = styled.div`
-  ${{ ...Button.btn.primary }};
-  width: ${Sizing.screen.width};
-  height: ${Sizing.x40}px;
-  margin-top: ${Sizing.x20}px;
-  padding: 0;
-  position: relative;
-`
-const ContentBtn = styled.div`
-  ${{ ...Button.btn.secondary }};
-  position: absolute;
-  width: 99.6%;
-  border-radius: 7px;
-  padding: 5.5px;
+  width: 90%;
 `
 
+const BtnLoadmore = styled.div`
+  ${{ ...Button.btn.secondary }};
+  width: 100%;
+`
 const TopSellerItem = styled.div`
   ${{ ...Outline.border.purple }}
   background: ${({ theme }) => theme.bg3};
@@ -44,6 +33,9 @@ const TopSellerItem = styled.div`
   &:hover {
     box-shadow: 2px 4px 8px #f0f0f0;
   }
+  @media only screen and (max-width: 700px) {
+    width: 100%;
+  }
 `
 
 const Avatar = styled.div`
@@ -51,7 +43,7 @@ const Avatar = styled.div`
   height: ${Sizing.x40}px;
   border-radius: ${Outline.borderRadius.small}px;
   margin-left: ${Sizing.x10}px;
-  postiton: relative;
+  position: relative;
   background-size: cover;
   background-position: center center;
   background-image: url(${Asset.SrcAvatar});
@@ -86,6 +78,7 @@ const Filter = styled.div`
   * {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
   }
   .itemFilter {
     ${{ ...Typography.fontWeight.bold }}
@@ -99,6 +92,9 @@ const Filter = styled.div`
       color: ${Color.neutral.black};
       background: ${Color.neutral.yellow};
     }
+    @media only screen and (max-width: 700px) {
+      display: none;
+    }
   }
   .btnFilter {
     cursor: pointer;
@@ -107,6 +103,9 @@ const Filter = styled.div`
     border-radius: ${Outline.borderRadius.small}px;
     height: 50px;
     color: ${Color.neutral.white};
+    @media only screen and (max-width: 700px) {
+      display: none;
+    }
   }
 `
 const ListItem = styled.div`
@@ -212,9 +211,7 @@ export default function Explore() {
             <ItemView item={item} key={index} />
           ))}
         </ListItem>
-        <BtnLoadmore onClick={onLoadMore}>
-          <ContentBtn>Load More</ContentBtn>
-        </BtnLoadmore>
+        <BtnLoadmore onClick={onLoadMore}>Load More</BtnLoadmore>
       </ContentGroup>
     </BodyExplore>
   )

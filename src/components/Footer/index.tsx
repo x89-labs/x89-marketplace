@@ -10,10 +10,14 @@ const FooterFrame = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: auto;
   bottom: 0;
   background: ${({ theme }) => theme.bg2};
-  padding: 0 120px;
+  padding: 0 10%;
   margin-top: 4rem;
+  @media only screen and (max-width: 700px) {
+    padding-bottom: 4rem;
+  }
 `
 const Header = styled.div`
   display: flex;
@@ -72,6 +76,11 @@ const InfoWithText = styled.div`
   .image:hover {
     opacity: 0.5;
   }
+  @media only screen and (max-width: 700px) {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
 `
 const FooterPolicy = styled.div`
   display: flex;
@@ -79,6 +88,9 @@ const FooterPolicy = styled.div`
   justify-content: center;
   padding: 20px 0;
   border-top: 1px dashed #ccc;
+  @media only screen and (max-width: 700px) {
+    padding: 0;
+  }
 `
 const activeClassName = 'ACTIVE'
 
