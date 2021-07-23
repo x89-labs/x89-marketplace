@@ -5,8 +5,6 @@ import styled from 'styled-components'
 import * as Asset from '../../assets'
 import { useIsDarkMode } from 'state/user/hooks'
 import { useMintState } from 'state/mint/hooks'
-import StableSelect from 'components/StableSelect'
-import OptionMintCreate from 'components/OptionMintCreate'
 import ReactPlayer from 'react-player'
 import { useDispatch } from 'react-redux'
 import { fieldChange, fileChange, getCategories, postItem, resetForm } from 'state/mint/actions'
@@ -22,6 +20,8 @@ import { XNFT_ADDRESS } from 'constants/addresses'
 import { Color, Typography } from 'styles'
 import Categories from 'components/Mint/categories'
 import UploadFile from 'components/Mint/UploadFile'
+import StableSelect from 'components/Mint/stableSelect'
+import OptionMintCreate from 'components/Mint/OptionMintCreate'
 interface ico {
   icon: any
   name: string
@@ -153,6 +153,10 @@ export const Single = ({ history }: RouteComponentProps) => {
       justify-content: center;
       align-items: center;
       text-align: center;
+      @media only screen and (max-width: 700px) {
+        width: 112px;
+        height: 120px;
+      }
     }
 
     .image {
@@ -163,10 +167,14 @@ export const Single = ({ history }: RouteComponentProps) => {
 
   const Preview = styled.div`
     .preview {
-      margin-top: 4rem;
+      postition: fixed;
+      margin: 4rem 0 0 2rem;
       position: relative;
       height: 390px;
       width: 240px;
+      @media only screen and (max-width: 700px) {
+        display: none;
+      }
     }
 
     .pr {
@@ -201,7 +209,7 @@ export const Single = ({ history }: RouteComponentProps) => {
     margin-right: 20px;
     .form__group {
       margin-top: 10px;
-      background: #f7f2f7;
+      background: ${({ theme }) => theme.bg1};
       height: 48px;
       display: flex;
       flex-direction: row;
@@ -210,16 +218,18 @@ export const Single = ({ history }: RouteComponentProps) => {
       border-radius: 10px;
     }
     input {
-      background: #f7f2f7;
+      background: ${({ theme }) => theme.bg1};
+      color: ${({ theme }) => theme.text1};
       width: 100%;
       border: none;
       outline: none;
+      margin: 4px;
     }
   `
   const ErrorMessage = styled.div`
     color: red;
-    font-weight: 700;
-    font-size: 0.8rem;
+    ${{ ...Typography.fontSize.x30 }}
+    ${{ ...Typography.fontWeight.bold }}
   `
   const UnlockPurchased = styled.div`
     display: flex;

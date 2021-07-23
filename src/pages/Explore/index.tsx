@@ -1,4 +1,3 @@
-import StableSelect from 'components/StableSelect'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { fieldChange, getListItems } from 'state/explore/actions'
@@ -9,6 +8,7 @@ import { optionsTopSeller, ListDicovery } from './config'
 import { Color, Outline, Sizing, Button, Typography } from 'styles'
 import HeaderExplore from 'components/Header/Explore'
 import ItemView from './ItemView'
+import StableSelect from 'components/Mint/stableSelect'
 
 const BodyExplore = styled.div`
   width: 90%;
