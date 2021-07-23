@@ -7,9 +7,7 @@ import { useIsDarkMode } from 'state/user/hooks'
 import { useMintState } from 'state/mint/hooks'
 import StableSelect from 'components/StableSelect'
 import OptionMintCreate from 'components/OptionMintCreate'
-import UploadFile from 'components/UploadFile'
 import ReactPlayer from 'react-player'
-import Categories from 'components/Categories'
 import { useDispatch } from 'react-redux'
 import { fieldChange, fileChange, getCategories, postItem, resetForm } from 'state/mint/actions'
 import { getIn, useFormik } from 'formik'
@@ -21,6 +19,9 @@ import { Ipfs } from 'hooks/ipfs'
 import Switch from 'react-switch'
 import useIsXNFTContract from 'hooks/useXNFTContract'
 import { XNFT_ADDRESS } from 'constants/addresses'
+import { Color, Typography } from 'styles'
+import Categories from 'components/Mint/categories'
+import UploadFile from 'components/Mint/UploadFile'
 interface ico {
   icon: any
   name: string
@@ -107,25 +108,16 @@ export const Single = ({ history }: RouteComponentProps) => {
 
   useEffect(() => {
     setSwitchType(SwitchType.FixedPrice)
-    // dispatch(getCategories())
+    dispatch(getCategories())
   }, [])
 
+  const Container = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  `
   const Around = styled.div`
-    p {
-      color: ${({ theme }) => theme.text5};
-      fontweight: bold;
-      line-height: 0.5;
-    }
-    h3 {
-      margin: 0;
-    }
-    h3:hover {
-      cursor: pointer;
-    }
-    h1 {
-      margin: 1rem 0;
-    }
-
     .labelUpload {
       color: ${({ theme }) => theme.text5};
     }
@@ -133,6 +125,15 @@ export const Single = ({ history }: RouteComponentProps) => {
     .unlockOncePurchased {
       color: ${({ theme }) => theme.text5};
     }
+  `
+
+  const Title = styled.p`
+    ${{ ...Typography.header.x30 }}
+  `
+  const Text = styled.p`
+    ${{ ...Typography.fontSize.x20 }}
+    color: ${Color.neutral.gray}
+    margin: 4px 0;
   `
   const Create = styled.div`
     * {
@@ -143,11 +144,11 @@ export const Single = ({ history }: RouteComponentProps) => {
     .marketplace {
       display: flex;
       flex-direction: column;
-      width: 140px;
+      width: 170px;
       height: 140px;
       border: 2px solid lightgray;
       border-radius: 16px;
-      margin: 10px;
+      margin: 20px 10px 0 0;
       cursor: pointer;
       justify-content: center;
       align-items: center;
@@ -195,10 +196,6 @@ export const Single = ({ history }: RouteComponentProps) => {
       border-radius: 5px;
     }
   `
-  const LableTitle = styled.h4`
-    font-weight: 700;
-    margin: 0;
-  `
   const TextInput = styled.div`
     margin-top: 40px;
     margin-right: 20px;
@@ -208,18 +205,15 @@ export const Single = ({ history }: RouteComponentProps) => {
       height: 48px;
       display: flex;
       flex-direction: row;
-      border-bottom: 1px solid #ccc;
+      border: 1px solid #ccc;
       justify-content: flex-end;
+      border-radius: 10px;
     }
     input {
       background: #f7f2f7;
       width: 100%;
       border: none;
       outline: none;
-    }
-    p {
-      font-weight: 700;
-      font-size: 0.8rem;
     }
   `
   const ErrorMessage = styled.div`
@@ -231,17 +225,9 @@ export const Single = ({ history }: RouteComponentProps) => {
     display: flex;
   `
   const UnlockTitle = styled.h2`
-    background-color: #ca4246;
     width: 18rem;
     margin: 0;
-    background-image: linear-gradient(
-      145deg,
-      rgb(12, 80, 255) 0%,
-      rgb(12, 80, 255) 13%,
-      rgb(91, 157, 255) 25.73%,
-      rgb(255, 116, 241) 75%,
-      rgb(255, 116, 241) 100%
-    );
+    background: ${Color.linearGradient.button};
     background-size: 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -323,7 +309,7 @@ export const Single = ({ history }: RouteComponentProps) => {
           if (f.type === Type.Input) {
             return (
               <TextInput key={index}>
-                <LableTitle style={{ margin: 0 }}>{f.title}</LableTitle>
+                <Title style={{ margin: 0 }}>{f.title}</Title>
                 <div className="form__group ">
                   <input
                     id={f.id}
@@ -334,13 +320,13 @@ export const Single = ({ history }: RouteComponentProps) => {
                   />
                 </div>
                 <ErrorMessage>{errorMessage(f.id)}</ErrorMessage>
-                <p>{f.panel}</p>
+                <Text>{f.panel}</Text>
               </TextInput>
             )
           } else if (f.type === Type.InputDropdown) {
             return (
               <TextInput key={index}>
-                <LableTitle style={{ margin: 0 }}>{f.title}</LableTitle>
+                <Title style={{ margin: 0 }}>{f.title}</Title>
                 <div className="form__group ">
                   <input
                     id={f.id}
@@ -351,7 +337,7 @@ export const Single = ({ history }: RouteComponentProps) => {
                   />
                   <StableSelect option={f.option} id={f.idDropdown} />
                 </div>
-                <p>{f.panel}</p>
+                <Text>{f.panel}</Text>
               </TextInput>
             )
           } else if (f.type === Type.Dropdown) {
@@ -370,22 +356,22 @@ export const Single = ({ history }: RouteComponentProps) => {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-      <Around style={{ width: '516px' }}>
-        <h3 onClick={() => history.goBack()}>{FeatherIcon(icons)}</h3>
-        <h1>Create {CreateType()} collectible</h1>
-        <LableTitle>UploadFile</LableTitle>
+    <Container>
+      <Around>
+        <Title onClick={() => history.goBack()}>{FeatherIcon(icons)}</Title>
+        <h1 style={{ textAlign: 'center' }}>Create {CreateType()} collectible</h1>
+        <Title>UploadFile</Title>
         <UploadFile />
         <Categories />
         <div style={{ marginTop: 40 }}>
-          <LableTitle>Put on marketplace</LableTitle>
+          <Title>Put on marketplace</Title>
           <div style={{ marginBottom: 20 }}>
             {switchType === 1 ? (
-              <p>Enter price to allow users instantly purchase your NFT</p>
+              <Text>Enter price to allow users instantly purchase your NFT</Text>
             ) : switchType === 2 ? (
-              <p>Set a period of time for which buyers can place bids</p>
+              <Text>Set a period of time for which buyers can place bids</Text>
             ) : (
-              <p>{`Put your new NFT on Polrare's marketplace`}</p>
+              <Text>{`Put your new NFT on Polrare's marketplace`}</Text>
             )}
 
             <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -406,7 +392,7 @@ export const Single = ({ history }: RouteComponentProps) => {
           <UnlockPurchased>
             <div>
               <UnlockTitle>Unlock once purchased</UnlockTitle>
-              <p>Content will be unlocked after successful transaction</p>
+              <Text>Content will be unlocked after successful transaction</Text>
             </div>
             <Switch
               onChange={() => setChecked(!checked)}
@@ -431,12 +417,12 @@ export const Single = ({ history }: RouteComponentProps) => {
           <div className="pr">
             <h4>Preview</h4>
             <div className="content">
-              <p hidden={state.file ? true : false}> Upload file to preview your brand new NFT</p>
+              <Text hidden={state.file ? true : false}> Upload file to preview your brand new NFT</Text>
               <PreviewFile />
             </div>
           </div>
         </div>
       </Preview>
-    </div>
+    </Container>
   )
 }

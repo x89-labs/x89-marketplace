@@ -66,7 +66,7 @@ export const lineHeight: Record<LineHeight, CSSProperties> = {
     lineHeight: 38,
   },
   x70: {
-    lineHeight: 44,
+    lineHeight: 40,
   },
 }
 

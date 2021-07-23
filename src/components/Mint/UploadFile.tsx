@@ -7,42 +7,45 @@ import { useMintState } from 'state/mint/hooks'
 import styled from 'styled-components'
 import * as Asset from 'assets'
 import { useIsDarkMode } from 'state/user/hooks'
-import { Ipfs } from 'hooks/ipfs'
 import ReactPlayer from 'react-player'
+import { Color } from 'styles'
 
 const Around = styled.div`
   margin-top: 10px;
-  width: 460px;
+  width: 560px;
   height: auto;
-  padding: 32px 60px 32px 60px;
-  border: 1px dashed lightgray;
-  borderradius: 16px;
+  border: 1px dashed ${Color.neutral.gray};
+  display: flex;
+  justify-content: center;
+  padding: 30px 0;
+  border-radius: 16px;
   position: relative;
+  background: ${({ theme }) => theme.bg3};
 `
 const CloseBtn = styled.div`
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
   position: absolute;
+  padding: 4px 3px;
   top: 20px;
-  right: 62px;
-  border: 1px solid #ccc;
+  right: 39px;
+  border: 1px solid ${Color.neutral.gray};
   cursor: pointer;
   .closeBtn {
     margin: 10px;
   }
 `
 const ChooseFile = styled.div`
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  display: flex;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid ${Color.neutral.gray};
+  background: ${({ theme }) => theme.bg2};
   cursor: pointer;
-  margin-top: 16px;
-  margin-left: 100px;
-  text-align: center;
-  width: 8rem;
-  font-weight: bold;
-  padding: 12px;
-  border-radius: 40px;
-  color: rgba(0, 102, 255, 0.9);
-  background: rgba(0, 102, 255, 0.2);
 `
 
 export default function UploadFile() {
@@ -51,7 +54,7 @@ export default function UploadFile() {
   const darkMode = useIsDarkMode()
   const [openFileSelector, { plainFiles }] = useFilePicker({
     multiple: false,
-    accept: ['.png', '.jpg', '.mp4', '.mov', '.gif'],
+    accept: ['.png', '.jpg', '.mp4', '.mov', '.gif', '.svg'],
     readAs: 'DataURL',
   })
 
@@ -63,7 +66,7 @@ export default function UploadFile() {
   const PreviewFile = () => {
     if (state.file) {
       if (state.file.type.includes('image')) {
-        return <img src={URL.createObjectURL(state.file)} width={'90%'} height={240} style={{ borderRadius: 10 }}></img>
+        return <img src={URL.createObjectURL(state.file)} width={'70%'} height={240} style={{ borderRadius: 10 }}></img>
       } else {
         return (
           <ReactPlayer
@@ -71,7 +74,7 @@ export default function UploadFile() {
             playing={false}
             muted={true}
             controls={true}
-            width={'90%'}
+            width={'70%'}
             height={'auto'}
           />
         )
@@ -84,7 +87,9 @@ export default function UploadFile() {
       <FormGroup hidden={state.file ? true : false}>
         <Label className="labelUpload">PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</Label>
         <br />
-        <ChooseFile onClick={() => openFileSelector()}>Choose File</ChooseFile>
+        <ChooseFile onClick={() => openFileSelector()}>
+          <Asset.Plus width={20} height={20} />
+        </ChooseFile>
       </FormGroup>
       <FormGroup hidden={state.file ? false : true}>
         <CloseBtn
@@ -92,9 +97,11 @@ export default function UploadFile() {
             state.file && dispatch(deleteFile({ value: state.file }))
           }}
         >
-          <Asset.Close width={8} height={8} className="closeBtn" fill={darkMode ? '#fff' : '#000'} />
+          <Asset.Close width={12} height={12} className="closeBtn" fill={darkMode ? '#fff' : '#000'} />
         </CloseBtn>
-        <PreviewFile />
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <PreviewFile />
+        </div>
       </FormGroup>
     </Around>
   )

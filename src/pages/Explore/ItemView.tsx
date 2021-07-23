@@ -28,6 +28,9 @@ const Container = styled(NavLink).attrs({
   &:hover {
     box-shadow: 0 2px 5px rgba(255, 101, 47, 0.2);
   }
+  @media only screen and (max-width: 700px) {
+    width: 100%;
+  }
 `
 const ItemContent = styled.div`
   display: flex;
@@ -48,7 +51,7 @@ const ItemName = styled.p`
 `
 const ImageDisPlay = styled.div`
   postition: relative;
-  width: ${Sizing.x255}px;
+  width: 100%;
   height: ${Sizing.x200}px;
   border-radius: ${Outline.borderRadius.base}px;
   overflow: hidden;
@@ -58,7 +61,7 @@ const ImageDisPlay = styled.div`
 `
 
 const Image = styled.img`
-  width: ${Sizing.x255}px;
+  width: 100%;
   border-radius: ${Outline.borderRadius.base}px;
   height: ${Sizing.x200}px;
   transition: transform 0.2s;
@@ -153,7 +156,7 @@ export default function ItemView({ index, item, isLiveAuction }: ItemView) {
           url={item.image}
           muted={true}
           playing={true}
-          width={'255px'}
+          width={'100%'}
           height={'200px'}
           loop={true}
           style={{ borderRadius: 10 }}

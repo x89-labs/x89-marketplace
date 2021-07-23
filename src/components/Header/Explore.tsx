@@ -15,6 +15,9 @@ const HeaderLayer = styled.div`
   width: ${Sizing.screen.width};
   border-radius: ${Outline.borderRadius.large}px;
   background: ${Color.linearGradient.layer};
+  @media only screen and (max-width: 900px) {
+    display: none;
+  }
 `
 const Header = styled.div`
   display: flex;
@@ -39,17 +42,8 @@ const ButtonHeader = styled.div`
   text-align: center;
 `
 const ButtonBorder = styled.div`
-  ${{ ...Button.btn.primary }};
-  width: ${Sizing.x240}px;
-  padding: 0;
-  position: relative;
-`
-
-const ContentBtn = styled.div`
   ${{ ...Button.btn.secondary }};
-  position: absolute;
-  width: 99%;
-  height: 90%;
+  width: ${Sizing.x240}px;
 `
 const TitleGreen = styled.p`
   ${{ ...Typography.header.x70 }}
@@ -82,7 +76,7 @@ const ListItem = styled.div`
   }
 `
 const Item = styled.div`
-  postiton: relative;
+  position: relative;
   border-radius: ${Outline.borderRadius.base}px;
   min-width: ${Sizing.x255}px;
   height: ${Sizing.x320}px;
@@ -145,9 +139,7 @@ export default function HeaderExplore() {
             <Text>Marketplace for crypto collectibies non-fungible token (NFTs).</Text>
             <div style={{ display: 'flex', margin: '14px 0' }}>
               <ButtonHeader>Explore more</ButtonHeader>
-              <ButtonBorder>
-                <ContentBtn>Start Create</ContentBtn>
-              </ButtonBorder>
+              <ButtonBorder>Start Create</ButtonBorder>
             </div>
           </LeftHeader>
           <RightHeader>

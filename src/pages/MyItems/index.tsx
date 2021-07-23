@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { getMyItems } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
 import styled from 'styled-components'
-import ItemView from 'components/ItemView'
+import ItemView from 'pages/Explore/ItemView'
 import * as Asset from 'assets'
 import { shortenAddress } from 'utils'
 const Container = styled.div`
