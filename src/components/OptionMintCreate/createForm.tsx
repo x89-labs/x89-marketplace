@@ -11,7 +11,7 @@ import { Ipfs } from 'hooks/ipfs'
 import { useActiveWeb3React } from 'hooks/web3'
 import * as Yup from 'yup'
 import { validationFormCreateSchema } from 'pages/Create/config'
-import { XNFT_ADDRESS } from 'constants/addresses'
+import { POLRARE_ADDRESS } from 'constants/addresses'
 
 const Container = styled.div`
   padding: 1rem;
@@ -127,7 +127,7 @@ export default function CreateModal() {
               name: values.name,
               description: values.description,
               price: values.price,
-              contractAddress: XNFT_ADDRESS[1],
+              contractAddress: POLRARE_ADDRESS[1],
               assetId: '1233',
               symbol: state.symbol,
               image: hash,

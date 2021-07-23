@@ -56,6 +56,7 @@ export const V3_MIGRATOR_ADDRESSES: AddressMap = constructSameAddressMap(
   '0xA5644E29708357803b5A882D272c41cC0dF92B34',
   true
 )
-export const XNFT_ADDRESS: AddressMap = {
+export const POLRARE_ADDRESS: AddressMap = {
+  [SupportedChainId.ROPSTEN]: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
   [SupportedChainId.MAINNET]: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
 }

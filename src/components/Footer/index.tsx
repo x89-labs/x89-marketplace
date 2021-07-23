@@ -124,11 +124,11 @@ export default function Footer() {
   const darkMode = useIsDarkMode()
   return (
     <FooterFrame>
-      <Header>
+      {/* <Header>
         <img src={Asset.SrcLogo} width={28} height={27} />
         <Title style={{ margin: '0 40px 0 10px', fontWeight: 'bold' }}>POLRARE </Title>
         <Title>NFT Maketplace</Title>
-      </Header>
+      </Header> */}
       <Content>
         <InfoWithSearch>
           <BoldText>Join Maketplace</BoldText>
@@ -157,9 +157,6 @@ export default function Footer() {
           <StyledExternalLink id={`stake-nav-link`} href={'https://musuem.polrare.co'}>
             <Text>Museum</Text>
           </StyledExternalLink>
-          <StyledExternalLink id={`stake-nav-link`} href={'#'}>
-            <Text>Become a partner</Text>
-          </StyledExternalLink>
         </InfoWithText>
         <InfoWithText>
           <BoldText>Community</BoldText>
@@ -169,10 +166,13 @@ export default function Footer() {
           <Text>Discussion</Text>
           <Text>Voting</Text>
           <Text>Suggest feature</Text>
+          <StyledExternalLink id={`stake-nav-link`} href={'#'}>
+            <Text>Become a partner</Text>
+          </StyledExternalLink>
         </InfoWithText>
         <InfoWithText>
           <BoldText>Find Us on</BoldText>
-          <StyledExternalLink id={`stake-nav-link`} href={'https://twitter.com/x89_nft'}>
+          <StyledExternalLink id={`stake-nav-link`} href={'https://twitter.com/polrare'}>
             <Asset.Twitter className="image" fill={darkMode ? '#fff' : Color.neutral.green} />
             <Text>Twitter</Text>
           </StyledExternalLink>
