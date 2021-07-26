@@ -10,7 +10,7 @@ import { useFormik } from 'formik'
 import { Ipfs } from 'hooks/ipfs'
 import { useActiveWeb3React } from 'hooks/web3'
 import * as Yup from 'yup'
-import { validationFormCreateSchema } from 'pages/Create/config'
+import { validationFormCreateSchema } from 'state/mint/config'
 import { POLRARE_ADDRESS } from 'constants/addresses'
 
 const Container = styled.div`

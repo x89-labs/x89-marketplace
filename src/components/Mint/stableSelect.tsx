@@ -9,6 +9,7 @@ import { textColor } from 'styled-system'
 import { useDispatch } from 'react-redux'
 import { fieldChange } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
+import { Typography } from 'styles'
 interface TableSelection {
   a?: string
   option?: any[]
@@ -16,52 +17,6 @@ interface TableSelection {
   textColor?: string
   id?: string
 }
-
-const Around = styled.div`
-  display: flex;
-  color: #9c9292;
-  margin: 0;
-  cursor: pointer;
-  justify-content: space-between;
-  align-items: center;
-  &:hover {
-    color: #000;
-  }
-  h4 {
-    margin: 2px;
-  }
-`
-const DropDown = styled.div`
-  margin-top: 0.6rem;
-  background-color: #fff;
-  box-shadow: rgb(4 4 5 / 20%) 0px 7px 36px -8px;
-  border-radius: 5px;
-  min-width: 8rem;
-  width: auto;
-  padding: 12px;
-  height: auto;
-  position: absolute;
-  .item {
-    display: flex;
-    cursor: pointer;
-    justify-content: space-between;
-    align-items: center;
-    width: auto;
-    .itemName {
-      display: flex;
-      align-items: center;
-    }
-    p {
-      margin-left: 12px;
-      font-size: 16px;
-      color: #000;
-      font-weight: 700;
-    }
-  }
-  .item:hover {
-    background-color: #f0f0f0;
-  }
-`
 
 export default function StableSelect({ option, width, textColor, id }: TableSelection) {
   const [show, setShow] = useState(true)
@@ -73,20 +28,65 @@ export default function StableSelect({ option, width, textColor, id }: TableSele
   const dispatch = useDispatch()
   const state = useMintState()
 
+  const Container = styled.div`
+    padding: 10px;
+    align-self: center;
+    min-width: ${width};
+    justify-content: space-between;
+    postiton: relative;
+  `
+  const Around = styled.div`
+    display: flex;
+    color: #9c9292;
+    margin: 0;
+    cursor: pointer;
+    justify-content: space-between;
+    align-items: center;
+    h4 {
+      margin: 0;
+    }
+  `
+  const DropDown = styled.div`
+    margin-top: 1rem;
+    background: ${({ theme }) => theme.bg2};
+    box-shadow: rgb(4 4 5 / 20%) 0px 7px 36px -8px;
+    border-radius: 5px;
+    min-width: 300px;
+    padding: 12px;
+    height: auto;
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    .item {
+      display: flex;
+      cursor: pointer;
+      justify-content: space-between;
+      align-items: center;
+      width: auto;
+      .itemName {
+        display: flex;
+        align-items: center;
+        margin-right: 1rem;
+      }
+      p {
+        ${{ ...Typography.fontSize.x30 }}
+        ${{ ...Typography.fontWeight.bold }}
+        margin-left: 12px;
+        color: ${({ theme }) => theme.text1};
+      }
+    }
+    .item:hover {
+      background: ${({ theme }) => theme.bg6};
+    }
+  `
+
   return (
-    <div
-      style={{ alignSelf: 'center', width: width, justifyContent: 'space-between', margin: '0 5px' }}
-      ref={node as any}
-    >
-      <Around
-        onClick={() => {
-          setShow(false)
-        }}
-      >
-        <h4 style={{ color: textColor ? textColor : '' }}>{selected ? selected : option && option[0]?.name}</h4>
-        <Asset.DownArrow width={12} height={12} fill={textColor ?? '#9c9292'} />
+    <Container ref={node as any}>
+      <Around onClick={() => setShow(false)}>
+        <h4>{selected ? selected : option && option[0]?.name}</h4>
+        <Asset.DownArrow width={12} height={12} />
       </Around>
-      <DropDown hidden={show} className="dropdown">
+      <DropDown hidden={show}>
         {option?.map((item, index) => (
           <div
             className="item"
@@ -105,6 +105,6 @@ export default function StableSelect({ option, width, textColor, id }: TableSele
           </div>
         ))}
       </DropDown>
-    </div>
+    </Container>
   )
 }

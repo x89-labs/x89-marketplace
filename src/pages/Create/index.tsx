@@ -27,7 +27,6 @@ export default function Create({ history }: RouteComponentProps) {
       position: relative;
       width: 250px;
       height: 270px;
-      /* border: 2px solid lightgray; */
       border-radius: 16px;
       margin: 10px;
       padding: 49px 16px 33px 16px;

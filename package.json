@@ -29,6 +29,7 @@
     "@types/react-dom": "^17.0.1",
     "@types/react-redux": "^7.1.16",
     "@types/react-router-dom": "^5.0.0",
+    "@types/react-slick": "^0.23.5",
     "@types/react-virtualized-auto-sizer": "^1.0.0",
     "@types/react-window": "^1.8.2",
     "@types/rebass": "^4.0.7",
@@ -51,7 +52,6 @@
     "@web3-react/core": "^6.0.9",
     "@web3-react/fortmatic-connector": "^6.0.9",
     "@web3-react/injected-connector": "^6.0.7",
-    "@types/react-slick": "^0.23.5",
     "ajv": "^6.12.3",
     "cids": "^1.0.0",
     "copy-to-clipboard": "^3.2.0",
@@ -149,6 +149,7 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "react-calendar": "^3.4.0",
     "react-countdown": "^2.3.2",
     "react-switch": "^6.0.0"
   }
