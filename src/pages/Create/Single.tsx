@@ -11,7 +11,7 @@ import { fieldChange, fileChange, getCategories, postItem, resetForm } from 'sta
 import { getIn, useFormik } from 'formik'
 import { BodyItem } from 'models/bodyItem'
 import { useActiveWeb3React } from 'hooks/web3'
-import { Forms, validationFormCreateSchema } from './config'
+import { Forms, validationFormCreateSchema } from '../../state/mint/config'
 import { Type } from 'models/formInput'
 import { Ipfs } from 'hooks/ipfs'
 import Switch from 'react-switch'
@@ -32,12 +32,6 @@ const icons: ico = {
   name: 'Manage collectible type',
 }
 
-enum SwitchType {
-  FixedPrice = 1,
-  TimedAuction,
-  UnlimitedAuction,
-}
-
 const FeatherIcon = (icon: ico) => {
   return (
     <div style={{ position: 'relative', left: '0', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -52,8 +46,6 @@ export const Single = ({ history }: RouteComponentProps) => {
   const state = useMintState()
   const darkMode = useIsDarkMode()
   const { account } = useActiveWeb3React()
-  const [switchType, setSwitchType] = useState<SwitchType>()
-  const [checked, setChecked] = useState(true)
   const { addFee } = useIsXNFTContract()
 
   const formik = useFormik({
@@ -97,17 +89,7 @@ export const Single = ({ history }: RouteComponentProps) => {
     },
   })
 
-  const errorMessage = (fieldName: string) => {
-    const touched = getIn(formik.touched, fieldName)
-    const error = getIn(formik.errors, fieldName)
-    if (touched && error) {
-      return error
-    }
-    return undefined
-  }
-
   useEffect(() => {
-    setSwitchType(SwitchType.FixedPrice)
     dispatch(getCategories())
   }, [])
 
@@ -135,36 +117,6 @@ export const Single = ({ history }: RouteComponentProps) => {
     color: ${Color.neutral.gray}
     margin: 4px 0;
   `
-  const Create = styled.div`
-    * {
-      display: flex;
-      flex-direction: row;
-    }
-
-    .marketplace {
-      display: flex;
-      flex-direction: column;
-      width: 170px;
-      height: 140px;
-      border: 2px solid lightgray;
-      border-radius: 16px;
-      margin: 20px 10px 0 0;
-      cursor: pointer;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      @media only screen and (max-width: 700px) {
-        width: 112px;
-        height: 120px;
-      }
-    }
-
-    .image {
-      width: 40px;
-      height: 40px;
-    }
-  `
-
   const Preview = styled.div`
     .preview {
       postition: fixed;
@@ -204,44 +156,6 @@ export const Single = ({ history }: RouteComponentProps) => {
       border-radius: 5px;
     }
   `
-  const TextInput = styled.div`
-    margin-top: 40px;
-    margin-right: 20px;
-    .form__group {
-      margin-top: 10px;
-      background: ${({ theme }) => theme.bg1};
-      height: 48px;
-      display: flex;
-      flex-direction: row;
-      border: 1px solid #ccc;
-      justify-content: flex-end;
-      border-radius: 10px;
-    }
-    input {
-      background: ${({ theme }) => theme.bg1};
-      color: ${({ theme }) => theme.text1};
-      width: 100%;
-      border: none;
-      outline: none;
-      margin: 4px;
-    }
-  `
-  const ErrorMessage = styled.div`
-    color: red;
-    ${{ ...Typography.fontSize.x30 }}
-    ${{ ...Typography.fontWeight.bold }}
-  `
-  const UnlockPurchased = styled.div`
-    display: flex;
-  `
-  const UnlockTitle = styled.h2`
-    width: 18rem;
-    margin: 0;
-    background: ${Color.linearGradient.button};
-    background-size: 100%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  `
 
   const PreviewFile = () => {
     if (state.file) {
@@ -267,103 +181,6 @@ export const Single = ({ history }: RouteComponentProps) => {
   const CreateType = () => {
     return 'single'
   }
-  const FixedPrice = () => {
-    return (
-      <div
-        className="marketplace"
-        onClick={() => setSwitchType(SwitchType.FixedPrice)}
-        style={{
-          border: switchType === SwitchType.FixedPrice ? '2px solid rgb(0, 102, 255)' : '2px solid lightgray',
-        }}
-      >
-        <Asset.FixedPrice className="image" fill={darkMode ? '#ffffff' : '#000000'} />
-        <h4>Fixed price</h4>
-      </div>
-    )
-  }
-
-  const TimedAuction = () => {
-    return (
-      <div
-        className="marketplace"
-        onClick={() => setSwitchType(SwitchType.TimedAuction)}
-        style={{
-          border: switchType === SwitchType.TimedAuction ? '2px solid rgb(0, 102, 255)' : '2px solid lightgray',
-        }}
-      >
-        <Asset.TimedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
-        <h4>Timed auction</h4>
-      </div>
-    )
-  }
-
-  const UnlimitedAuction = () => {
-    return (
-      <div
-        className="marketplace"
-        onClick={() => setSwitchType(SwitchType.UnlimitedAuction)}
-        style={{
-          border: switchType === SwitchType.UnlimitedAuction ? '2px solid rgb(0, 102, 255)' : '2px solid lightgray',
-        }}
-      >
-        <Asset.UnlimitedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
-        <h4>Unlimited auction</h4>
-      </div>
-    )
-  }
-
-  const FormInput = (location?: string) => {
-    return Forms.map((r, i) => {
-      if (location === r.location) {
-        return r.control?.map((f, index) => {
-          if (f.type === Type.Input) {
-            return (
-              <TextInput key={index}>
-                <Title style={{ margin: 0 }}>{f.title}</Title>
-                <div className="form__group ">
-                  <input
-                    id={f.id}
-                    type={'input'}
-                    placeholder={f.placeHolder}
-                    onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
-                    defaultValue={getIn(formik.values, f.id)}
-                  />
-                </div>
-                <ErrorMessage>{errorMessage(f.id)}</ErrorMessage>
-                <Text>{f.panel}</Text>
-              </TextInput>
-            )
-          } else if (f.type === Type.InputDropdown) {
-            return (
-              <TextInput key={index}>
-                <Title style={{ margin: 0 }}>{f.title}</Title>
-                <div className="form__group ">
-                  <input
-                    id={f.id}
-                    type={'input'}
-                    placeholder={f.placeHolder}
-                    onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
-                    defaultValue={getIn(formik.values, f.id)}
-                  />
-                  <StableSelect option={f.option} id={f.idDropdown} />
-                </div>
-                <Text>{f.panel}</Text>
-              </TextInput>
-            )
-          } else if (f.type === Type.Dropdown) {
-            return (
-              <TextInput style={{ width: '50%' }} key={f.id}>
-                <h3 style={{ margin: 0 }}>{f.title}</h3>
-                <div className="form__group ">
-                  <StableSelect option={f.option} width={'100%'} />
-                </div>
-              </TextInput>
-            )
-          }
-        })
-      }
-    })
-  }
 
   return (
     <Container>
@@ -373,54 +190,7 @@ export const Single = ({ history }: RouteComponentProps) => {
         <Title>UploadFile</Title>
         <UploadFile />
         <Categories />
-        <div style={{ marginTop: 40 }}>
-          <Title>Put on marketplace</Title>
-          <div style={{ marginBottom: 20 }}>
-            {switchType === 1 ? (
-              <Text>Enter price to allow users instantly purchase your NFT</Text>
-            ) : switchType === 2 ? (
-              <Text>Set a period of time for which buyers can place bids</Text>
-            ) : (
-              <Text>{`Put your new NFT on Polrare's marketplace`}</Text>
-            )}
-
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <Create>
-                <div>
-                  <FixedPrice />
-                  <TimedAuction />
-                  <UnlimitedAuction />
-                </div>
-              </Create>
-            </div>
-          </div>
-
-          <div>
-            {switchType === SwitchType.FixedPrice && FormInput('price')}
-            {switchType === SwitchType.TimedAuction && FormInput('bids')}
-          </div>
-          <UnlockPurchased>
-            <div>
-              <UnlockTitle>Unlock once purchased</UnlockTitle>
-              <Text>Content will be unlocked after successful transaction</Text>
-            </div>
-            <Switch
-              onChange={() => setChecked(!checked)}
-              checked={checked}
-              onColor="#86d3ff"
-              onHandleColor="#2693e6"
-              handleDiameter={20}
-              uncheckedIcon={false}
-              checkedIcon={false}
-              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-              height={20}
-              width={40}
-            />
-          </UnlockPurchased>
-          {FormInput('infomation')}
-          <OptionMintCreate formik={formik} />
-        </div>
+        <OptionMintCreate formik={formik} isSingle={true} />
       </Around>
       <Preview>
         <div className="preview">

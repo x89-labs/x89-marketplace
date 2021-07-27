@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { fieldChange, getListItems } from 'state/explore/actions'
+import { fieldChange, getListItems, searchItems } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
 import styled from 'styled-components'
 import * as Asset from 'assets'
-import { optionsTopSeller, ListDicovery } from './config'
 import { Color, Outline, Sizing, Button, Typography } from 'styles'
 import HeaderExplore from 'components/Header/Explore'
 import ItemView from './ItemView'
 import StableSelect from 'components/Mint/stableSelect'
+import { ListHotBid, optionsTopSeller } from 'state/explore/config'
+import { getCategories } from 'state/mint/actions'
+import { useMintState } from 'state/mint/hooks'
 
 const BodyExplore = styled.div`
   width: 90%;
@@ -127,10 +129,13 @@ const optionsSeller = [
 
 export default function Explore() {
   const dispatch = useDispatch()
+  const [selectCategory, setSelectCategory] = useState('')
   const state = useExploreState()
+  const listCategories = useMintState().categories
   useEffect(() => {
     dispatch(getListItems())
     dispatch(fieldChange({ fieldName: 'href', fieldValue: window.location.href }))
+    dispatch(getCategories())
   }, [])
 
   const GridList = () => {
@@ -164,6 +169,7 @@ export default function Explore() {
   const onLoadMore = () => {
     dispatch(fieldChange({ fieldName: 'limit', fieldValue: state.limit + 4 }))
   }
+  console.log(state.listItem)
 
   return (
     <BodyExplore>
@@ -181,7 +187,7 @@ export default function Explore() {
           Live Auction <Asset.Fire width={24} height={24} />
         </Title>
         <ListItem>
-          {state.listItem.map((item, index) => index < 4 && <ItemView item={item} key={index} isLiveAuction={true} />)}
+          {ListHotBid.map((item, index) => index < 4 && <ItemView item={item} key={index} isLiveAuction={true} />)}
         </ListItem>
       </ContentGroup>
 
@@ -189,18 +195,43 @@ export default function Explore() {
         <Title>
           Hot Bids <Asset.Star width={24} height={24} />
         </Title>
-        <ListItem>{state.listItem.map((item, index) => index < 4 && <ItemView item={item} key={index} />)}</ListItem>
+        <ListItem>{ListHotBid.map((item, index) => index < 4 && <ItemView item={item} key={index} />)}</ListItem>
       </ContentGroup>
 
       <ContentGroup>
         <Filter>
           <div>
             <Title>Discovery</Title>
-            {ListDicovery.map((item, index) => (
-              <div key={index} className="itemFilter">
-                {item.name}
-              </div>
-            ))}
+            <div
+              className="itemFilter"
+              style={{
+                background: selectCategory === 'All' ? `${Color.neutral.yellow}` : '',
+                color: selectCategory === 'All' ? `${Color.neutral.black}` : '',
+              }}
+              onClick={() => {
+                dispatch(searchItems(''))
+                setSelectCategory('All')
+              }}
+            >
+              All
+            </div>
+            {listCategories &&
+              listCategories.map((item, index) => (
+                <div
+                  key={index}
+                  className="itemFilter"
+                  style={{
+                    background: selectCategory === item.categoryName ? `${Color.neutral.yellow}` : '',
+                    color: selectCategory === item.categoryName ? `${Color.neutral.black}` : '',
+                  }}
+                  onClick={() => {
+                    dispatch(searchItems(item.categoryName))
+                    setSelectCategory(item.categoryName)
+                  }}
+                >
+                  {item.categoryName}
+                </div>
+              ))}
           </div>
           <div className="btnFilter">
             {`Filter & Sort`} <Image src={Asset.SrcFilter} />
