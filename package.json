@@ -149,8 +149,8 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "react-calendar": "^3.4.0",
     "react-countdown": "^2.3.2",
+    "react-day-picker": "^7.4.10",
     "react-switch": "^6.0.0"
   }
 }

@@ -15,6 +15,7 @@ import DetailItem from './DetailItem'
 import Stats from './Stats'
 import MyItem from './MyItems'
 import { useExploreState } from 'state/explore/hooks'
+import EditProfile from './MyItems/editProfile'
 const AppWrapper = styled.div`
   display: flex;
   height: 100vh;
@@ -70,6 +71,7 @@ export default function App() {
               <Route exact strict path="/create/erc1155" component={Multiple} />
               <Route exact strict path={`/detail/:itemid`} component={DetailItem} />
               <Route exact strict path={`/profile`} component={MyItem} />
+              <Route exact strict path={`/edit-profile`} component={EditProfile} />
             </Switch>
           </Web3ReactManager>
         </BodyWrapper>

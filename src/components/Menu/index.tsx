@@ -173,7 +173,7 @@ export default function Menu() {
               <Trans>Code</Trans>
             </div>
           </MenuItem>
-          <StyledNavLink to={'/myitem'}>
+          <StyledNavLink to={'/profile'}>
             <BookOpen size={14} />
             <div>
               <Trans>My Items</Trans>
