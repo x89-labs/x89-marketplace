@@ -155,31 +155,31 @@ export default function Menu() {
 
       {open && (
         <MenuFlyout>
-          <MenuItem href="https://uniswap.org/">
+          <MenuItem href="https://polrare.co/">
             <Info size={14} />
             <div>
               <Trans>About</Trans>
             </div>
           </MenuItem>
-          <MenuItem href="https://docs.uniswap.org/">
+          <MenuItem href="https://docs.polrare.co">
             <BookOpen size={14} />
             <div>
               <Trans>Docs</Trans>
             </div>
           </MenuItem>
-          <MenuItem href={CODE_LINK}>
+          {/* <MenuItem href={CODE_LINK}>
             <Code size={14} />
             <div>
               <Trans>Code</Trans>
             </div>
-          </MenuItem>
+          </MenuItem> */}
           <StyledNavLink to={'/profile'}>
             <BookOpen size={14} />
             <div>
               <Trans>My Items</Trans>
             </div>
           </StyledNavLink>
-          <MenuItem href="https://discord.gg/FCfyBSbCU5">
+          {/* <MenuItem href="https://discord.gg/FCfyBSbCU5">
             <MessageCircle size={14} />
             <div>
               <Trans>Discord</Trans>
@@ -190,7 +190,7 @@ export default function Menu() {
             <div>
               <Trans>Analytics</Trans>
             </div>
-          </MenuItem>
+          </MenuItem> */}
         </MenuFlyout>
       )}
     </StyledMenu>
