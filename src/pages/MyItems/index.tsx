@@ -7,17 +7,21 @@ import styled from 'styled-components'
 import ItemView from 'pages/Explore/ItemView'
 import * as Asset from 'assets'
 import { shortenAddress } from 'utils'
+import { NavLink } from 'react-router-dom'
+import { Outline, Typography } from 'styles'
 const Container = styled.div`
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 100px;
+  @media only screen and (max-width: 700px) {
+    padding: 0;
+  }
 `
 const Header = styled.div`
   width: 100%;
   height: 16rem;
-  background-color: #ccc;
   position: relative;
   display: flex;
   border-radius: 1rem;
@@ -28,7 +32,7 @@ const Header = styled.div`
 `
 
 const Avatar = styled.div`
-  border: 1px solid #fff;
+  ${{ ...Outline.border.white }}
   position: absolute;
   bottom: -30px;
   width: 8rem;
@@ -40,40 +44,22 @@ const Avatar = styled.div`
   border-radius: 50%;
 `
 const Name = styled.div`
-  padding: 10px;
+  ${{ ...Typography.header.x30 }};
+  color: ${({ theme }) => theme.text1};
   margin-top: 3rem;
-  color: #000;
-  background-color: #ccc;
-  border-radius: 20px;
 `
-const Menu = styled.div`
-  margin-top: 2rem;
-`
-const Setting = styled.div`
-  display: flex;
-  flex-derection: row;
-  justify-content: center;
-  margin-bottom: 1rem;
-`
-const EditProfile = styled.div`
-  color: #000;
+const activeClassName = 'ACTIVE'
+const EditProfile = styled(NavLink).attrs({
+  activeClassName,
+})`
+  ${{ ...Outline.border.gray }}
+  color: ${({ theme }) => theme.text1};
   cursor: pointer;
   padding: 10px 20px;
   border-radius: 20px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  margin-right: 1rem;
-`
-
-const ThreeDot = styled.div`
-  cursor: pointer;
-  color: #000;
-  text-align: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
-  background-color: #fff;
-  border: 1px solid #ccc;
+  background-color: ${({ theme }) => theme.bg3};
+  margin-top: 1rem;
+  text-decoration: none;
 `
 
 const Option = styled.div`
@@ -94,7 +80,7 @@ const Content = styled.div`
   display: flex;
 `
 
-const optionsItem = ['On sale', 'Owned', 'Created', 'Liked', 'Activity', 'Following', 'Followers', 'Hidden']
+const optionsItem = ['Sale', 'Owned', 'Created', 'Colection', 'Followers']
 
 export default function MyItem() {
   const dispatch = useDispatch()
@@ -116,18 +102,16 @@ export default function MyItem() {
         matrix[k].push(list[i])
       }
       return matrix.map((mt, i) => (
-        <div style={{ display: 'flex', flexWrap: 'wrap' }} key={i}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', width: '100%' }} key={i}>
           {mt.map((item, index) => (
-            <Content key={index}>
-              <ItemView item={item} key={index} />
-            </Content>
+            <ItemView item={item} key={index} />
           ))}
         </div>
       ))
     }
   }
 
-  const [selected, setSelected] = useState('On sale')
+  const [selected, setSelected] = useState('Sale')
   return (
     <Container>
       <Header>
@@ -135,26 +119,21 @@ export default function MyItem() {
         <Asset.YellowCheck style={{ position: 'absolute', width: 36, height: 36, marginLeft: 94, bottom: -28 }} />
       </Header>
       <Name>{account ? shortenAddress(account) : ''}</Name>
-      <Menu>
-        <Setting>
-          <EditProfile>Edit Profile</EditProfile>
-          <ThreeDot>...</ThreeDot>
-        </Setting>
-        <Option>
-          {optionsItem.map((item, index) => (
-            <OptionItem
-              key={index}
-              style={{
-                borderBottom: selected === item ? '1px solid #000' : '',
-                fontWeight: selected === item ? 'bolder' : 500,
-              }}
-              onClick={() => setSelected(item)}
-            >
-              {item}
-            </OptionItem>
-          ))}
-        </Option>
-      </Menu>
+      <EditProfile to={`/edit-profile`}>Edit Profile</EditProfile>
+      <Option>
+        {optionsItem.map((item, index) => (
+          <OptionItem
+            key={index}
+            style={{
+              borderBottom: selected === item ? '1px solid #000' : '',
+              fontWeight: selected === item ? 'bolder' : 500,
+            }}
+            onClick={() => setSelected(item)}
+          >
+            {item}
+          </OptionItem>
+        ))}
+      </Option>
       {GridList()}
     </Container>
   )

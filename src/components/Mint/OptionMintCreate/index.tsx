@@ -228,7 +228,7 @@ export default function OptionMintCreate({ formik, isSingle }: OptionMintCreate)
               <TextInput style={{ width: '50%' }} key={f.id}>
                 <h3 style={{ margin: 0 }}>{f.title}</h3>
                 <div className="form__group ">
-                  <StableSelect option={f.option} width={'100%'} />
+                  <StableSelect option={f.option} width={'100%'} id={f.id} />
                 </div>
               </TextInput>
             )
