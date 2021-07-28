@@ -37,7 +37,7 @@ export default function EditProfile() {
               <div className="form__group ">
                 <input id={item.id} type={'input'} placeholder={item.placeholder} />
               </div>
-              <Description>{item.descreption}</Description>
+              <Description>{item.description}</Description>
             </TextInput>
           ))}
         </div>

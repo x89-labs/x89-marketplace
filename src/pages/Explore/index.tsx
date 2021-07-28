@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { fieldChange, getListItems, searchItems } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
@@ -11,6 +11,7 @@ import StableSelect from 'components/Mint/stableSelect'
 import { ListHotBid, optionsTopSeller } from 'state/explore/config'
 import { getCategories } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
+import PlaceholderLoading from './placeholderLoading'
 
 const BodyExplore = styled.div`
   width: 90%;
@@ -18,6 +19,7 @@ const BodyExplore = styled.div`
 
 const BtnLoadmore = styled.div`
   ${{ ...Button.btn.secondary }};
+  margin-top: 1rem;
   width: 100%;
 `
 const TopSellerItem = styled.div`
@@ -133,10 +135,18 @@ export default function Explore() {
   const state = useExploreState()
   const listCategories = useMintState().categories
   useEffect(() => {
-    dispatch(getListItems())
+    setTimeout(() => {
+      dispatch(getListItems())
+    }, 7000)
     dispatch(fieldChange({ fieldName: 'href', fieldValue: window.location.href }))
     dispatch(getCategories())
   }, [])
+
+  const listItem = useMemo(() => {
+    const list = state.listItem
+    return list
+  }, [state.listItem])
+  console.log(listItem)
 
   const GridList = () => {
     const matrix = new Array<Array<any>>()
@@ -169,81 +179,85 @@ export default function Explore() {
   const onLoadMore = () => {
     dispatch(fieldChange({ fieldName: 'limit', fieldValue: state.limit + 4 }))
   }
-  console.log(state.listItem)
-
   return (
-    <BodyExplore>
-      <HeaderExplore />
+    <>
+      {listItem.length > 0 ? (
+        <BodyExplore>
+          <HeaderExplore />
 
-      <ContentGroup>
-        <Title>
-          Top
-          <StableSelect option={optionsSeller} textColor={'rgb(0, 102, 255)'} />
-        </Title>
-        {GridList()}
-      </ContentGroup>
-      <ContentGroup>
-        <Title>
-          Live Auction <Asset.Fire width={24} height={24} />
-        </Title>
-        <ListItem>
-          {ListHotBid.map((item, index) => index < 4 && <ItemView item={item} key={index} isLiveAuction={true} />)}
-        </ListItem>
-      </ContentGroup>
+          <ContentGroup>
+            <Title>
+              Top
+              <StableSelect option={optionsSeller} textColor={'rgb(0, 102, 255)'} />
+            </Title>
+            {GridList()}
+          </ContentGroup>
+          <ContentGroup>
+            <Title>
+              Live Auction <Asset.Fire width={24} height={24} />
+            </Title>
+            <ListItem>
+              {ListHotBid.map((item, index) => index < 4 && <ItemView item={item} key={index} isLiveAuction={true} />)}
+            </ListItem>
+          </ContentGroup>
 
-      <ContentGroup>
-        <Title>
-          Hot Bids <Asset.Star width={24} height={24} />
-        </Title>
-        <ListItem>{ListHotBid.map((item, index) => index < 4 && <ItemView item={item} key={index} />)}</ListItem>
-      </ContentGroup>
+          <ContentGroup>
+            <Title>
+              Hot Bids <Asset.Star width={24} height={24} />
+            </Title>
+            <ListItem>{ListHotBid.map((item, index) => index < 4 && <ItemView item={item} key={index} />)}</ListItem>
+          </ContentGroup>
 
-      <ContentGroup>
-        <Filter>
-          <div>
-            <Title>Discovery</Title>
-            <div
-              className="itemFilter"
-              style={{
-                background: selectCategory === 'All' ? `${Color.neutral.yellow}` : '',
-                color: selectCategory === 'All' ? `${Color.neutral.black}` : '',
-              }}
-              onClick={() => {
-                dispatch(searchItems(''))
-                setSelectCategory('All')
-              }}
-            >
-              All
-            </div>
-            {listCategories &&
-              listCategories.map((item, index) => (
+          <ContentGroup>
+            <Filter>
+              <div>
+                <Title>Discovery</Title>
                 <div
-                  key={index}
                   className="itemFilter"
                   style={{
-                    background: selectCategory === item.categoryName ? `${Color.neutral.yellow}` : '',
-                    color: selectCategory === item.categoryName ? `${Color.neutral.black}` : '',
+                    background: selectCategory === 'All' ? `${Color.neutral.yellow}` : '',
+                    color: selectCategory === 'All' ? `${Color.neutral.black}` : '',
                   }}
                   onClick={() => {
-                    dispatch(searchItems(item.categoryName))
-                    setSelectCategory(item.categoryName)
+                    dispatch(searchItems(''))
+                    setSelectCategory('All')
                   }}
                 >
-                  {item.categoryName}
+                  All
                 </div>
+                {listCategories &&
+                  listCategories.map((item, index) => (
+                    <div
+                      key={index}
+                      className="itemFilter"
+                      style={{
+                        background: selectCategory === item.categoryName ? `${Color.neutral.yellow}` : '',
+                        color: selectCategory === item.categoryName ? `${Color.neutral.black}` : '',
+                      }}
+                      onClick={() => {
+                        dispatch(searchItems(item.categoryName))
+                        setSelectCategory(item.categoryName)
+                      }}
+                    >
+                      {item.categoryName}
+                    </div>
+                  ))}
+              </div>
+              <div className="btnFilter">
+                {`Filter & Sort`} <Image src={Asset.SrcFilter} />
+              </div>
+            </Filter>
+            <ListItem>
+              {state.listItem.slice(0, state.limit).map((item, index) => (
+                <ItemView item={item} key={index} />
               ))}
-          </div>
-          <div className="btnFilter">
-            {`Filter & Sort`} <Image src={Asset.SrcFilter} />
-          </div>
-        </Filter>
-        <ListItem>
-          {state.listItem.slice(0, state.limit).map((item, index) => (
-            <ItemView item={item} key={index} />
-          ))}
-        </ListItem>
-        <BtnLoadmore onClick={onLoadMore}>Load More</BtnLoadmore>
-      </ContentGroup>
-    </BodyExplore>
+            </ListItem>
+            <BtnLoadmore onClick={onLoadMore}>Load More</BtnLoadmore>
+          </ContentGroup>
+        </BodyExplore>
+      ) : (
+        <PlaceholderLoading />
+      )}
+    </>
   )
 }

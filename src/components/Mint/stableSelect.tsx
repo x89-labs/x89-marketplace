@@ -105,8 +105,6 @@ export default function StableSelect({ option, width, textColor, id }: TableSele
       background: ${({ theme }) => theme.bg6};
     }
   `
-  console.log(day)
-
   return (
     <Container ref={node as any}>
       <Around onClick={() => setShow(false)}>

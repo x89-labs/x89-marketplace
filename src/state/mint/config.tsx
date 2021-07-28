@@ -123,7 +123,7 @@ export const EditForm = [
     id: 'customURL',
     title: 'Custom URL',
     placeholder: 'app.polrare.co/ Enter short URL',
-    descreption: 'Customize your URL on Polrare Market. Must only contain lowercase letters, numbers, and hyphens.',
+    description: 'Customize your URL on Polrare Market. Must only contain lowercase letters, numbers, and hyphens.',
   },
   {
     id: 'bio',
@@ -134,7 +134,7 @@ export const EditForm = [
     id: 'personalSite',
     title: 'Personal site or portfolio',
     placeholder: 'https://',
-    descreption: 'Display name',
+    description: 'Display name',
   },
   {
     id: 'emailE',
