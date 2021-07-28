@@ -12,6 +12,7 @@ interface ItemView {
   index?: any
   item: Item
   isLiveAuction?: boolean
+  isMyItem?: boolean
 }
 const activeClassName = 'ACTIVE'
 const Container = styled(NavLink).attrs({
@@ -19,14 +20,14 @@ const Container = styled(NavLink).attrs({
 })`
   width: ${Sizing.x255}px;
   color: ${Color.neutral.black};
-  background: ${Color.linearGradient.black};
+  background: ${({ theme }) => theme.bg6};
   text-decoration: none;
   margin: 1rem 0;
   position: relative;
   cursor: pointer;
   border-radius: ${Outline.borderRadius.base}px;
+  box-shadow: 0 2px 5px #6324ed;
   &:hover {
-    box-shadow: 0 2px 5px rgba(255, 101, 47, 0.2);
   }
   @media only screen and (max-width: 700px) {
     width: 100%;
@@ -45,15 +46,16 @@ const Text = styled.p`
 `
 const ItemName = styled.p`
   ${{ ...Typography.fontSize.x20 }}
-  ${{ ...Typography.fontWeight.bold }}
-  color: ${Color.neutral.white};
+  ${{ ...Typography.fontWeight.bold }}  
+  color: ${({ theme }) => theme.text1};
   margin: 0;
 `
 const ImageDisPlay = styled.div`
   postition: relative;
   width: 100%;
   height: ${Sizing.x200}px;
-  border-radius: ${Outline.borderRadius.base}px;
+  border-top-left-radius: ${Outline.borderRadius.base}px;
+  border-top-right-radius: ${Outline.borderRadius.base}px;
   overflow: hidden;
   justify-content: center;
   align-items: center;
@@ -62,7 +64,6 @@ const ImageDisPlay = styled.div`
 
 const Image = styled.img`
   width: 100%;
-  border-radius: ${Outline.borderRadius.base}px;
   height: ${Sizing.x200}px;
   transition: transform 0.2s;
   &:hover {
@@ -72,7 +73,7 @@ const Image = styled.img`
 `
 const Tag = styled.div`
   color: ${Color.neutral.purple};
-  ${{ ...Typography.fontSize.x10 }}
+  ${{ ...Typography.fontSize.x20 }}
   ${{ ...Typography.fontWeight.bold }}
 `
 const FooterContent = styled.div`
@@ -88,11 +89,11 @@ const Bid = styled.div`
   color: ${Color.neutral.green};
   ${{ ...Typography.fontSize.x30 }}
   ${{ ...Typography.fontWeight.bold }}
-  margin-top: ${Sizing.x10}px;
 `
 const Price = styled.div`
-  color: ${Color.neutral.white};
   ${{ ...Typography.fontSize.x10 }}
+  ${{ ...Typography.fontWeight.bold }}
+  color: ${({ theme }) => theme.text1};
   margin-right: 5px;
 `
 const Avatar = styled.img`
@@ -106,14 +107,21 @@ const Owner = styled.div`
   border-bottom: 1px solid #353945;
 `
 
+const Edition = styled.p`
+  ${{ ...Typography.fontSize.x20 }}
+  ${{ ...Typography.fontWeight.bold }}
+  margin:0;
+  color: ${Color.neutral.gray};
+`
+
 const FooterItem = styled.div`
   * {
     position: absolute;
     height: ${Sizing.x40}px;
     display: block;
-    background: #353945;
+    background: ${Color.neutral.gray2};
     border-radius: 16px;
-    border: 1px solid #2b2828;
+    border: 0.2px solid #2b2828;
   }
   .footer {
     width: 98%;
@@ -146,7 +154,7 @@ const TimeLeft = styled.div`
 `
 const Time = styled.div``
 
-export default function ItemView({ index, item, isLiveAuction }: ItemView) {
+export default function ItemView({ index, item, isLiveAuction, isMyItem }: ItemView) {
   const PreviewFile = (item: Item) => {
     if (item.type.includes('image')) {
       return <Image src={item.image} />
@@ -179,13 +187,12 @@ export default function ItemView({ index, item, isLiveAuction }: ItemView) {
           </TimeLeft>
         )}
       </ImageDisPlay>
-      <ItemContent>
-        <ItemName>{item.name}</ItemName>
-        <Owner>
-          <Avatar src={Asset.SrcAvatar} />
-          <Text> {shortenAddress(item.owner)}</Text>
-        </Owner>
-        <FooterContent>
+      {isMyItem ? (
+        <ItemContent>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <ItemName>{item.name}</ItemName>
+            <Tag>{item.categoryName}</Tag>
+          </div>
           <InfoItem>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Price>
@@ -193,11 +200,33 @@ export default function ItemView({ index, item, isLiveAuction }: ItemView) {
               </Price>
               <Text>1/{item.totalQuantity}</Text>
             </div>
-            <Tag>{item.categoryName}</Tag>
+            {item.totalQuantity > 1 ? <Edition>Multiple Edition</Edition> : <Edition>Single Edition</Edition>}
           </InfoItem>
-          <Bid>Bid Now</Bid>
-        </FooterContent>
-      </ItemContent>
+        </ItemContent>
+      ) : (
+        <ItemContent>
+          <ItemName>{item.name}</ItemName>
+          <Owner>
+            <Avatar src={Asset.SrcAvatar} />
+            <Text> {shortenAddress(item.owner)}</Text>
+          </Owner>
+          <FooterContent>
+            <InfoItem>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Price>
+                  {item.price} {item.symbol}
+                </Price>
+                <Text>1/{item.totalQuantity}</Text>
+              </div>
+              <Edition>Single Edition</Edition>
+            </InfoItem>
+            <InfoItem>
+              <Bid>Bid Now</Bid>
+              <Tag>{item.categoryName}</Tag>
+            </InfoItem>
+          </FooterContent>
+        </ItemContent>
+      )}
 
       {item.totalQuantity > 1 && (
         <FooterItem>

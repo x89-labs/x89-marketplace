@@ -6,6 +6,7 @@ import styled, {
   DefaultTheme,
   ThemeProvider as StyledComponentsThemeProvider,
 } from 'styled-components'
+import { Color } from 'styles'
 import { useIsDarkMode } from '../state/user/hooks'
 import { Colors } from './styled'
 
@@ -55,7 +56,7 @@ export function colors(darkMode: boolean): Colors {
     bg3: darkMode ? '#000000' : '#FFFFFF',
     bg4: darkMode ? '#000000' : '#f4f8fe',
     bg5: darkMode ? '#262626' : '#FFFFFF',
-    bg6: darkMode ? '#1A2028' : '#6C7284',
+    bg6: darkMode ? Color.linearGradient.black : '#fff',
 
     //specialty colors
     modalBG: darkMode ? 'rgba(0,0,0,.425)' : 'rgba(0,0,0,0.3)',

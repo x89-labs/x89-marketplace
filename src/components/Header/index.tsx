@@ -304,6 +304,9 @@ export default function Header() {
           <Trans>Explore</Trans>
         </StyledNavLink>
         <StyledNavLink id={`stats-nav-link`} to={'/stats'}>
+          <Trans>Games</Trans>
+        </StyledNavLink>
+        <StyledNavLink id={`stats-nav-link`} to={'/game'}>
           <Trans>Stats</Trans>
         </StyledNavLink>
         <StyledNavLink
@@ -319,13 +322,13 @@ export default function Header() {
         >
           <Trans>Mint</Trans>
         </StyledNavLink>
-        <StyledExternalLink id={`stake-nav-link`} href={'https://builder.polrare.co'}>
+        {/* <StyledExternalLink id={`stake-nav-link`} href={'https://builder.polrare.co'}>
           <Trans>Builder</Trans>
         </StyledExternalLink>
         <StyledExternalLink id={`stake-nav-link`} href={'https://museum.polrare.co'}>
           <Trans>Museum</Trans>
           <sup>↗</sup>
-        </StyledExternalLink>
+        </StyledExternalLink> */}
       </HeaderLinks>
       <HeaderControls>
         <HeaderElement>

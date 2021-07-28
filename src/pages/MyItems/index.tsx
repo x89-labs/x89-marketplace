@@ -9,6 +9,7 @@ import * as Asset from 'assets'
 import { shortenAddress } from 'utils'
 import { NavLink } from 'react-router-dom'
 import { Outline, Typography } from 'styles'
+
 const Container = styled.div`
   width: 100%;
   display: flex;
@@ -104,7 +105,7 @@ export default function MyItem() {
       return matrix.map((mt, i) => (
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', width: '100%' }} key={i}>
           {mt.map((item, index) => (
-            <ItemView item={item} key={index} />
+            <ItemView item={item} key={index} isMyItem={true} />
           ))}
         </div>
       ))
