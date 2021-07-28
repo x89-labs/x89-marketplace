@@ -137,7 +137,7 @@ export default function Explore() {
   useEffect(() => {
     setTimeout(() => {
       dispatch(getListItems())
-    }, 7000)
+    }, 3000)
     dispatch(fieldChange({ fieldName: 'href', fieldValue: window.location.href }))
     dispatch(getCategories())
   }, [])
