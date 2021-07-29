@@ -20,7 +20,7 @@ const optionsToken = [
     id: '3',
   },
 ]
-const options = [
+const startDate = [
   {
     name: 'Right after listing',
     id: '1',
@@ -31,6 +31,30 @@ const options = [
     type: 'DatePicker',
   },
 ]
+const ExpirationDate = [
+  {
+    name: '1 day',
+    id: '1',
+  },
+  {
+    name: '2 day',
+    id: '2',
+  },
+  {
+    name: '3 day',
+    id: '3',
+  },
+  {
+    name: '7 day',
+    id: '4',
+  },
+  {
+    name: 'Pick spicific date',
+    id: '5',
+    type: 'DatePicker',
+  },
+]
+
 export const Forms: FormInput[] = [
   {
     location: 'infomation',
@@ -68,13 +92,13 @@ export const Forms: FormInput[] = [
         title: 'Starting Date',
         type: Type.Dropdown,
         id: 'startingDate',
-        option: options,
+        option: startDate,
       },
       {
         title: 'Expiration Date',
         type: Type.Dropdown,
         id: 'ExpirationDate',
-        option: options,
+        option: ExpirationDate,
       },
     ],
   },

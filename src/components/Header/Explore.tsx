@@ -5,6 +5,7 @@ import * as Asset from 'assets'
 import { useExploreState } from 'state/explore/hooks'
 import ReactPlayer from 'react-player'
 import { shortenAddress } from 'utils'
+import { NavLink } from 'react-router-dom'
 
 const HeaderFrame = styled.div`
   display: flex;
@@ -75,7 +76,11 @@ const ListItem = styled.div`
     background: #555;
   }
 `
-const Item = styled.div`
+
+const activeClassName = 'ACTIVE'
+const Item = styled(NavLink).attrs({
+  activeClassName,
+})`
   position: relative;
   border-radius: ${Outline.borderRadius.base}px;
   min-width: ${Sizing.x255}px;
@@ -130,7 +135,7 @@ export default function HeaderExplore() {
   const listItem = useExploreState().listItem
   return (
     <HeaderFrame>
-      <HeaderLayer>
+      {/* <HeaderLayer>
         <Header>
           <LeftHeader>
             <TitlePurple>Discover & Collect </TitlePurple>
@@ -148,10 +153,10 @@ export default function HeaderExplore() {
             </div>
           </RightHeader>
         </Header>
-      </HeaderLayer>
+      </HeaderLayer> */}
       <ListItem>
         {listItem.map((item, index) => (
-          <Item key={index}>
+          <Item key={index} id={`detail-nav-link`} to={`/detail/${item.id}`}>
             <Image>{PreviewFile(item)}</Image>
             <Content>
               <Text style={{ color: '#fff' }}>{item.name}</Text>

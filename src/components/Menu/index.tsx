@@ -11,6 +11,7 @@ import { Trans } from '@lingui/macro'
 
 import { ExternalLink } from '../../theme'
 import { ButtonPrimary } from '../Button'
+import Web3Status from 'components/Web3Status'
 
 export enum FlyoutAlignment {
   LEFT = 'LEFT',
@@ -155,6 +156,7 @@ export default function Menu() {
 
       {open && (
         <MenuFlyout>
+          <Web3Status />
           <MenuItem href="https://polrare.co/">
             <Info size={14} />
             <div>

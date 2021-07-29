@@ -8,16 +8,14 @@ import { ApplicationModal } from 'state/application/actions'
 import { useDispatch } from 'react-redux'
 import { fieldChange } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
-import { Button, Color, Sizing, Typography } from 'styles'
-interface TableSelection {
-  a?: string
+import { Typography } from 'styles'
+import 'react-day-picker/lib/style.css'
+interface stablePriceProps {
   option?: any[]
   width?: any
-  textColor?: string
-  id?: string
 }
 
-export default function StableSelect({ option, width, textColor, id }: TableSelection) {
+export default function StablePrice({ option, width }: stablePriceProps) {
   const [show, setShow] = useState(true)
   const [selected, setSelected] = useState()
   const open = useModalOpen(ApplicationModal.DROPDOWN)
@@ -36,7 +34,7 @@ export default function StableSelect({ option, width, textColor, id }: TableSele
   `
   const Around = styled.div`
     display: flex;
-    color: ${Color.neutral.purple};
+    color: #9c9292;
     margin: 0;
     cursor: pointer;
     justify-content: space-between;
@@ -54,6 +52,7 @@ export default function StableSelect({ option, width, textColor, id }: TableSele
     padding: 12px;
     height: auto;
     position: absolute;
+    right: 0;
     z-index: 1;
     .item {
       display: flex;
@@ -81,7 +80,6 @@ export default function StableSelect({ option, width, textColor, id }: TableSele
     <Container ref={node as any}>
       <Around onClick={() => setShow(false)}>
         <h4>{selected ? selected : option && option[0]?.name}</h4>
-
         <Asset.DownArrow width={12} height={12} />
       </Around>
       <DropDown hidden={show}>
@@ -92,6 +90,7 @@ export default function StableSelect({ option, width, textColor, id }: TableSele
             onClick={() => {
               setSelected(item.name)
               setShow(true)
+              dispatch(fieldChange({ fieldName: 'symbol', fieldValue: item.name }))
             }}
           >
             <div className="itemName">

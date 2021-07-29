@@ -84,8 +84,8 @@ export const Single = ({ history }: RouteComponentProps) => {
           }
         }
       }
-      // formik.resetForm()
-      // dispatch(resetForm({ value: 'resetform' }))
+      formik.resetForm()
+      dispatch(resetForm({ value: 'resetform' }))
     },
   })
 

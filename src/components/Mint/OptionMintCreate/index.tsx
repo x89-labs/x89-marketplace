@@ -9,6 +9,8 @@ import { Forms } from 'state/mint/config'
 import { Type } from 'models/formInput'
 import { getIn } from 'formik'
 import StableSelect from '../stableSelect'
+import StablePrice from '../stablePrice'
+import StableDate from '../stableDate'
 
 type OptionMintCreate = {
   formik?: any
@@ -218,7 +220,7 @@ export default function OptionMintCreate({ formik, isSingle }: OptionMintCreate)
                     onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
                     defaultValue={getIn(formik.values, f.id)}
                   />
-                  <StableSelect option={f.option} id={f.idDropdown} />
+                  <StablePrice option={f.option} />
                 </div>
                 <Text>{f.panel}</Text>
               </TextInput>
@@ -228,7 +230,7 @@ export default function OptionMintCreate({ formik, isSingle }: OptionMintCreate)
               <TextInput style={{ width: '50%' }} key={f.id}>
                 <h3 style={{ margin: 0 }}>{f.title}</h3>
                 <div className="form__group ">
-                  <StableSelect option={f.option} width={'100%'} id={f.id} />
+                  <StableDate option={f.option} width={'100%'} />
                 </div>
               </TextInput>
             )

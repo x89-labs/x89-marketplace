@@ -1,4 +1,5 @@
 import React from 'react'
+import * as GameSvg from 'pages/Explore/Game/images'
 export const optionsTopSeller = [
   {
     id: '01',
@@ -164,4 +165,16 @@ export const ListHotBid = [
     createdAt: '2021-07-13T09:27:40.729Z',
     updatedAt: '2021-07-13T09:27:40.729Z',
   },
+]
+
+export const ListGameItem = [
+  { image: GameSvg.Game1, id: 'game1' },
+  { image: GameSvg.Game2, id: 'game2' },
+  { image: GameSvg.Game3, id: 'game3' },
+  { image: GameSvg.Game4, id: 'game4' },
+  { image: GameSvg.Game5, id: 'game5' },
+  { image: GameSvg.Game6, id: 'game6' },
+  { image: GameSvg.Game7, id: 'game7' },
+  { image: GameSvg.Game8, id: 'game8' },
+  { image: GameSvg.Game9, id: 'game9' },
 ]
