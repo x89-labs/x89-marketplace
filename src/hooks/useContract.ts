@@ -16,7 +16,7 @@ import { Unisocks } from 'abis/types/Unisocks'
 import UNISOCKS_ABI from 'abis/unisocks.json'
 import WETH_ABI from 'abis/weth.json'
 import EIP_2612 from 'abis/eip_2612.json'
-import XNFT_ABI from 'abis/polrare.json'
+import POLRARENFT_ABI from 'abis/polrare.json'
 
 import {
   V3_CORE_FACTORY_ADDRESSES,
@@ -34,9 +34,10 @@ import { getContract } from 'utils'
 import { Erc20, ArgentWalletDetector, EnsPublicResolver, EnsRegistrar, Multicall2, Weth } from '../abis/types'
 import { UNI, WETH9_EXTENDED } from '../constants/tokens'
 import { useActiveWeb3React } from './web3'
-import { XNFT, XNFTInterface } from 'abis/types/XNFT'
+import { Polrare } from 'abis/types/Polrare'
 import { UniswapV3Factory } from 'types/v3/UniswapV3Factory'
 import { UniswapV3Pool } from 'types/v3/UniswapV3Pool'
+import { SupportedChainId } from 'constants/chains'
 
 // returns null on errors
 export function useContract<T extends Contract = Contract>(
@@ -127,6 +128,8 @@ export function useV3Pool(address: string | undefined) {
   return useContract<UniswapV3Pool>(address, V3PoolABI)
 }
 
-export function useXNFTContract() {
-  return useContract<XNFT>(POLRARE_ADDRESS[1], XNFT_ABI.abi)
+export function usePolrareContract() {
+  const { chainId } = useActiveWeb3React()
+
+  return useContract<Polrare>(chainId ? POLRARE_ADDRESS[chainId]:POLRARE_ADDRESS[SupportedChainId.ROPSTEN], POLRARENFT_ABI.abi)
 }

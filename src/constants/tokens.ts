@@ -1,5 +1,5 @@
 import { WETH9, Token, Ether } from '@uniswap/sdk-core'
-import { UNI_ADDRESS } from './addresses'
+import { POLRARE_ADDRESS, UNI_ADDRESS } from './addresses'
 import { SupportedChainId } from './chains'
 
 export const AMPL = new Token(1, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth')
@@ -30,6 +30,9 @@ export const UNI: { [chainId: number]: Token } = {
   [SupportedChainId.GOERLI]: new Token(SupportedChainId.GOERLI, UNI_ADDRESS[5], 18, 'UNI', 'Uniswap'),
   [SupportedChainId.KOVAN]: new Token(SupportedChainId.KOVAN, UNI_ADDRESS[42], 18, 'UNI', 'Uniswap'),
 }
+
+
+
 export const WETH9_EXTENDED: { [chainId: number]: Token } = {
   ...WETH9,
   [SupportedChainId.ARBITRUM_KOVAN]: new Token(
