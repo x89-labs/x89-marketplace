@@ -87,6 +87,7 @@ const Item = styled(NavLink).attrs({
   height: ${Sizing.x320}px;
   background: ${Color.linearGradient.black};
   margin: 0 10px;
+  text-decoration: none;
 `
 
 const Image = styled.div`

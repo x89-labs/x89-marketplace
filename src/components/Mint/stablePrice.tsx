@@ -79,7 +79,7 @@ export default function StablePrice({ option, width }: stablePriceProps) {
   return (
     <Container ref={node as any}>
       <Around onClick={() => setShow(false)}>
-        <h4>{selected ? selected : option && option[0]?.name}</h4>
+        <h4>{state.symbol ? state.symbol : option && option[0]?.name}</h4>
         <Asset.DownArrow width={12} height={12} />
       </Around>
       <DropDown hidden={show}>
@@ -88,7 +88,6 @@ export default function StablePrice({ option, width }: stablePriceProps) {
             className="item"
             key={index}
             onClick={() => {
-              setSelected(item.name)
               setShow(true)
               dispatch(fieldChange({ fieldName: 'symbol', fieldValue: item.name }))
             }}
@@ -97,7 +96,7 @@ export default function StablePrice({ option, width }: stablePriceProps) {
               {item.icon && item.icon}
               <p>{item.name}</p>
             </div>
-            {selected === item.name && <Asset.Check width={16} height={16}></Asset.Check>}
+            {state.symbol === item.name && <Asset.Check width={16} height={16}></Asset.Check>}
           </div>
         ))}
       </DropDown>

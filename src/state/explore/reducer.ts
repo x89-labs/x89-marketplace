@@ -8,6 +8,7 @@ export interface ExploreState {
   item?: Item
   limit: number
   href: string
+  topSeller?: string
 }
 
 export const initialState: ExploreState = {

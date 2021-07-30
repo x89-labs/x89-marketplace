@@ -75,7 +75,81 @@ export const optionsTopSeller = [
     price: '345 ETH',
   },
 ]
+export const optionsTopBuyer = [
+  {
+    id: '01',
+    name: '@madmaracasss',
+    avt: '1',
+    price: '345 ETH',
+  },
+  {
+    id: '02',
+    name: '@whitefisherwr664',
+    avt: '1',
+    price: '345 ETH',
+  },
+  {
+    id: '03',
+    name: '@cxzc',
+    avt: '1',
+    price: '345 ETH',
+  },
+  {
+    id: '04',
+    name: '@bvcg',
+    avt: '1',
+    price: '345 ETH',
+  },
+  {
+    id: '05',
+    name: '@eqwewqeqw',
+    avt: '1',
+    price: '345 ETH',
+  },
 
+  {
+    id: '06',
+    name: '@czxc',
+    avt: '1',
+    price: '345 ETH',
+  },
+  {
+    id: '07',
+    name: '@zcxczx',
+    avt: '1',
+    price: '345 ETH',
+  },
+  {
+    id: '08',
+    name: '@rkgk',
+    avt: '1',
+    price: '345 ETH',
+  },
+  {
+    id: '09',
+    name: '@weqwe',
+    avt: '1',
+    price: '345 ETH',
+  },
+  {
+    id: '10',
+    name: '@asdas',
+    avt: '1',
+    price: '345 ETH',
+  },
+  {
+    id: '11',
+    name: 'bigbear444',
+    avt: '1',
+    price: '345 ETH',
+  },
+  {
+    id: '12',
+    name: 'ngryswan732',
+    avt: '1',
+    price: '345 ETH',
+  },
+]
 export const ListHotBid = [
   {
     id: 'a8a01adc-0dd5-4ed8-b942-85f5d9636b15',

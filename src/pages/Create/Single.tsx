@@ -16,12 +16,15 @@ import { Forms, validationFormCreateSchema } from '../../state/mint/config'
 import { Ipfs } from 'hooks/ipfs'
 
 import { POLRARE_ADDRESS } from 'constants/addresses'
-import { Color, Typography } from 'styles'
+import { Color, Outline, Typography } from 'styles'
 import Categories from 'components/Mint/categories'
 import UploadFile from 'components/Mint/UploadFile'
 
 import OptionMintCreate from 'components/Mint/OptionMintCreate'
 import { usePolrareNft } from 'hooks/usePolrareNft'
+import Modal from 'components/Modal'
+import Loader from 'react-loader-spinner'
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 interface ico {
   icon: any
   name: string
@@ -47,12 +50,13 @@ export const Single = ({ history }: RouteComponentProps) => {
   const darkMode = useIsDarkMode()
   const { account } = useActiveWeb3React()
   const { mint } = usePolrareNft()
-
+  const [openMint, setOpenMint] = useState(false)
   const formik = useFormik({
     initialValues: state.initValues,
     validationSchema: validationFormCreateSchema,
     onSubmit: (values) => {
       if (state.file) {
+        setOpenMint(true)
         const file = state.file
         const reader = new window.FileReader()
         reader.readAsArrayBuffer(file)
@@ -79,7 +83,9 @@ export const Single = ({ history }: RouteComponentProps) => {
                 }
 
                 dispatch(postItem(body))
-                // window.location.href = '/#/myitem'
+                if (state.isCompleted === true) {
+                  window.location.href = '/#/myitem'
+                }
               }
             })
             .catch((e) => {
@@ -160,6 +166,40 @@ export const Single = ({ history }: RouteComponentProps) => {
     }
   `
 
+  const LoadingContainer = styled.div`
+    width: 100%
+    padding: 10px;
+    .header {
+      ${{ ...Typography.fontSize.x50 }}
+      ${{ ...Typography.fontWeight.bold }}
+    }
+    .mint {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: row;
+    }
+    .content {
+      margin-left: 2rem;
+    }
+    .btn {
+      width: 100%;
+      height: 48px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 1rem;
+      border-radius: ${Outline.borderRadius.base}px;
+      cursor: pointer;
+    }
+    .btnLoading {
+      background: rgb(230, 230, 230);
+      color: rgb(255, 255, 255);
+    }
+    .btnCancel{
+      ${{ ...Outline.border.gray }}
+    }
+  `
+
   const PreviewFile = () => {
     if (state.file) {
       if (state.file.type.includes('image')) {
@@ -185,6 +225,38 @@ export const Single = ({ history }: RouteComponentProps) => {
     return 'single'
   }
 
+  const LoadingForm = () => {
+    return (
+      <LoadingContainer>
+        <div className="header">Follow steps</div>
+        <div className="mint">
+          {state.isCompleted === true ? (
+            <Asset.Check fill={'#ccc'} height={50} width={50} />
+          ) : (
+            <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
+          )}
+          <div className="content">
+            <Title>Mint</Title>
+            <Text>Send transaction to create your NFT</Text>
+          </div>
+        </div>
+        <div className=" btn btnLoading">Inprogress...</div>
+        <div className="mint">
+          <Asset.Check fill={'#ccc'} height={50} width={50} />
+          <div className="content">
+            <Title>Approve</Title>
+            <Text>This transaction is conducted only once per collection</Text>
+          </div>
+        </div>
+        <div className=" btn btnLoading">Start</div>
+        <div className=" btn btnCancel" onClick={() => setOpenMint(false)}>
+          Cancel
+        </div>
+      </LoadingContainer>
+    )
+  }
+  console.log(openMint)
+
   return (
     <Container>
       <Around>
@@ -206,6 +278,9 @@ export const Single = ({ history }: RouteComponentProps) => {
           </div>
         </div>
       </Preview>
+      <Modal isOpen={openMint} onDismiss={() => setOpenMint(false)}>
+        <LoadingForm />
+      </Modal>
     </Container>
   )
 }
