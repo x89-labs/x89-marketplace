@@ -75,7 +75,10 @@ const mintSlice = createSlice({
         }
       })
       .addCase(postItem.fulfilled, (state, action) => {
-        // console.log('aaa')
+        return {
+          ...state,
+          isCompleted: true,
+        }
       })
       .addCase(resetForm, (state, action) => {
         return {

@@ -6,7 +6,7 @@ import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import { useModalOpen, useToggleModal } from 'state/application/hooks'
 import { ApplicationModal } from 'state/application/actions'
 import { useDispatch } from 'react-redux'
-import { fieldChange } from 'state/mint/actions'
+import { fieldChange } from 'state/explore/actions'
 import { useMintState } from 'state/mint/hooks'
 import { Button, Color, Sizing, Typography } from 'styles'
 interface TableSelection {
@@ -15,9 +15,10 @@ interface TableSelection {
   width?: any
   textColor?: string
   id?: string
+  onClick?: () => void
 }
 
-export default function StableSelect({ option, width, textColor, id }: TableSelection) {
+export default function StableSelect({ option, width, textColor, id, onClick }: TableSelection) {
   const [show, setShow] = useState(true)
   const [selected, setSelected] = useState()
   const open = useModalOpen(ApplicationModal.DROPDOWN)
@@ -90,8 +91,14 @@ export default function StableSelect({ option, width, textColor, id }: TableSele
             className="item"
             key={index}
             onClick={() => {
+              onClick && onClick()
               setSelected(item.name)
               setShow(true)
+              if (item.name === 'Seller') {
+                dispatch(fieldChange({ fieldName: 'topSeller', fieldValue: item.name }))
+              } else if (item.name === 'Buyer') {
+                dispatch(fieldChange({ fieldName: 'topSeller', fieldValue: item.name }))
+              }
             }}
           >
             <div className="itemName">

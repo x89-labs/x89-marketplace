@@ -101,6 +101,7 @@ export default function OptionMintCreate({ formik, isSingle }: OptionMintCreate)
   const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
   const [isopen, setOpen] = useState(false)
   const [switchType, setSwitchType] = useState<SwitchType>(SwitchType.FixedPrice)
+
   const CreateCollection = () => {
     return (
       <div className="marketplace" onClick={() => setOpen(true)}>
@@ -141,7 +142,6 @@ export default function OptionMintCreate({ formik, isSingle }: OptionMintCreate)
       height: 40px;
     }
   `
-
   const FixedPrice = () => {
     return (
       <div
@@ -215,9 +215,16 @@ export default function OptionMintCreate({ formik, isSingle }: OptionMintCreate)
                 <div className="form__group ">
                   <input
                     id={f.id}
-                    type={'input'}
+                    type={'number'}
                     placeholder={f.placeHolder}
-                    onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
+                    onBlur={(e) => {
+                      e.preventDefault()
+                      const { value } = e.target
+                      const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/
+                      if (regex.test(value.toString())) {
+                        formik.setFieldValue(f.id, e.target.value)
+                      }
+                    }}
                     defaultValue={getIn(formik.values, f.id)}
                   />
                   <StablePrice option={f.option} />

@@ -8,11 +8,12 @@ import { Color, Outline, Sizing, Button, Typography } from 'styles'
 import HeaderExplore from 'components/Header/Explore'
 import ItemView from './ItemView'
 import StableSelect from 'components/Mint/stableSelect'
-import { ListHotBid, optionsTopSeller } from 'state/explore/config'
+import { ListHotBid, optionsTopBuyer, optionsTopSeller } from 'state/explore/config'
 import { getCategories } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
 import PlaceholderLoading from './placeholderLoading'
-import GameExplore from './Game'
+import Modal from 'components/Modal'
+import Categories from 'components/Mint/categories'
 
 const BodyExplore = styled.div`
   width: 100%;
@@ -120,6 +121,31 @@ const ListItem = styled.div`
   justify-content: space-between;
 `
 
+const FilterContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  .header {
+    ${{ ...Typography.fontSize.x40 }}
+    ${{ ...Typography.fontWeight.bold }}
+    justify-self: center;
+  }
+  .sort {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    .title {
+      ${{ ...Typography.fontSize.x40 }}
+      ${{ ...Typography.fontWeight.bold }}
+    }
+  }
+  .btnSort {
+  }
+`
+
 const optionsSeller = [
   {
     name: 'Seller',
@@ -131,10 +157,29 @@ const optionsSeller = [
   },
 ]
 
+const sortPrice = [
+  {
+    name: 'PriceDes',
+  },
+  {
+    name: 'PriceAsc',
+  },
+]
+
+const sortName = [
+  {
+    name: 'NameDes',
+  },
+  {
+    name: 'NameAsc',
+  },
+]
+
 export default function Explore() {
   const dispatch = useDispatch()
   const [selectCategory, setSelectCategory] = useState('')
   const state = useExploreState()
+  const [openFilter, setOpenFilter] = useState(false)
   const listCategories = useMintState().categories
   useEffect(() => {
     setTimeout(() => {
@@ -149,9 +194,25 @@ export default function Explore() {
     return list
   }, [state.listItem])
 
+  const FilterForm = () => {
+    return (
+      <FilterContainer>
+        <div className="header">Filter</div>
+        <div className="sort">
+          <div className="title">Price</div>
+          <StableSelect option={sortPrice} />
+        </div>
+        <div className="sort">
+          <div className="title">Name</div>
+          <StableSelect option={sortName} />
+        </div>
+        <BtnLoadmore onClick={() => setOpenFilter(false)}>Sort</BtnLoadmore>
+      </FilterContainer>
+    )
+  }
   const GridList = () => {
     const matrix = new Array<Array<any>>()
-    const list = optionsTopSeller
+    const list = state.topSeller === 'Seller' ? optionsTopSeller : optionsTopBuyer
     for (let i = 0, k = -1; i < list.length; i++) {
       if (i % 4 == 0) {
         k++
@@ -180,6 +241,7 @@ export default function Explore() {
   const onLoadMore = () => {
     dispatch(fieldChange({ fieldName: 'limit', fieldValue: state.limit + 4 }))
   }
+
   return (
     <>
       {listItem.length > 0 ? (
@@ -192,10 +254,6 @@ export default function Explore() {
               <StableSelect option={optionsSeller} textColor={'rgb(0, 102, 255)'} />
             </Title>
             {GridList()}
-          </ContentGroup>
-          <ContentGroup>
-            <Title>Game</Title>
-            <GameExplore />
           </ContentGroup>
           <ContentGroup>
             <Title>
@@ -248,7 +306,7 @@ export default function Explore() {
                     </div>
                   ))}
               </div>
-              <div className="btnFilter">
+              <div className="btnFilter" onClick={() => setOpenFilter(true)}>
                 {`Filter & Sort`} <Image src={Asset.SrcFilter} />
               </div>
             </Filter>
@@ -259,6 +317,9 @@ export default function Explore() {
             </ListItem>
             <BtnLoadmore onClick={onLoadMore}>Load More</BtnLoadmore>
           </ContentGroup>
+          <Modal isOpen={openFilter} onDismiss={() => setOpenFilter(false)}>
+            <FilterForm />
+          </Modal>
         </BodyExplore>
       ) : (
         <PlaceholderLoading />
