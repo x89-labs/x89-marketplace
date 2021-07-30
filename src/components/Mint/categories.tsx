@@ -7,8 +7,6 @@ import { fieldChange } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
 import { theme } from 'theme'
 import { Color, Outline, Typography } from 'styles'
-import { useModalOpen } from 'state/application/hooks'
-import { ApplicationModal } from 'state/application/actions'
 
 const Container = styled.div`
   margin-top: 1.2rem;
@@ -43,6 +41,7 @@ const DropDown = styled.div`
   padding: 12px;
   height: auto;
   position: absolute;
+  z-index: 1;
   .item {
     display: flex;
     cursor: pointer;
@@ -70,7 +69,6 @@ export default function Categories() {
   const state = useMintState()
   const dispatch = useDispatch()
   const [show, setShow] = useState(true)
-  const [selected, setSelected] = useState<string>()
 
   return (
     <Container>

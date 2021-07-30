@@ -16,7 +16,6 @@ import { useActiveWeb3React } from 'hooks/web3'
 import { Ipfs } from 'hooks/ipfs'
 import Switch from 'react-switch'
 import { POLRARE_ADDRESS } from 'constants/addresses'
-import usePolrareNft from 'hooks/usePolrareNft'
 import Categories from 'components/Mint/categories'
 import UploadFile from 'components/Mint/UploadFile'
 import StableSelect from 'components/Mint/stableSelect'
@@ -48,7 +47,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
   const state = useMintState()
   const [switchType, setSwitchType] = useState<SwitchType>()
   const [checked, setChecked] = useState(true)
-  const { addFee } = usePolrareNft()
+
   const dispatch = useDispatch()
   const { account } = useActiveWeb3React()
 
@@ -61,26 +60,30 @@ export const Multiple = ({ history }: RouteComponentProps) => {
         const reader = new window.FileReader()
         reader.readAsArrayBuffer(file)
         reader.onloadend = async () => {
-          const hash = await Ipfs.GetHash(reader.result)
-          if (state.categorie) {
-            const body: BodyItem = {
-              categoryId: state.categorie.id,
-              name: values.name,
-              description: values.description,
-              price: values.price,
-              contractAddress: POLRARE_ADDRESS[1],
-              assetId: '1233',
-              symbol: state.symbol ?? 'ETH',
-              image: hash,
-              totalQuantity: values.totalQuantity,
-              createdBy: account!,
-              type: state.fileType,
-              categoryName: state.categorie.categoryName,
-            }
-            console.log(body)
-            addFee()
-            dispatch(postItem(body))
-          }
+          Ipfs.GetHash(reader.result)
+            .then((hash) => {
+              if (state.categorie) {
+                const body: BodyItem = {
+                  categoryId: state.categorie.id,
+                  name: values.name,
+                  description: values.description,
+                  price: values.price,
+                  contractAddress: POLRARE_ADDRESS[1],
+                  assetId: '1233',
+                  symbol: state.symbol ?? 'ETH',
+                  image: hash,
+                  totalQuantity: values.totalQuantity,
+                  createdBy: account!,
+                  type: state.fileType,
+                  categoryName: state.categorie.categoryName,
+                }
+
+                dispatch(postItem(body))
+              }
+            })
+            .catch((e) => {
+              console.log(e.message)
+            })
         }
       }
     },

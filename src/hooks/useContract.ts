@@ -130,6 +130,8 @@ export function useV3Pool(address: string | undefined) {
 
 export function usePolrareContract() {
   const { chainId } = useActiveWeb3React()
-
-  return useContract<Polrare>(chainId ? POLRARE_ADDRESS[chainId]:POLRARE_ADDRESS[SupportedChainId.ROPSTEN], POLRARENFT_ABI.abi)
+  return useContract<Polrare>(
+    chainId ? POLRARE_ADDRESS[chainId] : POLRARE_ADDRESS[SupportedChainId.ROPSTEN],
+    POLRARENFT_ABI.abi
+  )
 }

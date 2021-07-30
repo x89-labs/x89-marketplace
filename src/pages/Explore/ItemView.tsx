@@ -26,7 +26,7 @@ const Container = styled(NavLink).attrs({
   position: relative;
   cursor: pointer;
   border-radius: ${Outline.borderRadius.base}px;
-  box-shadow: 0 2px 5px #6324ed;
+  box-shadow: 0px 8px 26px rgba(99, 36, 237, 0.16);
   &:hover {
   }
   @media only screen and (max-width: 700px) {
@@ -174,7 +174,7 @@ export default function ItemView({ index, item, isLiveAuction, isMyItem }: ItemV
   }
 
   return (
-    <Container key={index} id={`stats-nav-link`} to={`/detail/${item.id}`}>
+    <Container key={index} id={`detail-nav-link`} to={`/detail/${item.id}`}>
       <ImageDisPlay>
         {PreviewFile(item)}
         {isLiveAuction === true && (

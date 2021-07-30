@@ -12,16 +12,16 @@ import { getIn, useFormik } from 'formik'
 import { BodyItem } from 'models/bodyItem'
 import { useActiveWeb3React } from 'hooks/web3'
 import { Forms, validationFormCreateSchema } from '../../state/mint/config'
-import { Type } from 'models/formInput'
+
 import { Ipfs } from 'hooks/ipfs'
-import Switch from 'react-switch'
-import useIsXNFTContract from 'hooks/usePolrareNft'
+
 import { POLRARE_ADDRESS } from 'constants/addresses'
 import { Color, Typography } from 'styles'
 import Categories from 'components/Mint/categories'
 import UploadFile from 'components/Mint/UploadFile'
-import StableSelect from 'components/Mint/stableSelect'
+
 import OptionMintCreate from 'components/Mint/OptionMintCreate'
+import { usePolrareNft } from 'hooks/usePolrareNft'
 interface ico {
   icon: any
   name: string
@@ -46,7 +46,7 @@ export const Single = ({ history }: RouteComponentProps) => {
   const state = useMintState()
   const darkMode = useIsDarkMode()
   const { account } = useActiveWeb3React()
-  const { addFee } = useIsXNFTContract()
+  const { mint } = usePolrareNft()
 
   const formik = useFormik({
     initialValues: state.initValues,
@@ -57,35 +57,38 @@ export const Single = ({ history }: RouteComponentProps) => {
         const reader = new window.FileReader()
         reader.readAsArrayBuffer(file)
         reader.onloadend = async () => {
-          const hash = await Ipfs.GetHash(reader.result)
-          if (hash) {
-            dispatch(fieldChange({ fieldName: 'ipfsHash', fieldValue: hash }))
-          }
+          Ipfs.GetHash(reader.result)
+            .then((response: any) => {
+              const hash = response.Hash
+              dispatch(fieldChange({ fieldName: 'ipfsHash', fieldValue: hash }))
+              mint()
+              if (state.categorie) {
+                const body: BodyItem = {
+                  categoryId: state.categorie.id,
+                  name: values.name,
+                  description: values.description,
+                  price: values.price,
+                  contractAddress: POLRARE_ADDRESS[1],
+                  assetId: '1233',
+                  symbol: state.symbol ?? 'ETH',
+                  image: hash,
+                  totalQuantity: 1,
+                  createdBy: account!,
+                  type: state.fileType,
+                  categoryName: state.categorie.categoryName,
+                }
 
-          if (state.categorie) {
-            const body: BodyItem = {
-              categoryId: state.categorie.id,
-              name: values.name,
-              description: values.description,
-              price: values.price,
-              contractAddress: POLRARE_ADDRESS[1],
-              assetId: '1233',
-              symbol: state.symbol ?? 'ETH',
-              image: hash,
-              totalQuantity: 1,
-              createdBy: account!,
-              type: state.fileType,
-              categoryName: state.categorie.categoryName,
-            }
-            console.log(body)
-            addFee()
-            dispatch(postItem(body))
-            window.location.href = '/#/myitem'
-          }
+                dispatch(postItem(body))
+                // window.location.href = '/#/myitem'
+              }
+            })
+            .catch((e) => {
+              console.log(e)
+            })
         }
       }
-      // formik.resetForm()
-      // dispatch(resetForm({ value: 'resetform' }))
+      formik.resetForm()
+      dispatch(resetForm({ value: 'resetform' }))
     },
   })
 

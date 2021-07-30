@@ -12,9 +12,11 @@ import { ListHotBid, optionsTopSeller } from 'state/explore/config'
 import { getCategories } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
 import PlaceholderLoading from './placeholderLoading'
+import GameExplore from './Game'
 
 const BodyExplore = styled.div`
-  width: 90%;
+  width: 100%;
+  padding: 0 10%;
 `
 
 const BtnLoadmore = styled.div`
@@ -23,7 +25,6 @@ const BtnLoadmore = styled.div`
   width: 100%;
 `
 const TopSellerItem = styled.div`
-  ${{ ...Outline.border.purple }}
   background: ${({ theme }) => theme.bg3};
   cursor: pointer;
   border-radius: ${Outline.borderRadius.base}px;
@@ -34,6 +35,7 @@ const TopSellerItem = styled.div`
   align-items: center;
   margin: 8px 0;
   height: ${Sizing.x80}px;
+  box-shadow: 0px 4px 26px rgba(99, 36, 237, 0.16);
   &:hover {
     box-shadow: 2px 4px 8px #f0f0f0;
   }
@@ -71,7 +73,7 @@ const Text = styled.p`
 const Image = styled.img``
 
 const ContentGroup = styled.div`
-  margin-top: ${Sizing.x100}px;
+  margin-top: ${Sizing.x60}px;
 `
 
 const Filter = styled.div`
@@ -146,7 +148,6 @@ export default function Explore() {
     const list = state.listItem
     return list
   }, [state.listItem])
-  console.log(listItem)
 
   const GridList = () => {
     const matrix = new Array<Array<any>>()
@@ -191,6 +192,10 @@ export default function Explore() {
               <StableSelect option={optionsSeller} textColor={'rgb(0, 102, 255)'} />
             </Title>
             {GridList()}
+          </ContentGroup>
+          <ContentGroup>
+            <Title>Game</Title>
+            <GameExplore />
           </ContentGroup>
           <ContentGroup>
             <Title>

@@ -31,8 +31,6 @@ export const UNI: { [chainId: number]: Token } = {
   [SupportedChainId.KOVAN]: new Token(SupportedChainId.KOVAN, UNI_ADDRESS[42], 18, 'UNI', 'Uniswap'),
 }
 
-
-
 export const WETH9_EXTENDED: { [chainId: number]: Token } = {
   ...WETH9,
   [SupportedChainId.ARBITRUM_KOVAN]: new Token(
