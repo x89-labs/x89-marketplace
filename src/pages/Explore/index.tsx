@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { fieldChange, getListItems, searchItems } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
@@ -7,13 +7,17 @@ import * as Asset from 'assets'
 import { Color, Outline, Sizing, Button, Typography } from 'styles'
 import HeaderExplore from 'components/Header/Explore'
 import ItemView from './ItemView'
-import StableSelect from 'components/Mint/stableSelect'
 import { ListHotBid, optionsTopBuyer, optionsTopSeller } from 'state/explore/config'
 import { getCategories } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
 import PlaceholderLoading from './placeholderLoading'
 import Modal from 'components/Modal'
 import Categories from 'components/Mint/categories'
+import SelectTable from 'components/Mint/selectTable'
+import { useModalOpen, useToggleModal } from 'state/application/hooks'
+import { ApplicationModal } from 'state/application/actions'
+import { useOnClickOutside } from 'hooks/useOnClickOutside'
+import { relative } from 'path/posix'
 
 const BodyExplore = styled.div`
   width: 100%;
@@ -122,30 +126,30 @@ const ListItem = styled.div`
 `
 
 const FilterContainer = styled.div`
-  width: 100%;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  z-index: 1;
+  width: 200px;
+  background: ${({ theme }) => theme.bg6};
+  padding: 10px;
+  border: 1px solid #e0d3fb;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 26px rgba(53, 223, 177, 0.16);
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  .header {
-    ${{ ...Typography.fontSize.x40 }}
-    ${{ ...Typography.fontWeight.bold }}
-    justify-self: center;
-  }
-  .sort {
+  .sortBy {
     width: 100%;
-    display: flex;
-    align-items: center;
-    .title {
-      ${{ ...Typography.fontSize.x40 }}
-      ${{ ...Typography.fontWeight.bold }}
-    }
+    justify-content: space-between;
+    cursor: pointer;
   }
-  .btnSort {
+  p {
+    color: #939393;
+    ${{ ...Typography.fontSize.x20 }}
+    ${{ ...Typography.fontWeight.bold }}
   }
 `
-
 const optionsSeller = [
   {
     name: 'Seller',
@@ -157,34 +161,20 @@ const optionsSeller = [
   },
 ]
 
-const sortPrice = [
-  {
-    name: 'PriceDes',
-  },
-  {
-    name: 'PriceAsc',
-  },
-]
-
-const sortName = [
-  {
-    name: 'NameDes',
-  },
-  {
-    name: 'NameAsc',
-  },
-]
-
 export default function Explore() {
   const dispatch = useDispatch()
   const [selectCategory, setSelectCategory] = useState('')
+  const [filter, setFilter] = useState('')
   const state = useExploreState()
-  const [openFilter, setOpenFilter] = useState(false)
   const listCategories = useMintState().categories
+  const node = useRef<HTMLDivElement>()
+  const open = useModalOpen(ApplicationModal.FILTER_EXPLORE)
+  const toggle = useToggleModal(ApplicationModal.FILTER_EXPLORE)
+  useOnClickOutside(node, open ? toggle : undefined)
   useEffect(() => {
     setTimeout(() => {
       dispatch(getListItems())
-    }, 3000)
+    }, 1500)
     dispatch(fieldChange({ fieldName: 'href', fieldValue: window.location.href }))
     dispatch(getCategories())
   }, [])
@@ -197,16 +187,31 @@ export default function Explore() {
   const FilterForm = () => {
     return (
       <FilterContainer>
-        <div className="header">Filter</div>
-        <div className="sort">
-          <div className="title">Price</div>
-          <StableSelect option={sortPrice} />
+        <Text>Sort By</Text>
+        <div
+          className="sortBy"
+          onClick={() => {
+            dispatch(searchItems({ sortBy: 'sort', name: 'price_asc' }))
+            setFilter('Cheaper')
+          }}
+        >
+          <p> Cheaper</p>
+          {filter === 'Cheaper' && <Asset.Check width={16} height={16} />}
         </div>
-        <div className="sort">
-          <div className="title">Name</div>
-          <StableSelect option={sortName} />
+        <div
+          className="sortBy"
+          onClick={() => {
+            dispatch(searchItems({ sortBy: 'sort', name: 'price_desc' }))
+            setFilter('Highest')
+          }}
+        >
+          <p>Highest Price</p>
+          {filter === 'Highest' && <Asset.Check width={16} height={16} />}
         </div>
-        <BtnLoadmore onClick={() => setOpenFilter(false)}>Sort</BtnLoadmore>
+        <div className="sortBy">
+          <p>Most Liked</p>
+          {filter === 'Liked' && <Asset.Check width={16} height={16} />}
+        </div>
       </FilterContainer>
     )
   }
@@ -247,11 +252,10 @@ export default function Explore() {
       {listItem.length > 0 ? (
         <BodyExplore>
           <HeaderExplore />
-
           <ContentGroup>
             <Title>
               Top
-              <StableSelect option={optionsSeller} textColor={'rgb(0, 102, 255)'} />
+              <SelectTable option={optionsSeller} textColor={'rgb(0, 102, 255)'} />
             </Title>
             {GridList()}
           </ContentGroup>
@@ -271,7 +275,7 @@ export default function Explore() {
             <ListItem>{ListHotBid.map((item, index) => index < 4 && <ItemView item={item} key={index} />)}</ListItem>
           </ContentGroup>
 
-          <ContentGroup>
+          <ContentGroup style={{ position: 'relative' }}>
             <Filter>
               <div>
                 <Title>Discovery</Title>
@@ -282,7 +286,7 @@ export default function Explore() {
                     color: selectCategory === 'All' ? `${Color.neutral.black}` : '',
                   }}
                   onClick={() => {
-                    dispatch(searchItems(''))
+                    dispatch(searchItems({ sortBy: 'categoryName', name: '' }))
                     setSelectCategory('All')
                   }}
                 >
@@ -298,7 +302,7 @@ export default function Explore() {
                         color: selectCategory === item.categoryName ? `${Color.neutral.black}` : '',
                       }}
                       onClick={() => {
-                        dispatch(searchItems(item.categoryName))
+                        dispatch(searchItems({ sortBy: 'categoryName', name: item.categoryName }))
                         setSelectCategory(item.categoryName)
                       }}
                     >
@@ -306,8 +310,11 @@ export default function Explore() {
                     </div>
                   ))}
               </div>
-              <div className="btnFilter" onClick={() => setOpenFilter(true)}>
-                {`Filter & Sort`} <Image src={Asset.SrcFilter} />
+              <div ref={node as any}>
+                <div className="btnFilter" onClick={toggle}>
+                  {`Filter & Sort`} <Image src={Asset.SrcFilter} />
+                </div>
+                {open && <FilterForm />}
               </div>
             </Filter>
             <ListItem>
@@ -317,9 +324,6 @@ export default function Explore() {
             </ListItem>
             <BtnLoadmore onClick={onLoadMore}>Load More</BtnLoadmore>
           </ContentGroup>
-          <Modal isOpen={openFilter} onDismiss={() => setOpenFilter(false)}>
-            <FilterForm />
-          </Modal>
         </BodyExplore>
       ) : (
         <PlaceholderLoading />
