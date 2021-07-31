@@ -96,14 +96,6 @@ export default function SelectTable({ option, width, textColor, onClick }: Selec
                 dispatch(fieldChange({ fieldName: 'topSeller', fieldValue: item.name }))
               } else if (item.name === 'Buyer') {
                 dispatch(fieldChange({ fieldName: 'topSeller', fieldValue: item.name }))
-              } else if (item.name === 'PriceDes') {
-                dispatch(searchItems({ sortBy: 'sort', name: 'price_desc' }))
-              } else if (item.name === 'PriceAsc') {
-                dispatch(searchItems({ sortBy: 'sort', name: 'price_asc' }))
-              } else if (item.name === 'NameDes') {
-                dispatch(searchItems({ sortBy: 'sort', name: 'name_desc' }))
-              } else if (item.name === 'NameAsc') {
-                dispatch(searchItems({ sortBy: 'sort', name: 'name_asc' }))
               }
             }}
           >
