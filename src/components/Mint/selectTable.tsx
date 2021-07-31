@@ -6,20 +6,19 @@ import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import { useModalOpen, useToggleModal } from 'state/application/hooks'
 import { ApplicationModal } from 'state/application/actions'
 import { useDispatch } from 'react-redux'
+import { fieldChange, searchItems } from 'state/explore/actions'
 import { useMintState } from 'state/mint/hooks'
-import { Button, Sizing, Typography } from 'styles'
-import DayPicker from 'react-day-picker'
-import 'react-day-picker/lib/style.css'
-interface StableDateProps {
+import { Button, Color, Sizing, Typography } from 'styles'
+interface SelectTableProps {
   option?: any[]
   width?: any
+  textColor?: string
+  onClick?: () => void
 }
 
-export default function StableDate({ option, width }: StableDateProps) {
+export default function SelectTable({ option, width, textColor, onClick }: SelectTableProps) {
   const [show, setShow] = useState(true)
-  const [datePicker, setDatePicker] = useState(true)
   const [selected, setSelected] = useState()
-  const [day, setDay] = useState<Date>()
   const open = useModalOpen(ApplicationModal.DROPDOWN)
   const toggle = useToggleModal(ApplicationModal.DROPDOWN)
   const node = useRef<HTMLDivElement>()
@@ -34,30 +33,9 @@ export default function StableDate({ option, width }: StableDateProps) {
     justify-content: space-between;
     postiton: relative;
   `
-  const DatePicker = styled.div`
-    padding: 10px;
-    width: 260px;
-    background: ${({ theme }) => theme.bg2};
-    justify-content: center;
-    position: absolute;
-    z-index: 12;
-    margin-left: 20rem;
-    @media only screen and (max-width: 700px) {
-      margin-left: 0;
-    }
-    .dayPicker {
-      width: 230px;
-    }
-  `
-
-  const BtnApply = styled.div`
-    ${{ ...Button.btn.primary }};
-    width: ${Sizing.x240}px;
-    text-align: center;
-  `
   const Around = styled.div`
     display: flex;
-    color: #9c9292;
+    color: ${Color.neutral.purple};
     margin: 0;
     cursor: pointer;
     justify-content: space-between;
@@ -75,7 +53,6 @@ export default function StableDate({ option, width }: StableDateProps) {
     padding: 12px;
     height: auto;
     position: absolute;
-    right: 0;
     z-index: 1;
     .item {
       display: flex;
@@ -102,7 +79,8 @@ export default function StableDate({ option, width }: StableDateProps) {
   return (
     <Container ref={node as any}>
       <Around onClick={() => setShow(false)}>
-        <h4>{day ? day.toLocaleDateString() : selected ? selected : option && option[0]?.name}</h4>
+        <h4>{selected ? selected : option && option[0]?.name}</h4>
+
         <Asset.DownArrow width={12} height={12} />
       </Around>
       <DropDown hidden={show}>
@@ -111,14 +89,22 @@ export default function StableDate({ option, width }: StableDateProps) {
             className="item"
             key={index}
             onClick={() => {
-              if (item.name === 'Pick spicific date') {
-                setDatePicker(false)
-                setSelected(undefined)
-              } else {
-                setSelected(item.name)
-                setDay(undefined)
-              }
+              onClick && onClick()
+              setSelected(item.name)
               setShow(true)
+              if (item.name === 'Seller') {
+                dispatch(fieldChange({ fieldName: 'topSeller', fieldValue: item.name }))
+              } else if (item.name === 'Buyer') {
+                dispatch(fieldChange({ fieldName: 'topSeller', fieldValue: item.name }))
+              } else if (item.name === 'PriceDes') {
+                dispatch(searchItems({ sortBy: 'sort', name: 'price_desc' }))
+              } else if (item.name === 'PriceAsc') {
+                dispatch(searchItems({ sortBy: 'sort', name: 'price_asc' }))
+              } else if (item.name === 'NameDes') {
+                dispatch(searchItems({ sortBy: 'sort', name: 'name_desc' }))
+              } else if (item.name === 'NameAsc') {
+                dispatch(searchItems({ sortBy: 'sort', name: 'name_asc' }))
+              }
             }}
           >
             <div className="itemName">
@@ -129,17 +115,6 @@ export default function StableDate({ option, width }: StableDateProps) {
           </div>
         ))}
       </DropDown>
-      <DatePicker hidden={datePicker}>
-        <DayPicker
-          className="dayPicker"
-          onDayClick={(day: Date) => {
-            setDay(day)
-          }}
-          selectedDays={day ? day : undefined}
-        />
-        Select Time
-        <BtnApply onClick={() => setDatePicker(true)}>Apply</BtnApply>
-      </DatePicker>
     </Container>
   )
 }

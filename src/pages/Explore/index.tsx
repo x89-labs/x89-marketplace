@@ -7,13 +7,13 @@ import * as Asset from 'assets'
 import { Color, Outline, Sizing, Button, Typography } from 'styles'
 import HeaderExplore from 'components/Header/Explore'
 import ItemView from './ItemView'
-import StableSelect from 'components/Mint/stableSelect'
 import { ListHotBid, optionsTopBuyer, optionsTopSeller } from 'state/explore/config'
 import { getCategories } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
 import PlaceholderLoading from './placeholderLoading'
 import Modal from 'components/Modal'
 import Categories from 'components/Mint/categories'
+import SelectTable from 'components/Mint/selectTable'
 
 const BodyExplore = styled.div`
   width: 100%;
@@ -128,6 +128,24 @@ const FilterContainer = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
+  .form__group {
+    position: relative;
+    background: ${({ theme }) => theme.bg1};
+    height: 48px;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #ccc;
+    justify-content: flex-end;
+    border-radius: 10px;
+  }
+  input {
+    background: ${({ theme }) => theme.bg1};
+    color: ${({ theme }) => theme.text1};
+    width: 100%;
+    border: none;
+    outline: none;
+    margin: 4px;
+  }
   .header {
     ${{ ...Typography.fontSize.x40 }}
     ${{ ...Typography.fontWeight.bold }}
@@ -135,17 +153,17 @@ const FilterContainer = styled.div`
   }
   .sort {
     width: 100%;
-    display: flex;
+    margin-top: 2rem;
     align-items: center;
     .title {
       ${{ ...Typography.fontSize.x40 }}
       ${{ ...Typography.fontWeight.bold }}
     }
   }
-  .btnSort {
+  .selectTable {
+    width: 120px;
   }
 `
-
 const optionsSeller = [
   {
     name: 'Seller',
@@ -181,10 +199,11 @@ export default function Explore() {
   const state = useExploreState()
   const [openFilter, setOpenFilter] = useState(false)
   const listCategories = useMintState().categories
+  const [contentFilter, setContentFilter] = useState('')
   useEffect(() => {
     setTimeout(() => {
       dispatch(getListItems())
-    }, 3000)
+    }, 1500)
     dispatch(fieldChange({ fieldName: 'href', fieldValue: window.location.href }))
     dispatch(getCategories())
   }, [])
@@ -200,11 +219,29 @@ export default function Explore() {
         <div className="header">Filter</div>
         <div className="sort">
           <div className="title">Price</div>
-          <StableSelect option={sortPrice} />
+          <div className="form__group selectTable">
+            <SelectTable option={sortPrice} />
+          </div>
         </div>
         <div className="sort">
           <div className="title">Name</div>
-          <StableSelect option={sortName} />
+          <div className="form__group selectTable">
+            <SelectTable option={sortName} />
+          </div>
+        </div>
+        <div className="sort">
+          <div className="title">Search</div>
+          <div className="form__group ">
+            <input
+              type="text"
+              placeholder="search with text"
+              onBlur={(e) => {
+                dispatch(searchItems({ sortBy: 'search', name: e.target.value }))
+                setContentFilter(e.target.value)
+              }}
+              defaultValue={contentFilter}
+            />
+          </div>
         </div>
         <BtnLoadmore onClick={() => setOpenFilter(false)}>Sort</BtnLoadmore>
       </FilterContainer>
@@ -247,11 +284,10 @@ export default function Explore() {
       {listItem.length > 0 ? (
         <BodyExplore>
           <HeaderExplore />
-
           <ContentGroup>
             <Title>
               Top
-              <StableSelect option={optionsSeller} textColor={'rgb(0, 102, 255)'} />
+              <SelectTable option={optionsSeller} textColor={'rgb(0, 102, 255)'} />
             </Title>
             {GridList()}
           </ContentGroup>
@@ -282,7 +318,7 @@ export default function Explore() {
                     color: selectCategory === 'All' ? `${Color.neutral.black}` : '',
                   }}
                   onClick={() => {
-                    dispatch(searchItems(''))
+                    dispatch(searchItems({ sortBy: 'categoryName', name: '' }))
                     setSelectCategory('All')
                   }}
                 >
@@ -298,7 +334,7 @@ export default function Explore() {
                         color: selectCategory === item.categoryName ? `${Color.neutral.black}` : '',
                       }}
                       onClick={() => {
-                        dispatch(searchItems(item.categoryName))
+                        dispatch(searchItems({ sortBy: 'categoryName', name: item.categoryName }))
                         setSelectCategory(item.categoryName)
                       }}
                     >

@@ -20,8 +20,8 @@ export const getItem = createAsyncThunk('explore/getItem', async (itemId: string
     return []
   }
 })
-export const searchItems = createAsyncThunk('explore/search', async (name: string) => {
-  const URL = `${Endpoint.ITEM}?categoryName=${name}`
+export const searchItems = createAsyncThunk('explore/search', async (body: { name: string; sortBy: string }) => {
+  const URL = `${Endpoint.ITEM}?${body.sortBy}=${body.name}`
   const response = await client.get(URL, {})
   if (response && response.status == 200) {
     console.log(response)

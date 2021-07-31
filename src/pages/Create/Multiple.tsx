@@ -18,7 +18,7 @@ import Switch from 'react-switch'
 import { POLRARE_ADDRESS } from 'constants/addresses'
 import Categories from 'components/Mint/categories'
 import UploadFile from 'components/Mint/UploadFile'
-import StableSelect from 'components/Mint/stableSelect'
+import StableSelect from 'components/Mint/selectTable'
 import OptionMintCreate from 'components/Mint/OptionMintCreate'
 
 interface ico {
@@ -327,36 +327,6 @@ export const Multiple = ({ history }: RouteComponentProps) => {
   }
   const darkMode = useIsDarkMode()
 
-  const FixedPrice = () => {
-    return (
-      <div
-        className="marketplace"
-        onClick={() => setSwitchType(SwitchType.FixedPrice)}
-        style={{
-          border: switchType === SwitchType.FixedPrice ? '2px solid rgb(0, 102, 255)' : '2px solid lightgray',
-        }}
-      >
-        <Asset.FixedPrice className="image" fill={darkMode ? '#ffffff' : '#000000'} />
-        <h4>Fixed price</h4>
-      </div>
-    )
-  }
-
-  const UnlimitedAuction = () => {
-    return (
-      <div
-        className="marketplace"
-        onClick={() => setSwitchType(SwitchType.UnlimitedAuction)}
-        style={{
-          border: switchType === SwitchType.UnlimitedAuction ? '2px solid rgb(0, 102, 255)' : '2px solid lightgray',
-        }}
-      >
-        <Asset.UnlimitedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
-        <h4>Unlimited auction</h4>
-      </div>
-    )
-  }
-
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <Around>
@@ -365,47 +335,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
         <h2>Upload file</h2>
         <UploadFile />
         <Categories />
-        <div>
-          <h2>{`Put on marketplace`}</h2>
-          <div>
-            {switchType === SwitchType.FixedPrice ? (
-              <p>{`Enter price to allow users instantly purchase your NFT`}</p>
-            ) : (
-              <p>{` Allow other users to make bids on your NFT`}</p>
-            )}
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <Create>
-                <div>
-                  <FixedPrice />
-                  <UnlimitedAuction />
-                </div>
-              </Create>
-            </div>
-            {switchType === SwitchType.FixedPrice && FormInput('price')}
-          </div>
-          <UnlockPurchased>
-            <div>
-              <UnlockTitle>Unlock once purchased</UnlockTitle>
-              <p>Content will be unlocked after successful transaction</p>
-            </div>
-            <Switch
-              onChange={() => setChecked(!checked)}
-              checked={checked}
-              onColor="#86d3ff"
-              onHandleColor="#2693e6"
-              handleDiameter={20}
-              uncheckedIcon={false}
-              checkedIcon={false}
-              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-              height={20}
-              width={40}
-            />
-          </UnlockPurchased>
-          {FormInput('infomation')}
-          {FormInput('multiple')}
-          <OptionMintCreate formik={formik} />
-        </div>
+        <OptionMintCreate formik={formik} />
       </Around>
       <Preview>
         <div className="preview">

@@ -127,25 +127,21 @@ export const Single = ({ history }: RouteComponentProps) => {
     margin: 4px 0;
   `
   const Preview = styled.div`
-    .preview {
-      postition: fixed;
-      margin: 4rem 0 0 2rem;
-      position: relative;
-      height: 390px;
-      width: 240px;
-      @media only screen and (max-width: 700px) {
-        display: none;
-      }
+    position: sticky;
+    top: 60px;
+    margin: 5rem 0 0 2rem;
+    height: 390px;
+    width: 240px;
+    @media only screen and (max-width: 700px) {
+      display: none;
     }
-
-    .pr {
-      position: sticky;
-      top: 10px;
-    }
-
     .content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       border-radius: 16px;
       border: 1px solid ${({ theme }) => theme.text5};
+      background: ${({ theme }) => theme.bg6};
       height: 320px;
       width: 240px;
       padding: 22px 24px;
@@ -158,10 +154,7 @@ export const Single = ({ history }: RouteComponentProps) => {
     }
 
     .image {
-      margin-top: 86px;
-      margin-left: 8px;
-      width: 90%;
-      height: 100px;
+      width: 180px;
       border-radius: 5px;
     }
   `
@@ -268,14 +261,10 @@ export const Single = ({ history }: RouteComponentProps) => {
         <OptionMintCreate formik={formik} isSingle={true} />
       </Around>
       <Preview>
-        <div className="preview">
-          <div className="pr">
-            <h4>Preview</h4>
-            <div className="content">
-              <Text hidden={state.file ? true : false}> Upload file to preview your brand new NFT</Text>
-              <PreviewFile />
-            </div>
-          </div>
+        <h4>Preview</h4>
+        <div className="content">
+          <Text hidden={state.file ? true : false}> Upload file to preview your brand new NFT</Text>
+          <PreviewFile />
         </div>
       </Preview>
       <Modal isOpen={openMint} onDismiss={() => setOpenMint(false)}>
