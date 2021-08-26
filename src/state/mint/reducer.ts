@@ -2,10 +2,21 @@ import { createReducer, createSlice } from '@reduxjs/toolkit'
 import { BodyItem } from 'models/bodyItem'
 import { Categories } from 'models/categories'
 import { Item } from 'models/explore'
-import { deleteFile, Field, fieldChange, fileChange, getCategories, getMyItems, postItem, resetForm } from './actions'
+import {
+  deleteFile,
+  Field,
+  fieldChange,
+  fileChange,
+  getCategories,
+  getMyItems,
+  postItem,
+  resetForm,
+  actBtnAdvanced,
+} from './actions'
 export interface MintState {
   readonly independentField: Field
   readonly typedValue: string
+  readonly showBtnAdvanced: boolean
   readonly otherTypedValue: string // for the case when there's no liquidity
   readonly file?: any
   readonly fileType?: any
@@ -22,11 +33,13 @@ export const initialState: MintState = {
   independentField: Field.CURRENCY_A,
   typedValue: '',
   otherTypedValue: '',
+  showBtnAdvanced: true,
   initValues: {
     categoryId: '',
-    name: '',
     description: '',
     price: 0,
+    name: '',
+    royalties: 0,
     contractAddress: '',
     assetId: '1233',
     symbol: 'ETH',
@@ -84,6 +97,12 @@ const mintSlice = createSlice({
         return {
           ...state,
           file: undefined,
+        }
+      })
+      .addCase(actBtnAdvanced, (state, action) => {
+        return {
+          ...state,
+          showBtnAdvanced: !state.showBtnAdvanced,
         }
       })
   },

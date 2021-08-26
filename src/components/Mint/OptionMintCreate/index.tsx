@@ -9,15 +9,20 @@ import { Forms } from 'state/mint/config'
 import { Type } from 'models/formInput'
 import { getIn } from 'formik'
 import StablePrice from '../stablePrice'
+import Logo from '../../../assets/images/favicon.png'
 import SelectTableDate from '../selectTableDate'
-
+import ic_questionmark from '../../../assets/svg/ic_questionmark.svg'
+import Switch from '../../Switch'
 type OptionMintCreate = {
   formik?: any
   isSingle?: boolean
+  showBtnAdvanced?: boolean
+  actShowBtnAdvanced: () => void
 }
+
 const TextInput = styled.div`
   margin-top: 40px;
-  margin-right: 20px;
+  margin-right: 14px;
   .form__group {
     position: relative;
     margin-top: 10px;
@@ -25,7 +30,7 @@ const TextInput = styled.div`
     height: 48px;
     display: flex;
     flex-direction: row;
-    border: 1px solid #ccc;
+    border: 1px solid ${Color.neutral.gray};
     justify-content: flex-end;
     border-radius: 10px;
   }
@@ -41,9 +46,11 @@ const TextInput = styled.div`
 const AdvancedSetting = styled.div`
   ${{ ...Outline.border.gray }}
   padding: 10px 0;
-  width: 100%;
+  margin-right: 14px;
+  width: auto;
   margin-top: 2rem;
   text-align: center;
+  border: 1px solid ${Color.neutral.gray};
   border-radius: 3rem;
   font-size: 1rem;
   cursor: pointer;
@@ -60,6 +67,7 @@ const CreateBtn = styled.div`
 const CreateItem = styled.div`
   display: flex;
   margin-top: 2rem;
+  margin-right: 14px;
   justify-content: space-between;
 `
 
@@ -84,10 +92,30 @@ const UnlockTitle = styled.h2`
 const Title = styled.p`
   ${{ ...Typography.header.x30 }}
 `
+const TitleSmall = styled.span`
+  color: ${Color.neutral.gray};
+  ${{ ...Typography.header.x20 }}
+  font-weight: 500;
+`
+
+const Unsaved = styled.span`
+  ${{ ...Typography.fontSize.x30 }}
+  color: ${Color.neutral.gray}
+`
+
 const Text = styled.p`
   ${{ ...Typography.fontSize.x20 }}
   color: ${Color.neutral.gray}
   margin: 4px 0;
+`
+
+const Percent = styled.span`
+  ${{ ...Typography.fontSize.x20 }}
+  color: ${Color.neutral.gray}
+  width: 13px;
+  height: 20px;
+  margin-right: 10px;
+  margin-top: 15px;
 `
 
 enum SwitchType {
@@ -95,17 +123,26 @@ enum SwitchType {
   TimedAuction,
   UnlimitedAuction,
 }
-export default function OptionMintCreate({ formik, isSingle }: OptionMintCreate) {
+export default function OptionMintCreate({ formik, isSingle, showBtnAdvanced, actShowBtnAdvanced }: OptionMintCreate) {
   const darkMode = useIsDarkMode()
-  const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
+  //const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
   const [isopen, setOpen] = useState(false)
+  const [SwitchOn, setSwitchOn] = useState(true)
   const [switchType, setSwitchType] = useState<SwitchType>(SwitchType.FixedPrice)
 
   const CreateCollection = () => {
     return (
       <div className="marketplace" onClick={() => setOpen(true)}>
         <Asset.Plus className="image" fill={darkMode ? '#ffffff' : '#000000'} />
-        <h4>Create </h4>
+        <h4 style={{ marginBottom: 0 }}>Create </h4>
+      </div>
+    )
+  }
+  const PolrareCollection = () => {
+    return (
+      <div className="marketplacePolrare">
+        <img width={'40px'} src={darkMode ? Logo : Logo} alt="logo" />
+        <h4 style={{ marginBottom: 0 }}>Polrare </h4>
       </div>
     )
   }
@@ -113,8 +150,30 @@ export default function OptionMintCreate({ formik, isSingle }: OptionMintCreate)
     margin-top: 16px;
     display: flex;
     flex-direction: row;
-    .marketplace {
+    .marketplacePolrare {
       border: 2px solid transparent
+      border-radius: 15px;
+      display: inline-block;
+      background: ${darkMode ? Color.linearGradient.black : `linear-gradient(#fff,#fff)`} padding-box,
+        ${Color.linearGradient.button} border-box;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      width: 200px;
+      height: 140px;
+      margin-right: 14px;
+      border-radius: 16px;
+      justify-content: center;
+      align-items: center;
+      @media only screen and (max-width: 700px) {
+        width: 100%;
+        ${{ ...Typography.fontSize.x20 }}
+        text-align: center;
+      }
+    }    
+    .marketplace {
+      border: 2px solid lightgray;
       border-radius: 15px;
       display: inline-block;
       background: ${darkMode ? Color.linearGradient.black : `linear-gradient(#fff,#fff)`} padding-box,
@@ -187,64 +246,110 @@ export default function OptionMintCreate({ formik, isSingle }: OptionMintCreate)
   }
 
   const FormInput = (location?: string) => {
-    return Forms.map((r, i) => {
-      if (location === r.location) {
-        return r.control?.map((f, index) => {
-          if (f.type === Type.Input) {
-            return (
-              <TextInput key={index}>
-                <Title style={{ margin: 0 }}>{f.title}</Title>
-                <div className="form__group ">
-                  <input
-                    id={f.id}
-                    type={'input'}
-                    placeholder={f.placeHolder}
-                    onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
-                    defaultValue={getIn(formik.values, f.id)}
-                  />
-                </div>
-                <ErrorMessage>{errorMessage(f.id)}</ErrorMessage>
-                <Text>{f.panel}</Text>
-              </TextInput>
-            )
-          } else if (f.type === Type.InputDropdown) {
-            return (
-              <TextInput key={index}>
-                <Title style={{ margin: 0 }}>{f.title}</Title>
-                <div className="form__group ">
-                  <input
-                    id={f.id}
-                    type={'number'}
-                    min="0"
-                    placeholder={f.placeHolder}
-                    onBlur={(e) => {
-                      e.preventDefault()
-                      const { value } = e.target
-                      const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/
-                      if (regex.test(value.toString())) {
-                        formik.setFieldValue(f.id, e.target.value)
-                      }
-                    }}
-                    defaultValue={getIn(formik.values, f.id)}
-                  />
-                  <StablePrice option={f.option} />
-                </div>
-                <Text>{f.panel}</Text>
-              </TextInput>
-            )
-          } else if (f.type === Type.Dropdown) {
-            return (
-              <TextInput style={{ width: '50%' }} key={f.id}>
-                <h3 style={{ margin: 0 }}>{f.title}</h3>
-                <div className="form__group ">
-                  <SelectTableDate option={f.option} width={'100%'} />
-                </div>
-              </TextInput>
-            )
+    const controls: any = []
+    Forms.map((f, i) => {
+      if (location === f.location) {
+        const rows = f.row
+        rows?.map((r, rindex) => {
+          const controlsInRow = f.control?.filter((o) => o.row == r)
+          if (controlsInRow) {
+            const divControl: any = []
+            controlsInRow.map((c, cindex) => {
+              let control = <></>
+              if (c.type === Type.Input) {
+                control = (
+                  <TextInput key={cindex} style={{ width: c.width }}>
+                    <Title style={{ margin: 0, height: 18.67 }}>
+                      {c.title}
+                      <TitleSmall>{c.titleSmall}</TitleSmall>
+                    </Title>
+                    <div className="form__group ">
+                      <input
+                        id={c.id}
+                        type={'input'}
+                        placeholder={c.placeHolder}
+                        onBlur={(e) => formik.setFieldValue(c.id, e.target.value)}
+                        defaultValue={getIn(formik.values, c.id)}
+                      />
+                    </div>
+                    <ErrorMessage>{errorMessage(c.id)}</ErrorMessage>
+                    <Text>{c.panel}</Text>
+                  </TextInput>
+                )
+              } else if (c.type === Type.InputDropdown) {
+                control = (
+                  <TextInput key={cindex}>
+                    <Title style={{ margin: 0 }}>{c.title}</Title>
+                    <div className="form__group ">
+                      <input
+                        id={c.id}
+                        type={'number'}
+                        min="0"
+                        placeholder={c.placeHolder}
+                        onBlur={(e) => {
+                          e.preventDefault()
+                          const { value } = e.target
+                          const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/
+                          if (regex.test(value.toString())) {
+                            formik.setFieldValue(c.id, e.target.value)
+                          }
+                        }}
+                        defaultValue={getIn(formik.values, c.id)}
+                      />
+                      <StablePrice option={c.option} />
+                    </div>
+                    <Text>{c.panel}</Text>
+                    <Text>{c.panel1}</Text>
+                  </TextInput>
+                )
+              } else if (c.type === Type.Dropdown) {
+                control = (
+                  <TextInput style={{ width: '50%' }} key={c.id}>
+                    <h3 style={{ margin: 0 }}>{c.title}</h3>
+                    <div className="form__group ">
+                      <SelectTableDate option={c.option} width={'100%'} />
+                    </div>
+                  </TextInput>
+                )
+              } else if (c.type === Type.InputPercent) {
+                control = (
+                  <TextInput key={cindex}>
+                    <Title style={{ margin: 0 }}>{c.title}</Title>
+                    <div className="form__group ">
+                      <input
+                        id={c.id}
+                        type={'number'}
+                        min="0"
+                        placeholder={c.placeHolder}
+                        onBlur={(e) => {
+                          e.preventDefault()
+                          const { value } = e.target
+                          const regex = /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/
+                          if (regex.test(value.toString())) {
+                            formik.setFieldValue(c.id, e.target.value)
+                          }
+                        }}
+                        defaultValue={getIn(formik.values, c.id)}
+                      />
+                      <Percent>%</Percent>
+                    </div>
+                    <Text>{c.panel}</Text>
+                    <Text>{c.panel1}</Text>
+                  </TextInput>
+                )
+              }
+              divControl.push(control)
+            })
+            if (controlsInRow.length > 1) {
+              controls.push(<div style={{ display: 'flex' }}>{divControl}</div>)
+            } else {
+              controls.push(divControl)
+            }
           }
         })
       }
     })
+    return controls
   }
 
   const errorMessage = (fieldName: string) => {
@@ -255,17 +360,14 @@ export default function OptionMintCreate({ formik, isSingle }: OptionMintCreate)
     }
     return undefined
   }
+
+  const onChangeSwitch = () => {
+    setSwitchOn(!SwitchOn)
+  }
   return (
     <div>
       <div style={{ marginTop: 40 }}>
         <Title>Put on marketplace</Title>
-        {switchType === 1 ? (
-          <Text>Enter price to allow users instantly purchase your NFT</Text>
-        ) : switchType === 2 ? (
-          <Text>Set a period of time for which buyers can place bids</Text>
-        ) : (
-          <Text>{`Put your new NFT on Polrare's marketplace`}</Text>
-        )}
 
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <Create>
@@ -274,6 +376,14 @@ export default function OptionMintCreate({ formik, isSingle }: OptionMintCreate)
             <UnlimitedAuction />
           </Create>
         </div>
+        <br />
+        {switchType === 1 ? (
+          <Text>Enter price to allow users instantly purchase your NFT</Text>
+        ) : switchType === 2 ? (
+          <Text>Set a period of time for which buyers can place bids</Text>
+        ) : (
+          <Text>{`Put your new NFT on Polrare's marketplace`}</Text>
+        )}
 
         <div>
           {switchType === SwitchType.FixedPrice && FormInput('price')}
@@ -282,33 +392,26 @@ export default function OptionMintCreate({ formik, isSingle }: OptionMintCreate)
 
         <UnlockPurchased>
           <div>
-            <UnlockTitle>Unlock once purchased</UnlockTitle>
+            <div style={{ display: 'flex', width: '100%' }}>
+              <UnlockTitle>Unlock once purchased</UnlockTitle>
+              <Switch value={SwitchOn} onChange={onChangeSwitch} />
+            </div>
             <Text>Content will be unlocked after successful transaction</Text>
           </div>
         </UnlockPurchased>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <Create>
             <CreateCollection />
+            <PolrareCollection />
           </Create>
         </div>
         {FormInput('infomation')}
       </div>
-      <AdvancedSetting onClick={() => setShowBtnAdvanced(!showBtnAdvanced)}>
+      {/* <AdvancedSetting onClick={() => setShowBtnAdvanced(!showBtnAdvanced)}> */}
+      <AdvancedSetting onClick={() => actShowBtnAdvanced()}>
         {showBtnAdvanced == true ? 'Show Advenced Setting' : 'Hide Advenced Setting'}
       </AdvancedSetting>
-      <div hidden={showBtnAdvanced}>
-        <TextInput>
-          <Title>Properties</Title>
-          <div style={{ display: 'flex' }}>
-            <div className="form__group " style={{ marginRight: 10 }}>
-              <input type="input" placeholder="e.g. Size" />
-            </div>
-            <div className="form__group ">
-              <input type="input" placeholder="e.g.M" />
-            </div>
-          </div>
-        </TextInput>
-      </div>
+      <div hidden={showBtnAdvanced}>{FormInput('advance')}</div>
       <CreateItem>
         <CreateBtn
           onClick={() => {
@@ -317,7 +420,10 @@ export default function OptionMintCreate({ formik, isSingle }: OptionMintCreate)
         >
           Mint
         </CreateBtn>
-        <p>Unsaved changes </p>
+        <p>
+          <img src={ic_questionmark} />
+          <Unsaved> Unsaved changes</Unsaved>
+        </p>
       </CreateItem>
       <Modal isOpen={isopen} onDismiss={() => setOpen(false)}>
         <CreateForm />

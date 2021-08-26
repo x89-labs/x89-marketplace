@@ -147,7 +147,7 @@ export default function SelectTableDate({ option, width }: SelectTableDateProps)
   const FormTime = [{ name: 'AM' }, { name: 'PM' }]
   return (
     <Container ref={node as any}>
-      <Around onClick={() => setShow(false)}>
+      <Around onClick={() => setShow(!show)}>
         <div style={{ display: 'flex' }}>
           <h4>{day ? day.toLocaleDateString() : selected ? selected : option && option[0]?.name}</h4>
           <h4>{hour && hour > 0 ? `${hour}:${minute}  ${noon}` : ''}</h4>

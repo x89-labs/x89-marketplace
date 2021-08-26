@@ -4,7 +4,6 @@ import { usePolrareContract } from './useContract'
 import { useMintState } from 'state/mint/hooks'
 export function usePolrareNft(): { mint: () => void } {
   const { account, library } = useActiveWeb3React()
-  console.log(account)
   const pContract = usePolrareContract()
   const ipfsHash = useMintState().ipfsHash
   const mint = useCallback(() => {

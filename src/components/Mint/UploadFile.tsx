@@ -12,7 +12,7 @@ import { Color } from 'styles'
 
 const Around = styled.div`
   margin-top: 10px;
-  width: 560px;
+  width: 628px;
   height: auto;
   border: 1px dashed ${Color.neutral.gray};
   display: flex;

@@ -12,7 +12,8 @@ const Container = styled.div`
   margin-top: 1.2rem;
   align-self: center;
   justify-content: center;
-  width: 200px;
+  width: 50%;
+  padding-right: 0px;
 `
 const Title = styled.p`
   ${{ ...Typography.fontSize.x30 }}
@@ -20,6 +21,10 @@ const Title = styled.p`
   color: ${({ theme }) => theme.text1};
 `
 const Around = styled.div`
+  background: ${({ theme }) => theme.bg1};
+  height: 48px;
+  flex-direction: row;
+
   display: flex;
   color: ${Color.neutral.gray};
   padding: 10px;
@@ -37,10 +42,8 @@ const DropDown = styled.div`
   margin-top: 0.6rem;
   background: ${({ theme }) => theme.bg2};
   border-radius: 5px;
-  width: 200px;
   padding: 12px;
   height: auto;
-  position: absolute;
   z-index: 1;
   .item {
     display: flex;
@@ -75,13 +78,15 @@ export default function Categories() {
       <Title>Categories</Title>
       <Around
         onClick={() => {
-          setShow(false)
+          setShow(!show)
         }}
       >
         <h4>
           {state.categorie?.categoryName
             ? state.categorie?.categoryName
-            : state.categories && state.categories[0].categoryName}
+            : state.categories && state.categories.length > 0
+            ? state.categories[0].categoryName
+            : ''}
         </h4>
         <Asset.DownArrow width={12} height={12} fill={'#9c9292'} />
       </Around>

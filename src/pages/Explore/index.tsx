@@ -249,7 +249,7 @@ export default function Explore() {
 
   return (
     <>
-      {listItem.length > 0 ? (
+      {listItem && listItem.length > 0 ? (
         <BodyExplore>
           <HeaderExplore />
           <ContentGroup>

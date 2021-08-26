@@ -281,7 +281,6 @@ const NETWORK_LABELS: { [chainId in SupportedChainId | number]: string } = {
 
 export default function Header() {
   const { account, chainId } = useActiveWeb3React()
-
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   // const [isDark] = useDarkModeManager()
   const [darkMode, toggleDarkMode] = useDarkModeManager()
