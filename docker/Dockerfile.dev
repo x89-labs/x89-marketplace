@@ -1,0 +1,12 @@
+FROM node:14.17.5-buster-slim
+LABEL author="Duong Duc Nam <nampt1999@gmail.com>"
+
+WORKDIR /app
+RUN apt-get update && apt-get install -y yarn
+RUN npm install react-scripts -g --silent
+
+COPY ["package.json", "yarn.lock", "./"]
+RUN yarn install --silent
+COPY . .
+
+EXPOSE 3000
