@@ -56,7 +56,6 @@ const RequestClient = class {
       return response
     } catch (error) {
       this.handleError(error)
-      return error.response
     }
   }
 
@@ -66,7 +65,6 @@ const RequestClient = class {
       return response
     } catch (error) {
       this.handleError(error)
-      return error.response
     }
   }
 
@@ -90,7 +88,6 @@ const RequestClient = class {
       return response
     } catch (error) {
       this.handleError(error)
-      return error.response
     }
   }
   handleError(error: any) {
@@ -103,6 +100,7 @@ const RequestClient = class {
       // delay(1000);
       error.recall = true
     }
+    return null
     // throw error;
   }
 }
