@@ -6,12 +6,13 @@ import styled from 'styled-components'
 import { useIsDarkMode } from 'state/user/hooks'
 import ReactPlayer from 'react-player'
 import { useMintState } from 'state/mint/hooks'
+import { Color, Outline, Typography } from 'styles'
 import { Forms, validationFormCreateSchema } from '../../state/mint/config'
 import { Type } from 'models/formInput'
 import { useDispatch } from 'react-redux'
 import { getIn, useFormik } from 'formik'
 import { BodyItem } from 'models/bodyItem'
-import { getCategories, postItem } from 'state/mint/actions'
+import { actBtnAdvanced, getCategories, postItem } from 'state/mint/actions'
 import { useActiveWeb3React } from 'hooks/web3'
 import { Ipfs } from 'hooks/ipfs'
 import Switch from 'react-switch'
@@ -64,6 +65,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
             .then((hash) => {
               if (state.categorie) {
                 const body: BodyItem = {
+                  royalties: 0,
                   categoryId: state.categorie.id,
                   name: values.name,
                   description: values.description,
@@ -102,16 +104,6 @@ export const Multiple = ({ history }: RouteComponentProps) => {
     dispatch(getCategories())
   }, [])
   const Around = styled.div`
-    p {
-      color: ${({ theme }) => theme.text5};
-      fontweight: 500;
-      margin: 6px;
-    }
-
-    h3:hover {
-      cursor: pointer;
-    }
-
     .labelUpload {
       color: ${({ theme }) => theme.text5};
     }
@@ -119,6 +111,18 @@ export const Multiple = ({ history }: RouteComponentProps) => {
       color: linear-gradient(to right, blue, pink);
     }
   `
+  const Container = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  `
+  const Text = styled.p`
+    ${{ ...Typography.fontSize.x20 }}
+    color: ${Color.neutral.gray}
+    margin: 4px 0;
+  `
+
   const LableTitle = styled.h4`
     font-weight: 700;
     margin: 0;
@@ -168,30 +172,24 @@ export const Multiple = ({ history }: RouteComponentProps) => {
   `
 
   const Preview = styled.div`
-    .preview {
-      margin-left: 2rem;
-      position: relative;
-      height: 390px;
-      width: 240px;
-      @media only screen and (max-width: 700px) {
-        display: none;
-      }
+    position: sticky;
+    top: 60px;
+    margin: 5rem 0 0 2rem;
+    height: 390px;
+    width: 240px;
+    @media only screen and (max-width: 700px) {
+      display: none;
     }
-
-    .pr {
-      position: sticky;
-      top: 10px;
-    }
-
     .content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       border-radius: 16px;
       border: 1px solid ${({ theme }) => theme.text5};
+      background: ${({ theme }) => theme.bg6};
       height: 320px;
       width: 240px;
       padding: 22px 24px;
-      align-items: center;
-      text-align: center;
-      justify-content: center;
     }
 
     .unlockContent {
@@ -199,6 +197,14 @@ export const Multiple = ({ history }: RouteComponentProps) => {
       width: 190px;
       padding: 22px 24px;
     }
+
+    .image {
+      width: 180px;
+      border-radius: 5px;
+    }
+  `
+  const Title = styled.p`
+    ${{ ...Typography.header.x30 }}
   `
   const TextInput = styled.div`
     margin-top: 40px;
@@ -247,7 +253,25 @@ export const Multiple = ({ history }: RouteComponentProps) => {
     font-weight: 700;
     font-size: 0.8rem;
   `
-
+  const Checkbox = styled.input`
+    width: 20px;
+    height: 20px;
+    margin-right: 1%;
+    margin-top: 3%;
+    margin-bottom: 1%;
+    background: #ffffff;
+    border: 1.5px solid #eaeef4;
+    border-radius: 2px;
+  `
+  const Description = styled.div`
+    width: 628px;
+    label {
+      color: ${Color.neutral.gray};
+    }
+  `
+  const ShowBtnAdvanced = () => {
+    dispatch(actBtnAdvanced())
+  }
   const PreviewFile = () => {
     if (state.file) {
       if (state.file.type.includes('image')) {
@@ -328,26 +352,35 @@ export const Multiple = ({ history }: RouteComponentProps) => {
   const darkMode = useIsDarkMode()
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <Container>
       <Around>
-        <h3 onClick={() => history.goBack()}>{FeatherIcon(icons)}</h3>
-        <h1>Create {CreateType()} collectible</h1>
-        <h2>Upload file</h2>
-        <UploadFile />
+        <Title onClick={() => history.goBack()}>{FeatherIcon(icons)}</Title>
+        <h1 style={{ textAlign: 'center' }}>Create {CreateType()} collectible</h1>
+        <Title>Upload File</Title>
+        <div style={{ paddingRight: 14 }}>
+          <UploadFile />
+        </div>
+        <Description>
+          <Checkbox type="checkbox" />
+          <label>I declare that this is an original artwork.</label>
+          <label>I understand that no plagiarism is allowed,</label>
+          <label>and that the artwork can be removed anytime if detected.</label>
+        </Description>
         <Categories />
-        <OptionMintCreate formik={formik} />
+        <OptionMintCreate
+          formik={formik}
+          isSingle={true}
+          showBtnAdvanced={state.showBtnAdvanced}
+          actShowBtnAdvanced={ShowBtnAdvanced}
+        />
       </Around>
       <Preview>
-        <div className="preview">
-          <div className="pr">
-            <h4>Preview</h4>
-            <div className="content">
-              <p hidden={state.file ? true : false}> Upload file to preview your brand new NFT</p>
-              <PreviewFile />
-            </div>
-          </div>
+        <h4 style={{ marginBottom: 10, marginTop: 29.28 }}>Preview</h4>
+        <div className="content">
+          <Text hidden={state.file ? true : false}> Upload file to preview your brand new NFT</Text>
+          <PreviewFile />
         </div>
       </Preview>
-    </div>
+    </Container>
   )
 }

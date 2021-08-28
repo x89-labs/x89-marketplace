@@ -1,6 +1,7 @@
 export {}
 export interface BodyItem {
-  name: string
+  name: string;
+  royalties: number;
   description: string
   price: number
   contractAddress: string

@@ -58,8 +58,10 @@ const ExpirationDate = [
 export const Forms: FormInput[] = [
   {
     location: 'infomation',
+    row: [1, 2, 3],
     control: [
       {
+        row: 1,
         title: 'Title',
         type: Type.Input,
         id: 'name',
@@ -67,20 +69,30 @@ export const Forms: FormInput[] = [
         panel: '',
       },
       {
-        title: 'Description',
+        row: 2,
+        title: 'Description ',
+        titleSmall: '(Optional)',
         type: Type.Input,
-
         id: 'description',
         placeHolder: `e.g.After purchasing you'll be able to get the real T-shirt`,
-
         panel: 'With preserved line-breaks',
+      },
+      {
+        row: 3,
+        title: 'Royalties',
+        type: Type.InputPercent,
+        id: 'royalties',
+        placeHolder: `0`,
+        panel: 'Suggested: 0%, 10%, 20%, 30%. Maximum is 50%',
       },
     ],
   },
   {
     location: 'bids',
+    row: [1, 2, 3],
     control: [
       {
+        row: 1,
         title: 'Minimum bid',
         type: Type.InputDropdown,
         id: 'bid',
@@ -89,12 +101,14 @@ export const Forms: FormInput[] = [
         option: optionsToken,
       },
       {
+        row: 2,
         title: 'Starting Date',
         type: Type.Dropdown,
         id: 'startingDate',
         option: startDate,
       },
       {
+        row: 3,
         title: 'Expiration Date',
         type: Type.Dropdown,
         id: 'ExpirationDate',
@@ -104,27 +118,66 @@ export const Forms: FormInput[] = [
   },
   {
     location: 'price',
+    row: [1],
     control: [
       {
+        row: 1,
         title: 'Price',
         type: Type.InputDropdown,
         id: 'price',
         idDropdown: 'symbol',
         placeHolder: 'Enter price for one piece ...',
         panel: 'Service fee 2.5%',
+        panel1: 'You will receive 0 ETH',
         option: optionsToken,
       },
     ],
   },
   {
     location: 'multiple',
+    row: [1],
     control: [
       {
+        row: 1,
         title: 'Number of copies',
         type: Type.Input,
         id: 'totalQuantity',
         placeHolder: 'E.g 10',
         panel: 'Amount of tokens',
+      },
+    ],
+  },
+  {
+    location: 'advance',
+    row: [1, 2],
+    control: [
+      {
+        row: 1,
+        title: 'Properties ',
+        titleSmall: '(Optional)',
+        type: Type.Input,
+        id: 'totalQuantity',
+        placeHolder: 'e.g. Size',
+        panel: '',
+        width: '50%',
+      },
+      {
+        row: 1,
+        title: '',
+        type: Type.Input,
+        id: 'totalQuantity',
+        placeHolder: 'e.g.M',
+        panel: '',
+        width: '50%',
+      },
+      {
+        row: 2,
+        title: 'Alternative text for NFT ',
+        titleSmall: '(Optional)',
+        type: Type.Input,
+        id: 'totalQuantity',
+        placeHolder: 'Image description in details (do not start with the word “image”)',
+        panel: 'Text that will be used in VoiceOver for people with disabilities',
       },
     ],
   },

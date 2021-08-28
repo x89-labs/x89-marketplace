@@ -78,7 +78,7 @@ export default function StablePrice({ option, width }: stablePriceProps) {
   `
   return (
     <Container ref={node as any}>
-      <Around onClick={() => setShow(false)}>
+      <Around onClick={() => setShow(!show)}>
         <h4>{state.symbol ? state.symbol : option && option[0]?.name}</h4>
         <Asset.DownArrow width={12} height={12} />
       </Around>

@@ -16,6 +16,7 @@ import Stats from './Stats'
 import MyItem from './MyItems'
 import { useExploreState } from 'state/explore/hooks'
 import EditProfile from './MyItems/editProfile'
+import Game from './Game'
 const AppWrapper = styled.div`
   display: flex;
   height: 100vh;
@@ -66,6 +67,7 @@ export default function App() {
               <Route exact strict path="/" component={Explore} />
               <Route exact strict path="/explore" component={Explore} />
               <Route exact strict path="/stats" component={Stats} />
+              <Route exact strict path="/game" component={Game} />
               <Route exact strict path="/create" component={Create} />
               <Route exact strict path={`/create/erc721`} component={Single} />
               <Route exact strict path="/create/erc1155" component={Multiple} />

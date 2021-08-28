@@ -7,7 +7,7 @@ import { useIsDarkMode } from 'state/user/hooks'
 import { useMintState } from 'state/mint/hooks'
 import ReactPlayer from 'react-player'
 import { useDispatch } from 'react-redux'
-import { fieldChange, fileChange, getCategories, postItem, resetForm } from 'state/mint/actions'
+import { actBtnAdvanced, fieldChange, fileChange, getCategories, postItem, resetForm } from 'state/mint/actions'
 import { getIn, useFormik } from 'formik'
 import { BodyItem } from 'models/bodyItem'
 import { useActiveWeb3React } from 'hooks/web3'
@@ -25,6 +25,7 @@ import { usePolrareNft } from 'hooks/usePolrareNft'
 import Modal from 'components/Modal'
 import Loader from 'react-loader-spinner'
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
+import { Description } from '@ethersproject/properties'
 interface ico {
   icon: any
   name: string
@@ -55,6 +56,8 @@ export const Single = ({ history }: RouteComponentProps) => {
     initialValues: state.initValues,
     validationSchema: validationFormCreateSchema,
     onSubmit: (values) => {
+      console.log(values)
+      console.log(state.file)
       if (state.file) {
         setOpenMint(true)
         const file = state.file
@@ -68,6 +71,7 @@ export const Single = ({ history }: RouteComponentProps) => {
               mint()
               if (state.categorie) {
                 const body: BodyItem = {
+                  royalties: 0,
                   categoryId: state.categorie.id,
                   name: values.name,
                   description: values.description,
@@ -125,6 +129,22 @@ export const Single = ({ history }: RouteComponentProps) => {
     ${{ ...Typography.fontSize.x20 }}
     color: ${Color.neutral.gray}
     margin: 4px 0;
+  `
+  const Checkbox = styled.input`
+    width: 20px;
+    height: 20px;
+    margin-right: 1%;
+    margin-top: 3%;
+    margin-bottom: 1%;
+    background: #ffffff;
+    border: 1.5px solid #eaeef4;
+    border-radius: 2px;
+  `
+  const Description = styled.div`
+    width: 628px;
+    label {
+      color: ${Color.neutral.gray};
+    }
   `
   const Preview = styled.div`
     position: sticky;
@@ -217,7 +237,9 @@ export const Single = ({ history }: RouteComponentProps) => {
   const CreateType = () => {
     return 'single'
   }
-
+  const ShowBtnAdvanced = () => {
+    dispatch(actBtnAdvanced())
+  }
   const LoadingForm = () => {
     return (
       <LoadingContainer>
@@ -248,20 +270,30 @@ export const Single = ({ history }: RouteComponentProps) => {
       </LoadingContainer>
     )
   }
-  console.log(openMint)
 
   return (
     <Container>
       <Around>
         <Title onClick={() => history.goBack()}>{FeatherIcon(icons)}</Title>
         <h1 style={{ textAlign: 'center' }}>Create {CreateType()} collectible</h1>
-        <Title>UploadFile</Title>
+        <Title>Upload File</Title>
         <UploadFile />
+        <Description>
+          <Checkbox type="checkbox" />
+          <label>I declare that this is an original artwork.</label>
+          <label>I understand that no plagiarism is allowed,</label>
+          <label>and that the artwork can be removed anytime if detected.</label>
+        </Description>
         <Categories />
-        <OptionMintCreate formik={formik} isSingle={true} />
+        <OptionMintCreate
+          formik={formik}
+          isSingle={true}
+          showBtnAdvanced={state.showBtnAdvanced}
+          actShowBtnAdvanced={ShowBtnAdvanced}
+        />
       </Around>
       <Preview>
-        <h4>Preview</h4>
+        <h4 style={{ marginBottom: 10, marginTop: 29.28 }}>Preview</h4>
         <div className="content">
           <Text hidden={state.file ? true : false}> Upload file to preview your brand new NFT</Text>
           <PreviewFile />

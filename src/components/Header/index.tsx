@@ -281,7 +281,6 @@ const NETWORK_LABELS: { [chainId in SupportedChainId | number]: string } = {
 
 export default function Header() {
   const { account, chainId } = useActiveWeb3React()
-
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   // const [isDark] = useDarkModeManager()
   const [darkMode, toggleDarkMode] = useDarkModeManager()
@@ -303,7 +302,7 @@ export default function Header() {
         <StyledNavLink id={`explore-nav-link`} to={'/explore'}>
           <Trans>Explore</Trans>
         </StyledNavLink>
-        <StyledNavLink id={`stats-nav-link`} to={'/stats'}>
+        <StyledNavLink id={`stats-nav-link`} to={'/game'}>
           <Trans>Games</Trans>
         </StyledNavLink>
         <StyledNavLink id={`stats-nav-link`} to={'/game'}>
@@ -322,13 +321,6 @@ export default function Header() {
         >
           <Trans>Mint</Trans>
         </StyledNavLink>
-        {/* <StyledExternalLink id={`stake-nav-link`} href={'https://builder.polrare.co'}>
-          <Trans>Builder</Trans>
-        </StyledExternalLink>
-        <StyledExternalLink id={`stake-nav-link`} href={'https://museum.polrare.co'}>
-          <Trans>Museum</Trans>
-          <sup>↗</sup>
-        </StyledExternalLink> */}
       </HeaderLinks>
       <HeaderControls>
         <HeaderElement>

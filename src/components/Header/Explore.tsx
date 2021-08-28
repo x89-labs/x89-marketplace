@@ -30,30 +30,7 @@ const Header = styled.div`
   border-radius: ${Outline.borderRadius.large}px;
   background: ${({ theme }) => theme.bg4};
 `
-const LeftHeader = styled.div`
-  margin: 50px 30px;
-`
-const RightHeader = styled.div`
-  margin: ${Sizing.x40}px;
-`
-const ButtonHeader = styled.div`
-  ${{ ...Button.btn.primary }};
-  width: ${Sizing.x240}px;
-  margin-right: ${Sizing.x40}px;
-  text-align: center;
-`
-const ButtonBorder = styled.div`
-  ${{ ...Button.btn.secondary }};
-  width: ${Sizing.x240}px;
-`
-const TitleGreen = styled.p`
-  ${{ ...Typography.header.x70 }}
-  color: ${Color.neutral.green}
-`
-const TitlePurple = styled.p`
-  ${{ ...Typography.header.x70 }}
-  color: ${Color.neutral.purple}
-`
+
 const Text = styled.p`
   display: inline-block;
   ${{ ...Typography.fontSize.x20 }}
@@ -136,25 +113,6 @@ export default function HeaderExplore() {
   const listItem = useExploreState().listItem
   return (
     <HeaderFrame>
-      {/* <HeaderLayer>
-        <Header>
-          <LeftHeader>
-            <TitlePurple>Discover & Collect </TitlePurple>
-            <TitleGreen>Extraordinary</TitleGreen>
-            <TitlePurple>NFTs </TitlePurple>
-            <Text>Marketplace for crypto collectibies non-fungible token (NFTs).</Text>
-            <div style={{ display: 'flex', margin: '14px 0' }}>
-              <ButtonHeader>Explore more</ButtonHeader>
-              <ButtonBorder>Start Create</ButtonBorder>
-            </div>
-          </LeftHeader>
-          <RightHeader>
-            <div style={{ position: 'relative', width: 240, height: 280, background: '#ccc', borderRadius: 10 }}>
-              <Asset.WalletPicture width={240} height={280} style={{ position: 'absolute', top: -20, left: -20 }} />
-            </div>
-          </RightHeader>
-        </Header>
-      </HeaderLayer> */}
       <ListItem>
         {listItem.map((item, index) => (
           <Item key={index} id={`detail-nav-link`} to={`/detail/${item.id}`}>
