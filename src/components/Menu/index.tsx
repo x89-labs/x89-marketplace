@@ -136,7 +136,7 @@ const StyledNavLink = styled(NavLink).attrs({
   }
 `
 
-const CODE_LINK = 'https://github.com/Uniswap/uniswap-interface'
+const CODE_LINK = 'https://github.com/Polrare/marketplace'
 
 export default function Menu() {
   const { account } = useActiveWeb3React()
@@ -160,7 +160,7 @@ export default function Menu() {
           <MenuItem href="https://polrare.co/">
             <Info size={14} />
             <div>
-              <Trans>About</Trans>
+              <Trans>Official</Trans>
             </div>
           </MenuItem>
           <MenuItem href="https://docs.polrare.co">
@@ -169,30 +169,24 @@ export default function Menu() {
               <Trans>Docs</Trans>
             </div>
           </MenuItem>
-          {/* <MenuItem href={CODE_LINK}>
+          <MenuItem href={CODE_LINK}>
             <Code size={14} />
             <div>
               <Trans>Code</Trans>
             </div>
-          </MenuItem> */}
-          <StyledNavLink to={'/profile'}>
-            <BookOpen size={14} />
-            <div>
-              <Trans>My Items</Trans>
-            </div>
-          </StyledNavLink>
-          {/* <MenuItem href="https://discord.gg/FCfyBSbCU5">
+          </MenuItem>
+          <MenuItem href="https://t.me/polrare">
             <MessageCircle size={14} />
             <div>
-              <Trans>Discord</Trans>
+              <Trans>Telegram</Trans>
             </div>
           </MenuItem>
-          <MenuItem href="https://info.uniswap.org/">
-            <PieChart size={14} />
+          <MenuItem href="https://discord.gg/5fQb6M9a">
+            <MessageCircle size={14} />
             <div>
-              <Trans>Analytics</Trans>
+              <Trans>Twiter</Trans>
             </div>
-          </MenuItem> */}
+          </MenuItem>
         </MenuFlyout>
       )}
     </StyledMenu>

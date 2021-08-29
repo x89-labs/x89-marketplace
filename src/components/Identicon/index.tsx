@@ -24,6 +24,5 @@ export default function Identicon() {
     }
   }, [account])
 
-  // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451
   return <StyledIdenticonContainer ref={ref as any} />
 }
