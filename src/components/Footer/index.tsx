@@ -19,19 +19,19 @@ const FooterFrame = styled.div`
     padding-bottom: 4rem;
   }
 `
-const Header = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100px;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 1px dashed #ccc;
-`
-const Title = styled.p`
-  ${{ ...Typography.fontSize.x50 }};
-  color: ${Color.neutral.green};
-  margin: 0;
-`
+// const Header = styled.div`
+//   display: flex;
+//   width: 100%;
+//   height: 100px;
+//   justify-content: center;
+//   align-items: center;
+//   border-bottom: 1px dashed #ccc;
+// `
+// const Title = styled.p`
+//   ${{ ...Typography.fontSize.x50 }};
+//   color: ${Color.neutral.green};
+//   margin: 0;
+// `
 const Content = styled.div`
   display: flex;
   flex-direction: row;

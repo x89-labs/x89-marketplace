@@ -1,5 +1,5 @@
 import useScrollPosition from '@react-hook/window-scroll'
-import React, { useState } from 'react'
+import React from 'react'
 import { Text } from 'rebass'
 import { NavLink } from 'react-router-dom'
 import { darken } from 'polished'
@@ -8,13 +8,12 @@ import { Moon, Sun } from 'react-feather'
 import styled from 'styled-components/macro'
 
 import Logo from '../../assets/images/favicon.png'
-import LogoDark from '../../assets/svg/logo_white.svg'
+// import LogoDark from '../../assets/svg/logo_white.svg'
 import { SupportedChainId } from '../../constants/chains'
 
 import { useActiveWeb3React } from '../../hooks/web3'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances } from '../../state/wallet/hooks'
-import { ExternalLink } from '../../theme'
 import { YellowCard } from '../Card'
 import Menu from '../Menu'
 import Row, { RowFixed } from '../Row'
@@ -208,37 +207,37 @@ const StyledNavLink = styled(NavLink).attrs({
   }
 `
 
-const StyledExternalLink = styled(ExternalLink).attrs({
-  activeClassName,
-})<{ isActive?: boolean }>`
-  ${({ theme }) => theme.flexRowNoWrap}
-  align-items: left;
-  border-radius: 3rem;
-  outline: none;
-  cursor: pointer;
-  text-decoration: none;
-  color: ${({ theme }) => theme.text2};
-  font-size: 1rem;
-  width: fit-content;
-  margin: 0 12px;
-  font-weight: 500;
+// const StyledExternalLink = styled(ExternalLink).attrs({
+//   activeClassName,
+// })<{ isActive?: boolean }>`
+//   ${({ theme }) => theme.flexRowNoWrap}
+//   align-items: left;
+//   border-radius: 3rem;
+//   outline: none;
+//   cursor: pointer;
+//   text-decoration: none;
+//   color: ${({ theme }) => theme.text2};
+//   font-size: 1rem;
+//   width: fit-content;
+//   margin: 0 12px;
+//   font-weight: 500;
 
-  &.${activeClassName} {
-    border-radius: 12px;
-    font-weight: 600;
-    color: ${({ theme }) => theme.text1};
-  }
+//   &.${activeClassName} {
+//     border-radius: 12px;
+//     font-weight: 600;
+//     color: ${({ theme }) => theme.text1};
+//   }
 
-  :hover,
-  :focus {
-    color: ${({ theme }) => darken(0.1, theme.text1)};
-    text-decoration: none;
-  }
+//   :hover,
+//   :focus {
+//     color: ${({ theme }) => darken(0.1, theme.text1)};
+//     text-decoration: none;
+//   }
 
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-      display: none;
-`}
-`
+//   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+//       display: none;
+// `}
+// `
 
 export const StyledMenuButton = styled.button`
   position: relative;
@@ -286,7 +285,7 @@ export default function Header() {
   // const [isDark] = useDarkModeManager()
   const [darkMode, toggleDarkMode] = useDarkModeManager()
 
-  const [showUniBalanceModal, setShowUniBalanceModal] = useState(false)
+  // const [showUniBalanceModal, setShowUniBalanceModal] = useState(false)
 
   const scrollY = useScrollPosition()
 

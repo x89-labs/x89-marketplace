@@ -5,7 +5,6 @@ import getLibrary from '../utils/getLibrary'
 
 import { FortmaticConnector } from './Fortmatic'
 import { NetworkConnector } from './NetworkConnector'
-import UNISWAP_LOGO_URL from '../assets/svg/logo.svg'
 
 const INFURA_KEY = process.env.REACT_APP_INFURA_KEY
 const FORMATIC_KEY = process.env.REACT_APP_FORTMATIC_KEY

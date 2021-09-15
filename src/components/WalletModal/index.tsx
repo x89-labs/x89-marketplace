@@ -15,7 +15,7 @@ import { useModalOpen, useWalletModalToggle } from '../../state/application/hook
 import { ExternalLink, TYPE } from '../../theme'
 import AccountDetails from '../AccountDetails'
 import { Trans } from '@lingui/macro'
-
+import { ethers } from 'ethers'
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
@@ -157,6 +157,24 @@ export default function WalletModal({
     }
   }, [setWalletView, active, error, connector, walletModalOpen, activePrevious, connectorPrevious])
 
+  const signMessage = async () => {
+    try {
+      const message = 'marketplace-service'
+      if (!window.ethereum) throw new Error('No crypto wallet found. Please install it.')
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const signature = await signer.signMessage(message)
+      const address = await signer.getAddress()
+      return {
+        message,
+        signature,
+        address,
+      }
+    } catch (err) {
+      alert(err)
+    }
+  }
+
   const tryActivation = async (connector: AbstractConnector | undefined) => {
     let name = ''
     Object.keys(SUPPORTED_WALLETS).map((key) => {
@@ -180,13 +198,17 @@ export default function WalletModal({
     // }
 
     connector &&
-      activate(connector, undefined, true).catch((error) => {
-        if (error instanceof UnsupportedChainIdError) {
-          activate(connector) // a little janky...can't use setError because the connector isn't set
-        } else {
-          setPendingError(true)
-        }
-      })
+      activate(connector, undefined, true)
+        .then(() => {
+          signMessage()
+        })
+        .catch((error) => {
+          if (error instanceof UnsupportedChainIdError) {
+            activate(connector) // a little janky...can't use setError because the connector isn't set
+          } else {
+            setPendingError(true)
+          }
+        })
   }
 
   // close wallet modal if fortmatic modal is active
@@ -260,6 +282,8 @@ export default function WalletModal({
           <Option
             id={`connect-${key}`}
             onClick={() => {
+              signMessage()
+
               option.connector === connector
                 ? setWalletView(WALLET_VIEWS.ACCOUNT)
                 : !option.href && tryActivation(option.connector)

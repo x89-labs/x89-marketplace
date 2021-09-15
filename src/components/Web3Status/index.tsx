@@ -3,7 +3,7 @@ import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import { darken, lighten } from 'polished'
 import React, { useMemo } from 'react'
 import { Activity } from 'react-feather'
-import { t, Trans } from '@lingui/macro'
+import { Trans } from '@lingui/macro'
 import styled, { css } from 'styled-components'
 import FortmaticIcon from '../../assets/images/fortmaticIcon.png'
 import { fortmatic, injected } from '../../connectors'
@@ -119,13 +119,13 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
 }
 
-function Sock() {
-  return (
-    <span role="img" aria-label={t`has socks emoji`} style={{ marginTop: -4, marginBottom: -4 }}>
-      🧦
-    </span>
-  )
-}
+// function Sock() {
+//   return (
+//     <span role="img" aria-label={t`has socks emoji`} style={{ marginTop: -4, marginBottom: -4 }}>
+//       🧦
+//     </span>
+//   )
+// }
 
 // eslint-disable-next-line react/prop-types
 function StatusIcon({ connector }: { connector: AbstractConnector }) {
