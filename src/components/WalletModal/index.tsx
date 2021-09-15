@@ -20,6 +20,8 @@ import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
 import { LightCard } from '../Card'
+import { login } from 'state/auth/actions'
+import { useDispatch } from 'react-redux'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -133,6 +135,7 @@ export default function WalletModal({
 
   const previousAccount = usePrevious(account)
 
+  const dispatch = useDispatch()
   // close on connection, when logged out before
   useEffect(() => {
     if (account && !previousAccount && walletModalOpen) {
@@ -161,17 +164,17 @@ export default function WalletModal({
     try {
       const message = 'marketplace-service'
       if (!window.ethereum) throw new Error('No crypto wallet found. Please install it.')
+      if (!message) throw new Error('no message!')
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
       const signature = await signer.signMessage(message)
-      const address = await signer.getAddress()
+      const publicAddress = await signer.getAddress()
       return {
-        message,
         signature,
-        address,
+        publicAddress,
       }
     } catch (err) {
-      alert(err)
+      console.log(err)
     }
   }
 
@@ -200,7 +203,9 @@ export default function WalletModal({
     connector &&
       activate(connector, undefined, true)
         .then(() => {
-          signMessage()
+          signMessage().then((res) => {
+            dispatch(login(res))
+          })
         })
         .catch((error) => {
           if (error instanceof UnsupportedChainIdError) {
@@ -282,8 +287,6 @@ export default function WalletModal({
           <Option
             id={`connect-${key}`}
             onClick={() => {
-              signMessage()
-
               option.connector === connector
                 ? setWalletView(WALLET_VIEWS.ACCOUNT)
                 : !option.href && tryActivation(option.connector)
