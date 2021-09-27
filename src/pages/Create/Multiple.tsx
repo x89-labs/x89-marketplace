@@ -75,7 +75,7 @@ export const Multiple = ({ history }: RouteComponentProps) => {
                   totalQuantity: values.totalQuantity,
                   createdBy: account!,
                   type: state.fileType,
-                  categoryName: state.categorie.categoryName,
+                  categoryName: state.categorie.name,
                 }
 
                 dispatch(postItem(body))

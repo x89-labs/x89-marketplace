@@ -29,19 +29,48 @@ export default function SelectTableDate({ option, width }: SelectTableDateProps)
   const toggle = useToggleModal(ApplicationModal.DROPDOWN)
   const node = useRef<HTMLDivElement>()
   useOnClickOutside(node, open ? toggle : undefined)
-  const dispatch = useDispatch()
-  const state = useMintState()
 
   const Container = styled.div`
-    padding: 10px;
     align-self: center;
-    min-width: ${width};
-    justify-content: space-between;
     postiton: relative;
+    width: 100%;
+  `
+  const Around = styled.div`
+    display: flex;
+    color: #9c9292;
+    cursor: pointer;
+    align-items: center;
+    padding: 10px;
+    justify-content: space-between;
+  `
+  const DropDown = styled.div`
+    width: 300px;
+    justify-content: space-between;
+    background: ${({ theme }) => theme.bg2};
+    border-radius: 8px;
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    padding: 12px;
+    .item {
+      border-radius: 8px;
+      padding: 5px;
+      display: flex;
+      cursor: pointer;
+      justify-content: space-between;
+      align-items: center;
+      .itemName {
+        display: flex;
+        align-items: center;
+      }
+    }
+    .item:hover {
+      background: ${({ theme }) => theme.bg6};
+    }
   `
   const DatePicker = styled.div`
     padding: 10px;
-    width: 260px;
+    // width: 260px;
     background: ${({ theme }) => theme.bg2};
     justify-content: center;
     position: absolute;
@@ -58,57 +87,6 @@ export default function SelectTableDate({ option, width }: SelectTableDateProps)
       justify-content: space-between;
     }
   `
-
-  const BtnApply = styled.div`
-    ${{ ...Button.btn.primary }};
-    width: ${Sizing.x240}px;
-    text-align: center;
-  `
-  const Around = styled.div`
-    display: flex;
-    color: #9c9292;
-    margin: 0;
-    cursor: pointer;
-    justify-content: space-between;
-    align-items: center;
-    h4 {
-      margin: 0 5px;
-    }
-  `
-  const DropDown = styled.div`
-    margin-top: 1rem;
-    background: ${({ theme }) => theme.bg2};
-    box-shadow: rgb(4 4 5 / 20%) 0px 7px 36px -8px;
-    border-radius: 5px;
-    min-width: 300px;
-    padding: 12px;
-    height: auto;
-    position: absolute;
-    right: 0;
-    z-index: 1;
-    .item {
-      display: flex;
-      cursor: pointer;
-      justify-content: space-between;
-      align-items: center;
-      width: auto;
-      .itemName {
-        display: flex;
-        align-items: center;
-        margin-right: 1rem;
-      }
-      p {
-        ${{ ...Typography.fontSize.x30 }}
-        ${{ ...Typography.fontWeight.bold }}
-        margin-left: 12px;
-        color: ${({ theme }) => theme.text1};
-      }
-    }
-    .item:hover {
-      background: ${({ theme }) => theme.bg6};
-    }
-  `
-
   const TimeSelect = styled.div`
     height: 300px;
     width: 132px;
@@ -129,7 +107,6 @@ export default function SelectTableDate({ option, width }: SelectTableDateProps)
       }
     }
   `
-
   const ItemTime = styled.div`
     width: 36px;
     height: 36px;
@@ -143,16 +120,19 @@ export default function SelectTableDate({ option, width }: SelectTableDateProps)
       background: #aef2e0;
     }
   `
+  const BtnApply = styled.div`
+    ${{ ...Button.btn.primary }};
+    width: ${Sizing.x240}px;
+    text-align: center;
+  `
 
   const FormTime = [{ name: 'AM' }, { name: 'PM' }]
   return (
     <Container ref={node as any}>
-      <Around onClick={() => setShow(false)}>
-        <div style={{ display: 'flex' }}>
-          <h4>{day ? day.toLocaleDateString() : selected ? selected : option && option[0]?.name}</h4>
-          <h4>{hour && hour > 0 ? `${hour}:${minute}  ${noon}` : ''}</h4>
-        </div>
-        <Asset.DownArrow width={12} height={12} />
+      <Around onClick={() => setShow(!show)}>
+        <div>{day ? day.toLocaleDateString() : selected ? selected : option && option[0]?.name}</div>
+        <div>{hour && hour > 0 ? `${hour}:${minute}  ${noon}` : ''}</div>
+        <Asset.DownArrow className="d-block" style={{ justifyContent: 'flex-end' }} width={12} height={12} />
       </Around>
       <DropDown hidden={show}>
         {option?.map((item, index) => (
@@ -166,14 +146,14 @@ export default function SelectTableDate({ option, width }: SelectTableDateProps)
               } else {
                 setSelected(item.name)
                 setDay(undefined)
-                setHour(-1)
+                setHour(0)
               }
               setShow(true)
             }}
           >
             <div className="itemName">
               {item.icon && item.icon}
-              <p>{item.name}</p>
+              <span>{item.name}</span>
             </div>
             {selected === item.name && <Asset.Check width={16} height={16}></Asset.Check>}
           </div>
@@ -188,6 +168,7 @@ export default function SelectTableDate({ option, width }: SelectTableDateProps)
           }}
           selectedDays={day ? day : undefined}
         />
+
         <div className="timeSelect">
           <p>Select Time</p>
           <p>

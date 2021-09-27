@@ -1,40 +1,50 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
-import * as Icon from 'react-feather'
-import styled from 'styled-components'
 import * as Asset from '../../assets'
-import { useIsDarkMode } from 'state/user/hooks'
-import { useMintState } from 'state/mint/hooks'
-import ReactPlayer from 'react-player'
+import * as Icon from 'react-feather'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { fieldChange, fileChange, getCategories, postItem, resetForm } from 'state/mint/actions'
+import ReactPlayer from 'react-player'
+import { RouteComponentProps } from 'react-router-dom'
+import Loader from 'react-loader-spinner'
 import { getIn, useFormik } from 'formik'
-import { BodyItem } from 'models/bodyItem'
-import { useActiveWeb3React } from 'hooks/web3'
-import { Forms, validationFormCreateSchema } from '../../state/mint/config'
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
+import { Container, Row, Col, FormGroup, Label } from 'reactstrap'
 
 import { Ipfs } from 'hooks/ipfs'
+import { useActiveWeb3React } from 'hooks/web3'
+import { usePolrareNft } from 'hooks/usePolrareNft'
+import useFilePicker from 'hooks/useFilePicker'
+
+import { useIsDarkMode } from 'state/user/hooks'
+import { useMintState } from 'state/mint/hooks'
+import { fieldChange, fileChange, getCategories, postItem, resetForm, deleteFile } from 'state/mint/actions'
+import { Forms, validationFormCreateSchema } from 'state/mint/config'
 
 import { POLRARE_ADDRESS } from 'constants/addresses'
-import { Color, Outline, Typography } from 'styles'
-import Categories from 'components/Mint/categories'
-import UploadFile from 'components/Mint/UploadFile'
 
-import OptionMintCreate from 'components/Mint/OptionMintCreate'
-import { usePolrareNft } from 'hooks/usePolrareNft'
+import { BodyItem } from 'models/bodyItem'
+import { Type } from 'models/formInput'
 import Modal from 'components/Modal'
-import Loader from 'react-loader-spinner'
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
+import Categories from 'components/Mint/categories'
+import StablePrice from 'components/Mint/stablePrice'
+import SelectTableDate from 'components/Mint/selectTableDate'
+
+import { Button, Color, Outline, Typography } from 'styles'
+import styled from 'styled-components'
+
+enum SwitchType {
+  FixedPrice = 1,
+  TimedAuction,
+  UnlimitedAuction,
+}
+
 interface ico {
   icon: any
   name: string
 }
-
 const icons: ico = {
   icon: <Icon.ArrowLeft />,
   name: 'Manage collectible type',
 }
-
 const FeatherIcon = (icon: ico) => {
   return (
     <div style={{ position: 'relative', left: '0', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -46,11 +56,29 @@ const FeatherIcon = (icon: ico) => {
 
 export const Single = ({ history }: RouteComponentProps) => {
   const dispatch = useDispatch()
-  const state = useMintState()
   const darkMode = useIsDarkMode()
+  const state = useMintState()
+
   const { account } = useActiveWeb3React()
   const { mint } = usePolrareNft()
+
+  const [isSingle, setIsSingle] = useState(true)
   const [openMint, setOpenMint] = useState(false)
+  const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
+  const [isopen, setOpen] = useState(false)
+  const [switchType, setSwitchType] = useState<SwitchType>(SwitchType.FixedPrice)
+
+  const [openFileSelector, { plainFiles }] = useFilePicker({
+    multiple: false,
+    accept: ['.png', '.jpg', '.mp4', '.mov', '.gif', '.svg'],
+    readAs: 'DataURL',
+  })
+
+  useEffect(() => {
+    plainFiles[0] && dispatch(fileChange({ value: plainFiles[0] }))
+    plainFiles[0] && dispatch(fieldChange({ fieldName: 'fileType', fieldValue: plainFiles[0].type }))
+  }, [plainFiles[0]])
+
   const formik = useFormik({
     initialValues: state.initValues,
     validationSchema: validationFormCreateSchema,
@@ -79,7 +107,7 @@ export const Single = ({ history }: RouteComponentProps) => {
                   totalQuantity: 1,
                   createdBy: account!,
                   type: state.fileType,
-                  categoryName: state.categorie.categoryName,
+                  categoryName: state.categorie.name,
                 }
 
                 dispatch(postItem(body))
@@ -102,36 +130,31 @@ export const Single = ({ history }: RouteComponentProps) => {
     dispatch(getCategories())
   }, [])
 
-  const Container = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-  `
-  const Around = styled.div`
-    .labelUpload {
-      color: ${({ theme }) => theme.text5};
-    }
-
-    .unlockOncePurchased {
-      color: ${({ theme }) => theme.text5};
-    }
-  `
-
   const Title = styled.p`
     ${{ ...Typography.header.x30 }}
   `
-  const Text = styled.p`
+  const Text = styled.span`
     ${{ ...Typography.fontSize.x20 }}
     color: ${Color.neutral.gray}
-    margin: 4px 0;
+  `
+  const Around = styled.div`
+    margin-top: 10px;
+    height: auto;
+    border: 1px dashed ${Color.neutral.gray};
+    display: flex;
+    justify-content: center;
+    padding: 30px 0;
+    border-radius: 16px;
+    position: relative;
+    background: ${({ theme }) => theme.bg3};
+    @media only screen and (max-width: 700px) {
+      width: 100%;
+    }
   `
   const Preview = styled.div`
     position: sticky;
-    top: 60px;
-    margin: 5rem 0 0 2rem;
-    height: 390px;
-    width: 240px;
+    top: 10vh;
+    text-align: center;
     @media only screen and (max-width: 700px) {
       display: none;
     }
@@ -142,8 +165,7 @@ export const Single = ({ history }: RouteComponentProps) => {
       border-radius: 16px;
       border: 1px solid ${({ theme }) => theme.text5};
       background: ${({ theme }) => theme.bg6};
-      height: 320px;
-      width: 240px;
+      height: 400px;
       padding: 22px 24px;
     }
 
@@ -158,7 +180,6 @@ export const Single = ({ history }: RouteComponentProps) => {
       border-radius: 5px;
     }
   `
-
   const LoadingContainer = styled.div`
     width: 100%
     padding: 10px;
@@ -192,6 +213,109 @@ export const Single = ({ history }: RouteComponentProps) => {
       ${{ ...Outline.border.gray }}
     }
   `
+  const CloseBtn = styled.div`
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    position: absolute;
+    padding: 4px 3px;
+    top: 20px;
+    right: 39px;
+    border: 1px solid ${Color.neutral.gray};
+    cursor: pointer;
+    .closeBtn {
+      margin: 10px;
+    }
+    @media only screen and (max-width: 700px) {
+      right: 14px;
+      top: 10px;
+    }
+  `
+  const ChooseFile = styled.div`
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    margin: 14px auto;
+    display: flex;
+    padding: 20px;
+    border: 1px solid ${Color.neutral.gray};
+    background: ${({ theme }) => theme.bg2};
+    cursor: pointer;
+  `
+  const TextInput = styled.div`
+    margin-top: 15px;
+    // margin-right: 20px;
+    width: 100%;
+    .text-input {
+      position: relative;
+      margin-top: 10px;
+      background: ${({ theme }) => theme.bg1};
+      height: 48px;
+      display: flex;
+      border: 1px solid #ccc;
+      justify-content: space-between;
+      border-radius: 10px;
+    }
+    input {
+      background: ${({ theme }) => theme.bg1};
+      color: ${({ theme }) => theme.text1};
+      width: 100%;
+      border: none;
+      outline: none;
+      margin: 10px;
+    }
+  `
+  const AdvancedSetting = styled.button`
+    padding: 12px;
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 15px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    background: ${({ theme }) => theme.bg4};
+    color: ${({ theme }) => theme.text1};
+  `
+  const CreateBtn = styled.button`
+    width: 240px;
+    height: 48px;
+    text-align: center;
+    ${{ ...Button.btn.primary }};
+  `
+  const CreateItem = styled.div`
+    display: flex;
+    margin-top: 2rem;
+    justify-content: space-between;
+  `
+  const Create = styled.div`
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    .type-create {
+      width: 32%;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      background: ${darkMode ? Color.linearGradient.black : `linear-gradient(#fff,#fff)`} padding-box,
+        ${Color.linearGradient.button} border-box;
+      border-radius: 16px;
+      border: 2px solid transparent;
+      padding: 15px 0;
+      cursor: pointer;
+    }
+    .image {
+      display: block;
+      margin: 10px auto;
+      width: 40px;
+      height: 40px;
+    }
+  `
+  const ErrorMessage = styled.div`
+    color: red;
+    ${{ ...Typography.fontSize.x20 }}
+    ${{ ...Typography.fontWeight.bold }}
+  `
 
   const PreviewFile = () => {
     if (state.file) {
@@ -213,11 +337,9 @@ export const Single = ({ history }: RouteComponentProps) => {
       }
     } else return <></>
   }
-
   const CreateType = () => {
     return 'single'
   }
-
   const LoadingForm = () => {
     return (
       <LoadingContainer>
@@ -248,28 +370,228 @@ export const Single = ({ history }: RouteComponentProps) => {
       </LoadingContainer>
     )
   }
-  console.log(openMint)
+  const TypeCreate = (type: SwitchType) => {
+    return (
+      <div
+        className="type-create"
+        onClick={() => setSwitchType(type)}
+        style={{
+          border: switchType === type ? '2px solid transparent' : '2px solid lightgray',
+        }}
+      >
+        {type == SwitchType.FixedPrice ? (
+          <Asset.FixedPrice className="image" fill={darkMode ? '#ffffff' : '#000000'} />
+        ) : type == SwitchType.TimedAuction ? (
+          <Asset.TimedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
+        ) : (
+          <Asset.UnlimitedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
+        )}
+        <span>
+          {type == SwitchType.FixedPrice
+            ? 'Fixed Price'
+            : type == SwitchType.TimedAuction
+            ? 'Timed Auction'
+            : 'Unlimited Auction'}
+        </span>
+      </div>
+    )
+  }
+  const FormInput = (location?: string) => {
+    return Forms.map((r, i) => {
+      if (location === r.location) {
+        return r.control?.map((f, index) => {
+          if (f.type === Type.Input) {
+            return (
+              <TextInput key={index}>
+                <Title style={{ margin: 0 }}>{f.title}</Title>
+                <div className="text-input ">
+                  <input
+                    id={f.id}
+                    type={'input'}
+                    placeholder={f.placeHolder}
+                    onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
+                    defaultValue={getIn(formik.values, f.id)}
+                  />
+                </div>
+                <ErrorMessage>{errorMessage(f.id)}</ErrorMessage>
+                <Text>{f.panel}</Text>
+              </TextInput>
+            )
+          } else if (f.type === Type.InputDropdown) {
+            return (
+              <TextInput key={index}>
+                <Title style={{ margin: 0 }}>{f.title}</Title>
+                <div className="text-input w-100">
+                  <input
+                    id={f.id}
+                    type={'number'}
+                    min="0"
+                    placeholder={f.placeHolder}
+                    onBlur={(e) => {
+                      formik.setFieldValue(f.id, e.target.value)
+                    }}
+                    defaultValue={getIn(formik.values, f.id)}
+                  />
+                  <StablePrice option={f.option} />
+                </div>
+                <Text>{f.panel}</Text>
+              </TextInput>
+            )
+          } else if (f.type === Type.Dropdown) {
+            return (
+              <TextInput style={{ width: '49%' }} key={f.id}>
+                <Title style={{ margin: 0 }}>{f.title}</Title>
+                <div className="text-input">
+                  <SelectTableDate option={f.option} />
+                </div>
+              </TextInput>
+            )
+          }
+        })
+      }
+    })
+  }
+  const errorMessage = (fieldName: string) => {
+    const touched = getIn(formik.touched, fieldName)
+    const error = getIn(formik.errors, fieldName)
+    if (touched && error) {
+      return error
+    }
+    return undefined
+  }
 
   return (
-    <Container>
-      <Around>
+    <Container style={{ width: 1000 }}>
+      <Row>
         <Title onClick={() => history.goBack()}>{FeatherIcon(icons)}</Title>
-        <h1 style={{ textAlign: 'center' }}>Create {CreateType()} collectible</h1>
-        <Title>UploadFile</Title>
-        <UploadFile />
-        <Categories />
-        <OptionMintCreate formik={formik} isSingle={true} />
-      </Around>
-      <Preview>
-        <h4>Preview</h4>
-        <div className="content">
-          <Text hidden={state.file ? true : false}> Upload file to preview your brand new NFT</Text>
-          <PreviewFile />
-        </div>
-      </Preview>
-      <Modal isOpen={openMint} onDismiss={() => setOpenMint(false)}>
-        <LoadingForm />
-      </Modal>
+      </Row>
+      <Row>
+        <h1 className="my-4 bold text-center">Create {CreateType()} collectible</h1>
+      </Row>
+      {/* info item */}
+      <Row>
+        <Col xs={8}>
+          <Title>Upload File</Title>
+          <Around>
+            <FormGroup hidden={state.file ? true : false}>
+              <Label className="labelUpload">PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</Label>
+              <br />
+              <ChooseFile onClick={() => openFileSelector()}>
+                <Asset.Plus width={20} height={20} />
+              </ChooseFile>
+            </FormGroup>
+            <FormGroup hidden={state.file ? false : true}>
+              <CloseBtn
+                onClick={() => {
+                  state.file && dispatch(deleteFile({ value: state.file }))
+                }}
+              >
+                <Asset.Close width={12} height={12} className="closeBtn" fill={darkMode ? '#fff' : '#000'} />
+              </CloseBtn>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                {state.file && state.file.type.includes('image') ? (
+                  <img
+                    src={URL.createObjectURL(state.file)}
+                    width={'70%'}
+                    height={240}
+                    style={{ borderRadius: 10 }}
+                  ></img>
+                ) : (
+                  state.file && (
+                    <ReactPlayer
+                      url={URL.createObjectURL(state.file)}
+                      playing={false}
+                      muted={true}
+                      controls={true}
+                      width={'90%'}
+                      height={'auto'}
+                    />
+                  )
+                )}
+              </div>
+            </FormGroup>
+          </Around>
+
+          <Categories />
+
+          <Row
+            style={{
+              marginTop: 15,
+            }}
+          >
+            <Title>Put on type-create</Title>
+            {switchType === 1 ? (
+              <Text>Enter price to allow users instantly purchase your NFT</Text>
+            ) : switchType === 2 ? (
+              <Text>Set a period of time for which buyers can place bids</Text>
+            ) : (
+              <Text>{`Put your new NFT on Polrare's type-create`}</Text>
+            )}
+            {/* choose type */}
+            <Create>
+              {TypeCreate(SwitchType.FixedPrice)}
+              {isSingle && TypeCreate(SwitchType.TimedAuction)}
+              {TypeCreate(SwitchType.UnlimitedAuction)}
+            </Create>
+            {/* form info */}
+            <div>
+              {switchType === SwitchType.FixedPrice && FormInput('price')}
+              <div style={{ justifyContent: 'space-between', display: 'flex', flexWrap: 'wrap' }}>
+                {switchType === SwitchType.TimedAuction && FormInput('bids')}
+              </div>
+            </div>
+            {FormInput('infomation')}
+            {/* advance */}
+            <AdvancedSetting onClick={() => setShowBtnAdvanced(!showBtnAdvanced)}>
+              {showBtnAdvanced == true ? 'Show Advenced Setting' : 'Hide Advenced Setting'}
+            </AdvancedSetting>
+            <div hidden={showBtnAdvanced}>
+              <TextInput>
+                <Title>Properties</Title>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <div className="text-input" style={{ width: '49%' }}>
+                    <input type="text" placeholder="e.g. Size" />
+                  </div>
+                  <div className="text-input" style={{ width: '49%' }}>
+                    <input type="text" placeholder="e.g.M" />
+                  </div>
+                </div>
+              </TextInput>
+            </div>
+            {/* action */}
+            <CreateItem>
+              <CreateBtn
+                onClick={() => {
+                  formik.handleSubmit()
+                }}
+              >
+                Mint
+              </CreateBtn>
+              <CreateBtn
+                onClick={() => {
+                  formik.resetForm()
+                }}
+              >
+                Unsaved changes
+              </CreateBtn>
+            </CreateItem>
+          </Row>
+
+          {/* loading  */}
+          <Modal isOpen={openMint} onDismiss={() => setOpenMint(false)}>
+            <LoadingForm />
+          </Modal>
+        </Col>
+        <Col xs={4}>
+          <Preview>
+            <h4>Preview</h4>
+            <div className="content">
+              <Text hidden={state.file ? true : false}> Upload file to preview your brand new NFT</Text>
+              <PreviewFile />
+            </div>
+          </Preview>
+        </Col>
+      </Row>
     </Container>
   )
 }

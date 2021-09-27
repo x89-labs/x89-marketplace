@@ -1,11 +1,11 @@
 export {}
 export interface Categories {
   id: string
-  categoryName: string
+  name: string
   descriptions: string
-  active: boolean
-  categoryImage: boolean
-  parentID: boolean
-  createdAt: null
-  updatedAt: string
+  isActive: boolean
+  icon: string
+  backgroundImage: string
+  createdDate: Date
+  modifiedDate: Date
 }

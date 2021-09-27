@@ -13,9 +13,9 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Explore from './Explore'
 
-// import Create from './Create'
-// import { Multiple } from './Create/Multiple'
-// import { Single } from './Create/Single'
+import Create from './Create'
+import { Multiple } from './Create/Multiple'
+import { Single } from './Create/Single'
 // import DetailItem from './DetailItem'
 // import Stats from './Stats'
 // import MyItem from './MyItems'
@@ -69,10 +69,10 @@ export default function App() {
             <Switch>
               <Route exact strict path="/" component={Explore} />
               <Route exact strict path="/explore" component={Explore} />
-              {/* <Route exact strict path="/stats" component={Stats} />
               <Route exact strict path="/create" component={Create} />
               <Route exact strict path={`/create/erc721`} component={Single} />
               <Route exact strict path="/create/erc1155" component={Multiple} />
+              {/* <Route exact strict path="/stats" component={Stats} />
               <Route exact strict path={`/detail/:itemid`} component={DetailItem} />
               <Route exact strict path={`/profile`} component={MyItem} />
               <Route exact strict path={`/edit-profile`} component={EditProfile} /> */}
