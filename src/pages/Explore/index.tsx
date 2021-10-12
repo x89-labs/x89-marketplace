@@ -272,10 +272,10 @@ export default function Explore() {
           {list.map((value, index) => (
             <Col className="mt-4" lg="3" md="4" sm="6" xs="12" key={index}>
               <Card style={{ backgroundColor: 'transparent' }}>
-                <CardImg style={{ minHeight: 250, maxHeight: 250, objectFit: 'cover' }} src={value.image} />
+                <CardImg style={{ minHeight: 250, maxHeight: 250, objectFit: 'cover' }} src={value.urlFile} />
                 <CardBody>
                   <CardTitle tag="h5">{value.name}</CardTitle>
-                  <CardText className="text-justify">{value.description.slice(0, 70)}</CardText>
+                  <CardText className="text-justify">{value.descriptions?.slice(0, 70)}</CardText>
                   <CardText>
                     <small className="text-muted">
                       {value.price} {value.symbol}

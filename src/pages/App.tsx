@@ -71,7 +71,7 @@ export default function App() {
               <Route exact strict path="/explore" component={Explore} />
               <Route exact strict path="/create" component={Create} />
               <Route exact strict path={`/create/erc721`} component={Single} />
-              <Route exact strict path="/create/erc1155" component={Multiple} />
+              <Route exact strict path="/create/erc1155" component={Single} />
               {/* <Route exact strict path="/stats" component={Stats} />
               <Route exact strict path={`/detail/:itemid`} component={DetailItem} />
               <Route exact strict path={`/profile`} component={MyItem} />

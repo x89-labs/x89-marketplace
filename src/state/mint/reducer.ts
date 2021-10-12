@@ -1,7 +1,7 @@
 import { createReducer, createSlice } from '@reduxjs/toolkit'
 import { BodyItem } from 'models/bodyItem'
 import { Categories } from 'models/categories'
-import { Item } from 'models/explore'
+import { Item, PutOnSaleType } from 'models/item'
 import { deleteFile, Field, fieldChange, fileChange, getCategories, getMyItems, postItem, resetForm } from './actions'
 export interface MintState {
   readonly independentField: Field
@@ -12,7 +12,7 @@ export interface MintState {
   readonly categories?: Categories[]
   readonly categorie?: Categories
   readonly symbol?: string
-  readonly initValues: BodyItem
+  readonly initValues: Item
   readonly listMyItem?: Item[]
   readonly isCompleted: boolean
   readonly ipfsHash?: string
@@ -23,18 +23,19 @@ export const initialState: MintState = {
   typedValue: '',
   otherTypedValue: '',
   initValues: {
-    categoryId: '',
     name: '',
-    description: '',
-    price: 0,
     contractAddress: '',
-    assetId: '1233',
-    symbol: 'ETH',
-    image: '',
-    totalQuantity: 1,
-    createdBy: '',
-    type: '',
-    categoryName: '',
+    descriptions: '',
+    urlFile: '',
+    price: 0,
+    symbol: '',
+    royalties: 0,
+    numberOfCopies: 1,
+    putOnSaleType: PutOnSaleType.FixedPrice,
+    startingDate: new Date(),
+    expirationDate: new Date(),
+    categoryId: '',
+    collectionId: '',
   },
   isCompleted: false,
 }

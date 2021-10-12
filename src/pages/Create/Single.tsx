@@ -8,6 +8,7 @@ import Loader from 'react-loader-spinner'
 import { getIn, useFormik } from 'formik'
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 import { Container, Row, Col, FormGroup, Label } from 'reactstrap'
+import Logo from '../../assets/images/favicon.png'
 
 import { Ipfs } from 'hooks/ipfs'
 import { useActiveWeb3React } from 'hooks/web3'
@@ -21,7 +22,7 @@ import { Forms, validationFormCreateSchema } from 'state/mint/config'
 
 import { POLRARE_ADDRESS } from 'constants/addresses'
 
-import { BodyItem } from 'models/bodyItem'
+import { Item, PutOnSaleType } from 'models/item'
 import { Type } from 'models/formInput'
 import Modal from 'components/Modal'
 import Categories from 'components/Mint/categories'
@@ -30,12 +31,6 @@ import SelectTableDate from 'components/Mint/selectTableDate'
 
 import { Button, Color, Outline, Typography } from 'styles'
 import styled from 'styled-components'
-
-enum SwitchType {
-  FixedPrice = 1,
-  TimedAuction,
-  UnlimitedAuction,
-}
 
 interface ico {
   icon: any
@@ -55,6 +50,7 @@ const FeatherIcon = (icon: ico) => {
 }
 
 export const Single = ({ history }: RouteComponentProps) => {
+  const { isSingle } = window.history.state.state
   const dispatch = useDispatch()
   const darkMode = useIsDarkMode()
   const state = useMintState()
@@ -62,11 +58,24 @@ export const Single = ({ history }: RouteComponentProps) => {
   const { account } = useActiveWeb3React()
   const { mint } = usePolrareNft()
 
-  const [isSingle, setIsSingle] = useState(true)
   const [openMint, setOpenMint] = useState(false)
   const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
-  const [isopen, setOpen] = useState(false)
-  const [switchType, setSwitchType] = useState<SwitchType>(SwitchType.FixedPrice)
+
+  const [item, setItem] = useState({
+    name: '',
+    descriptions: '',
+    urlFile: '',
+    price: 0,
+    symbol: '',
+    royalties: null,
+    numberOfCopies: 1,
+    putOnSaleType: 1,
+    startingDate: null,
+    expirationDate: null,
+    categoryId: '',
+    collectionId: '',
+  })
+  const [switchType, setSwitchType] = useState<PutOnSaleType>(PutOnSaleType.FixedPrice)
 
   const [openFileSelector, { plainFiles }] = useFilePicker({
     multiple: false,
@@ -80,7 +89,7 @@ export const Single = ({ history }: RouteComponentProps) => {
   }, [plainFiles[0]])
 
   const formik = useFormik({
-    initialValues: state.initValues,
+    initialValues: item,
     validationSchema: validationFormCreateSchema,
     onSubmit: (values) => {
       if (state.file) {
@@ -95,22 +104,21 @@ export const Single = ({ history }: RouteComponentProps) => {
               dispatch(fieldChange({ fieldName: 'ipfsHash', fieldValue: hash }))
               mint()
               if (state.categorie) {
-                const body: BodyItem = {
+                const body: Item = {
                   categoryId: state.categorie.id,
                   name: values.name,
-                  description: values.description,
+                  descriptions: values.descriptions,
                   price: values.price,
                   contractAddress: POLRARE_ADDRESS[1],
-                  assetId: '1233',
                   symbol: state.symbol ?? 'ETH',
-                  image: hash,
-                  totalQuantity: 1,
-                  createdBy: account!,
-                  type: state.fileType,
-                  categoryName: state.categorie.name,
+                  urlFile: hash,
+                  numberOfCopies: 1,
+                  putOnSaleType: switchType,
+                  collectionId: '',
+                  royalties: 0,
                 }
 
-                dispatch(postItem(body))
+                // dispatch(postItem(body))
                 if (state.isCompleted === true) {
                   window.location.href = '/#/myitem'
                 }
@@ -154,12 +162,11 @@ export const Single = ({ history }: RouteComponentProps) => {
   const Preview = styled.div`
     position: sticky;
     top: 10vh;
-    text-align: center;
     @media only screen and (max-width: 700px) {
       display: none;
     }
     .content {
-      display: flex;
+      position: absolute;
       justify-content: center;
       align-items: center;
       border-radius: 16px;
@@ -176,8 +183,9 @@ export const Single = ({ history }: RouteComponentProps) => {
     }
 
     .image {
-      width: 180px;
+      width: 100%;
       border-radius: 5px;
+      display: block;
     }
   `
   const LoadingContainer = styled.div`
@@ -291,11 +299,12 @@ export const Single = ({ history }: RouteComponentProps) => {
   const Create = styled.div`
     margin-top: 16px;
     display: flex;
-    justify-content: space-between;
+    margin-right: 10px;
     .type-create {
       width: 32%;
       text-align: center;
       align-items: center;
+      margin-right: 10px;
       justify-content: center;
       background: ${darkMode ? Color.linearGradient.black : `linear-gradient(#fff,#fff)`} padding-box,
         ${Color.linearGradient.button} border-box;
@@ -320,7 +329,7 @@ export const Single = ({ history }: RouteComponentProps) => {
   const PreviewFile = () => {
     if (state.file) {
       if (state.file.type.includes('image')) {
-        return <img src={URL.createObjectURL(state.file)} width={'90%'} height={240} className="image" />
+        return <img src={URL.createObjectURL(state.file)} className="image" />
       } else {
         return (
           <div className="image">
@@ -336,9 +345,6 @@ export const Single = ({ history }: RouteComponentProps) => {
         )
       }
     } else return <></>
-  }
-  const CreateType = () => {
-    return 'single'
   }
   const LoadingForm = () => {
     return (
@@ -370,7 +376,7 @@ export const Single = ({ history }: RouteComponentProps) => {
       </LoadingContainer>
     )
   }
-  const TypeCreate = (type: SwitchType) => {
+  const TypeCreate = (type: PutOnSaleType) => {
     return (
       <div
         className="type-create"
@@ -379,17 +385,17 @@ export const Single = ({ history }: RouteComponentProps) => {
           border: switchType === type ? '2px solid transparent' : '2px solid lightgray',
         }}
       >
-        {type == SwitchType.FixedPrice ? (
+        {type == PutOnSaleType.FixedPrice ? (
           <Asset.FixedPrice className="image" fill={darkMode ? '#ffffff' : '#000000'} />
-        ) : type == SwitchType.TimedAuction ? (
+        ) : type == PutOnSaleType.TimedAuction ? (
           <Asset.TimedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
         ) : (
           <Asset.UnlimitedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
         )}
         <span>
-          {type == SwitchType.FixedPrice
+          {type == PutOnSaleType.FixedPrice
             ? 'Fixed Price'
-            : type == SwitchType.TimedAuction
+            : type == PutOnSaleType.TimedAuction
             ? 'Timed Auction'
             : 'Unlimited Auction'}
         </span>
@@ -421,7 +427,7 @@ export const Single = ({ history }: RouteComponentProps) => {
             return (
               <TextInput key={index}>
                 <Title style={{ margin: 0 }}>{f.title}</Title>
-                <div className="text-input w-100">
+                <div className="text-input">
                   <input
                     id={f.id}
                     type={'number'}
@@ -446,6 +452,24 @@ export const Single = ({ history }: RouteComponentProps) => {
                 </div>
               </TextInput>
             )
+          } else if (f.type === Type.InputNumber) {
+            return (
+              <TextInput key={f.id}>
+                <Title style={{ margin: 0 }}>{f.title}</Title>
+                <div className="text-input">
+                  <input
+                    id={f.id}
+                    type={'number'}
+                    min="0"
+                    placeholder={f.placeHolder}
+                    onBlur={(e) => {
+                      formik.setFieldValue(f.id, e.target.value)
+                    }}
+                    defaultValue={getIn(formik.values, f.id)}
+                  />
+                </div>
+              </TextInput>
+            )
           }
         })
       }
@@ -466,7 +490,7 @@ export const Single = ({ history }: RouteComponentProps) => {
         <Title onClick={() => history.goBack()}>{FeatherIcon(icons)}</Title>
       </Row>
       <Row>
-        <h1 className="my-4 bold text-center">Create {CreateType()} collectible</h1>
+        <h1 className="my-4 bold text-center">Create {isSingle ? 'single' : 'multi'} collectible</h1>
       </Row>
       {/* info item */}
       <Row>
@@ -529,18 +553,19 @@ export const Single = ({ history }: RouteComponentProps) => {
             )}
             {/* choose type */}
             <Create>
-              {TypeCreate(SwitchType.FixedPrice)}
-              {isSingle && TypeCreate(SwitchType.TimedAuction)}
-              {TypeCreate(SwitchType.UnlimitedAuction)}
+              {TypeCreate(PutOnSaleType.FixedPrice)}
+              {isSingle && TypeCreate(PutOnSaleType.TimedAuction)}
+              {TypeCreate(PutOnSaleType.UnlimitedAuction)}
             </Create>
             {/* form info */}
             <div>
-              {switchType === SwitchType.FixedPrice && FormInput('price')}
+              {switchType === PutOnSaleType.FixedPrice && FormInput('price')}
               <div style={{ justifyContent: 'space-between', display: 'flex', flexWrap: 'wrap' }}>
-                {switchType === SwitchType.TimedAuction && FormInput('bids')}
+                {switchType === PutOnSaleType.TimedAuction && FormInput('bids')}
               </div>
             </div>
             {FormInput('infomation')}
+            {isSingle === false && FormInput('multiple')}
             {/* advance */}
             <AdvancedSetting onClick={() => setShowBtnAdvanced(!showBtnAdvanced)}>
               {showBtnAdvanced == true ? 'Show Advenced Setting' : 'Hide Advenced Setting'}
@@ -586,8 +611,39 @@ export const Single = ({ history }: RouteComponentProps) => {
           <Preview>
             <h4>Preview</h4>
             <div className="content">
+              <p className="text-center" hidden={state.file ? false : true}>
+                <img width={'24px'} src={darkMode ? Logo : Logo} alt="logo" /> Polrare
+              </p>
               <Text hidden={state.file ? true : false}> Upload file to preview your brand new NFT</Text>
               <PreviewFile />
+              <Text hidden={!isSingle && state.file ? false : true}> {getIn(formik.values, 'numberOfCopies')}</Text>
+              <Text hidden={state.file ? false : true}> {getIn(formik.values, 'name')}</Text>
+              <div
+                hidden={!isSingle && getIn(formik.values, 'numberOfCopies') > 1 ? false : true}
+                style={{
+                  position: 'absolute',
+                  width: '95%',
+                  height: '100%',
+                  left: '2.5%',
+                  borderRadius: 16,
+                  zIndex: -1,
+                  top: 7.5,
+                  border: '1px solid #ccc',
+                }}
+              ></div>
+              <div
+                hidden={!isSingle && getIn(formik.values, 'numberOfCopies') > 1 ? false : true}
+                style={{
+                  position: 'absolute',
+                  width: '86%',
+                  height: '100%',
+                  left: '7%',
+                  borderRadius: 16,
+                  zIndex: -2,
+                  top: 15,
+                  border: '1px solid #ccc',
+                }}
+              ></div>
             </div>
           </Preview>
         </Col>

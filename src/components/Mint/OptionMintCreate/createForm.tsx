@@ -121,24 +121,24 @@ export default function CreateModal() {
         reader.readAsArrayBuffer(file)
         reader.onloadend = async () => {
           const hash = await Ipfs.GetHash(reader.result)
-          if (state.symbol) {
-            const body: BodyItem = {
-              categoryId: '9c9debff-35d5-4276-ba59-d606c8ed9859',
-              name: values.name,
-              description: values.description,
-              price: values.price,
-              contractAddress: POLRARE_ADDRESS[1],
-              assetId: '1233',
-              symbol: state.symbol,
-              image: hash,
-              totalQuantity: 1,
-              createdBy: account!,
-              type: state.fileType,
-              categoryName: 'string',
-            }
-            console.log(body)
-            dispatch(postItem(body))
-          }
+          // if (state.symbol) {
+          //   const body: BodyItem = {
+          //     categoryId: '9c9debff-35d5-4276-ba59-d606c8ed9859',
+          //     name: values.name,
+          //     description: values.descriptions,
+          //     price: values.price,
+          //     contractAddress: POLRARE_ADDRESS[1],
+          //     assetId: '1233',
+          //     symbol: state.symbol,
+          //     image: hash,
+          //     totalQuantity: 1,
+          //     createdBy: account!,
+          //     type: state.fileType,
+          //     categoryName: 'string',
+          //   }
+          //   console.log(body)
+          //   dispatch(postItem(body))
+          // }
         }
       }
     },

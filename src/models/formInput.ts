@@ -19,6 +19,7 @@ export enum Type {
   Input = 1,
   InputDropdown,
   Dropdown,
+  InputNumber,
 }
 export interface Option {
   name?: string

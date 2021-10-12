@@ -56,11 +56,11 @@ export default function Create({ history }: RouteComponentProps) {
   `
 
   const Single = () => {
-    return history.push('/create/erc721')
+    return history.push('/create/erc721', { isSingle: true })
   }
 
   const Multiple = () => {
-    return history.push('/create/erc1155')
+    return history.push('/create/erc1155', { isSingle: false })
   }
 
   const SingleComponent = () => {
