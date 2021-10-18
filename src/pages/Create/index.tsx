@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { Container, Row, Col } from 'reactstrap'
+import { Container } from 'reactstrap'
 
 import styled from 'styled-components'
 // import { useDispatch } from 'react-redux'

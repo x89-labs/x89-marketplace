@@ -1,13 +1,8 @@
-import { t } from '@lingui/macro'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { AppState } from '../index'
 import { Field, typeInput } from './actions'
 
-import JSBI from 'jsbi'
-
 import { useAppDispatch, useAppSelector } from 'state/hooks'
-
-const ZERO = JSBI.BigInt(0)
 
 export function useMintState(): AppState['mint'] {
   return useAppSelector((state) => state.mint)

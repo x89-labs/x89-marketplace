@@ -1,5 +1,4 @@
-import { createReducer, createSlice } from '@reduxjs/toolkit'
-import { BodyItem } from 'models/bodyItem'
+import { createSlice } from '@reduxjs/toolkit'
 import { Categories } from 'models/categories'
 import { Item, PutOnSaleType } from 'models/item'
 import { deleteFile, Field, fieldChange, fileChange, getCategories, getMyItems, postItem, resetForm } from './actions'
@@ -58,7 +57,7 @@ const mintSlice = createSlice({
           [fieldName]: fieldValue,
         }
       })
-      .addCase(deleteFile, (state, action) => {
+      .addCase(deleteFile, (state) => {
         return {
           ...state,
           file: undefined,
@@ -75,13 +74,13 @@ const mintSlice = createSlice({
           state.listMyItem = action.payload.items
         }
       })
-      .addCase(postItem.fulfilled, (state, action) => {
+      .addCase(postItem.fulfilled, (state) => {
         return {
           ...state,
           isCompleted: true,
         }
       })
-      .addCase(resetForm, (state, action) => {
+      .addCase(resetForm, (state) => {
         return {
           ...state,
           file: undefined,

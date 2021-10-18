@@ -1,7 +1,6 @@
-import { createReducer, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { fieldChange, getItem, getListItems, searchItems } from './actions'
 import { Item } from 'models/explore'
-import { useMintState } from 'state/mint/hooks'
 
 export interface ExploreState {
   listItem: Item[]

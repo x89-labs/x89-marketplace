@@ -8,7 +8,6 @@ import transactions from './transactions/reducer'
 import mint from './mint/reducer'
 import lists from './lists/reducer'
 import explore from './explore/reducer'
-import stats from './stats/reducer'
 import multicall from './multicall/reducer'
 import auth from './auth/reducer'
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
@@ -21,7 +20,6 @@ const store = configureStore({
     mint,
     lists,
     explore,
-    stats,
     multicall,
     auth,
   },

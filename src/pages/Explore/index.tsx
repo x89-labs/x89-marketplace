@@ -1,163 +1,160 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Container, Row, Col, Card, CardBody, CardTitle, CardText, CardImg } from 'reactstrap'
 import { useDispatch } from 'react-redux'
-import { fieldChange, getListItems, searchItems } from 'state/explore/actions'
+import { fieldChange, getListItems } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
 import * as Asset from 'assets'
 import styled from 'styled-components'
-import { Color, Outline, Sizing, Button, Typography } from 'styles'
-import * as theme from 'theme'
-import ItemView from './ItemView'
-import { ListHotBid, optionsTopBuyer, optionsTopSeller } from 'state/explore/config'
+import { Button, Typography } from 'styles'
+import { ListHotBid } from 'state/explore/config'
 import { getCategories } from 'state/mint/actions'
-import { useMintState } from 'state/mint/hooks'
 import { useModalOpen, useToggleModal } from 'state/application/hooks'
 import { ApplicationModal } from 'state/application/actions'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 
 import { Item } from 'models/item'
 
-import HeaderExplore from 'components/Header/Explore'
-import PlaceholderLoading from './placeholderLoading'
-import SelectTable from 'components/Mint/selectTable'
-import { relative } from 'path/posix'
-import Modal from 'components/Modal'
-import Categories from 'components/Mint/categories'
+// import * as theme from 'theme'
+// import ItemView from './ItemView'
+// import HeaderExplore from 'components/Header/Explore'
+// import PlaceholderLoading from './placeholderLoading'
+// import SelectTable from 'components/Mint/selectTable'
+// import { relative } from 'path/posix'
+// import Modal from 'components/Modal'
+// import Categories from 'components/Mint/categories'
+
+// const TopSellerItem = styled.div`
+//   background: ${({ theme }) => theme.bg3};
+//   cursor: pointer;
+//   border-radius: ${Outline.borderRadius.base}px;
+//   display: flex;
+//   min-width: ${Sizing.x255}px;
+//   max-width: ${Sizing.x320}px;
+//   padding: ${Sizing.x10}px;
+//   align-items: center;
+//   margin: 8px 0;
+//   height: ${Sizing.x80}px;
+//   box-shadow: 0px 4px 26px rgba(99, 36, 237, 0.16);
+//   &:hover {
+//     box-shadow: 2px 4px 8px #f0f0f0;
+//   }
+//   @media only screen and (max-width: 700px) {
+//     width: 100%;
+//   }
+// `
+// const Avatar = styled.div`
+//   width: ${Sizing.x40}px;
+//   height: ${Sizing.x40}px;
+//   border-radius: ${Outline.borderRadius.small}px;
+//   margin-left: ${Sizing.x10}px;
+//   position: relative;
+//   background-size: cover;
+//   background-position: center center;
+//   background-image: url(${Asset.SrcAvatar});
+// `
+
+// const Text = styled.p`
+//   ${{ ...Typography.fontSize.x20 }}
+//   margin: 0;
+// `
+// const Image = styled.img``
+// const ContentGroup = styled.div`
+//   margin-top: ${Sizing.x60}px;
+// `
+// const Filter = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-between;
+//   align-items: center;
+//   * {
+//     display: flex;
+//     align-items: center;
+//     flex-wrap: wrap;
+//   }
+//   .itemFilter {
+//     ${{ ...Typography.fontWeight.bold }}
+//     background:#1D1D1D;
+//     padding: 12px 24px;
+//     border-radius: ${Outline.borderRadius.small}px;
+//     color: ${Color.neutral.white};
+//     margin: 0 20px;
+//     cursor: pointer;
+//     &:hover {
+//       color: ${Color.neutral.black};
+//       background: ${Color.neutral.yellow};
+//     }
+//     @media only screen and (max-width: 700px) {
+//       display: none;
+//     }
+//   }
+//   .btnFilter {
+//     cursor: pointer;
+//     background: #353945;
+//     padding: 4px 24px;
+//     border-radius: ${Outline.borderRadius.small}px;
+//     height: 50px;
+//     color: ${Color.neutral.white};
+//     @media only screen and (max-width: 700px) {
+//       display: none;
+//     }
+//   }
+// `
+// const ListItem = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: space-between;
+// `
+// const FilterContainer = styled.div`
+//   position: absolute;
+//   top: 60px;
+//   right: 0;
+//   z-index: 1;
+//   width: 200px;
+//   background: ${({ theme }) => theme.bg6};
+//   padding: 10px;
+//   border: 1px solid #e0d3fb;
+//   box-sizing: border-box;
+//   box-shadow: 0px 4px 26px rgba(53, 223, 177, 0.16);
+//   border-radius: 8px;
+//   display: flex;
+//   flex-direction: column;
+//   .sortBy {
+//     width: 100%;
+//     justify-content: space-between;
+//     cursor: pointer;
+//   }
+//   p {
+//     color: #939393;
+//     ${{ ...Typography.fontSize.x20 }}
+//     ${{ ...Typography.fontWeight.bold }}
+//   }
+// `
+// const optionsSeller = [
+//   {
+//     name: 'Seller',
+//     id: '1',
+//   },
+//   {
+//     name: 'Buyer',
+//     id: '2',
+//   },
+// ]
 
 const BtnLoadmore = styled.div`
   ${{ ...Button.btn.secondary }};
   margin-top: 1rem;
   width: 100%;
 `
-const TopSellerItem = styled.div`
-  background: ${({ theme }) => theme.bg3};
-  cursor: pointer;
-  border-radius: ${Outline.borderRadius.base}px;
-  display: flex;
-  min-width: ${Sizing.x255}px;
-  max-width: ${Sizing.x320}px;
-  padding: ${Sizing.x10}px;
-  align-items: center;
-  margin: 8px 0;
-  height: ${Sizing.x80}px;
-  box-shadow: 0px 4px 26px rgba(99, 36, 237, 0.16);
-  &:hover {
-    box-shadow: 2px 4px 8px #f0f0f0;
-  }
-  @media only screen and (max-width: 700px) {
-    width: 100%;
-  }
-`
-const Avatar = styled.div`
-  width: ${Sizing.x40}px;
-  height: ${Sizing.x40}px;
-  border-radius: ${Outline.borderRadius.small}px;
-  margin-left: ${Sizing.x10}px;
-  position: relative;
-  background-size: cover;
-  background-position: center center;
-  background-image: url(${Asset.SrcAvatar});
-`
-
 const Title = styled.div`
   display: flex;
   align-items: center;
   ${{ ...Typography.header.x70 }}
   margin-bottom: 1rem;
+  //
 `
-const Text = styled.p`
-  ${{ ...Typography.fontSize.x20 }}
-  margin: 0;
-`
-const Image = styled.img``
-const ContentGroup = styled.div`
-  margin-top: ${Sizing.x60}px;
-`
-const Filter = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  * {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  .itemFilter {
-    ${{ ...Typography.fontWeight.bold }}
-    background:#1D1D1D;
-    padding: 12px 24px;
-    border-radius: ${Outline.borderRadius.small}px;
-    color: ${Color.neutral.white};
-    margin: 0 20px;
-    cursor: pointer;
-    &:hover {
-      color: ${Color.neutral.black};
-      background: ${Color.neutral.yellow};
-    }
-    @media only screen and (max-width: 700px) {
-      display: none;
-    }
-  }
-  .btnFilter {
-    cursor: pointer;
-    background: #353945;
-    padding: 4px 24px;
-    border-radius: ${Outline.borderRadius.small}px;
-    height: 50px;
-    color: ${Color.neutral.white};
-    @media only screen and (max-width: 700px) {
-      display: none;
-    }
-  }
-`
-const ListItem = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-`
-const FilterContainer = styled.div`
-  position: absolute;
-  top: 60px;
-  right: 0;
-  z-index: 1;
-  width: 200px;
-  background: ${({ theme }) => theme.bg6};
-  padding: 10px;
-  border: 1px solid #e0d3fb;
-  box-sizing: border-box;
-  box-shadow: 0px 4px 26px rgba(53, 223, 177, 0.16);
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  .sortBy {
-    width: 100%;
-    justify-content: space-between;
-    cursor: pointer;
-  }
-  p {
-    color: #939393;
-    ${{ ...Typography.fontSize.x20 }}
-    ${{ ...Typography.fontWeight.bold }}
-  }
-`
-const optionsSeller = [
-  {
-    name: 'Seller',
-    id: '1',
-  },
-  {
-    name: 'Buyer',
-    id: '2',
-  },
-]
-
 export default function Explore() {
   const dispatch = useDispatch()
-  const [selectCategory, setSelectCategory] = useState('')
-  const [filter, setFilter] = useState('')
   const state = useExploreState()
-  const listCategories = useMintState().categories
   const node = useRef<HTMLDivElement>()
   const open = useModalOpen(ApplicationModal.FILTER_EXPLORE)
   const toggle = useToggleModal(ApplicationModal.FILTER_EXPLORE)
@@ -168,12 +165,7 @@ export default function Explore() {
     }, 1500)
     dispatch(fieldChange({ fieldName: 'href', fieldValue: window.location.href }))
     dispatch(getCategories())
-  }, [])
-
-  const listItem = useMemo(() => {
-    const list = state.listItem
-    return list
-  }, [state.listItem])
+  }, [dispatch])
 
   // const FilterForm = () => {
   //   return (
@@ -257,7 +249,7 @@ export default function Explore() {
   //     </Col>
   //   )
   // }
-  const Block = (list: Item[], nameBlock?: string, icon?: any, filer?: any) => {
+  const Block = (list: Item[], nameBlock?: string, icon?: any) => {
     return (
       <Container className="mt-5">
         {nameBlock && (

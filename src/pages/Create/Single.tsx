@@ -11,18 +11,14 @@ import { Container, Row, Col, FormGroup, Label } from 'reactstrap'
 import Logo from '../../assets/images/favicon.png'
 
 import { Ipfs } from 'hooks/ipfs'
-import { useActiveWeb3React } from 'hooks/web3'
-import { usePolrareNft } from 'hooks/usePolrareNft'
 import useFilePicker from 'hooks/useFilePicker'
 
 import { useIsDarkMode } from 'state/user/hooks'
 import { useMintState } from 'state/mint/hooks'
-import { fieldChange, fileChange, getCategories, postItem, resetForm, deleteFile } from 'state/mint/actions'
+import { fieldChange, fileChange, getCategories, resetForm, deleteFile } from 'state/mint/actions'
 import { Forms, validationFormCreateSchema } from 'state/mint/config'
 
-import { POLRARE_ADDRESS } from 'constants/addresses'
-
-import { Item, PutOnSaleType } from 'models/item'
+import { PutOnSaleType } from 'models/item'
 import { Type } from 'models/formInput'
 import Modal from 'components/Modal'
 import Categories from 'components/Mint/categories'
@@ -49,19 +45,183 @@ const FeatherIcon = (icon: ico) => {
   )
 }
 
+// style component
+
+const Title = styled.p`
+  ${{ ...Typography.header.x30 }}
+`
+const Text = styled.span`
+  ${{ ...Typography.fontSize.x20 }}
+  color: ${Color.neutral.gray}
+`
+const Around = styled.div`
+  margin-top: 10px;
+  height: auto;
+  border: 1px dashed ${Color.neutral.gray};
+  display: flex;
+  justify-content: center;
+  padding: 30px 0;
+  border-radius: 16px;
+  position: relative;
+  background: ${({ theme }) => theme.bg3};
+  @media only screen and (max-width: 700px) {
+    width: 100%;
+  }
+`
+const Preview = styled.div`
+  position: sticky;
+  top: 10vh;
+  @media only screen and (max-width: 700px) {
+    display: none;
+  }
+  .content {
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    border: 1px solid ${({ theme }) => theme.text5};
+    background: ${({ theme }) => theme.bg6};
+    height: 400px;
+    padding: 22px 24px;
+  }
+
+  .unlockContent {
+    height: 20px;
+    width: 190px;
+    padding: 22px 24px;
+  }
+
+  .image {
+    width: 100%;
+    border-radius: 5px;
+    display: block;
+  }
+`
+const LoadingContainer = styled.div`
+width: 100%
+padding: 10px;
+.header {
+  ${{ ...Typography.fontSize.x50 }}
+  ${{ ...Typography.fontWeight.bold }}
+}
+.mint {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+}
+.content {
+  margin-left: 2rem;
+}
+.btn {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  border-radius: ${Outline.borderRadius.base}px;
+  cursor: pointer;
+}
+.btnLoading {
+  background: rgb(230, 230, 230);
+  color: rgb(255, 255, 255);
+}
+.btnCancel{
+  ${{ ...Outline.border.gray }}
+}
+`
+const CloseBtn = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  position: absolute;
+  padding: 4px 3px;
+  top: 20px;
+  right: 39px;
+  border: 1px solid ${Color.neutral.gray};
+  cursor: pointer;
+  .closeBtn {
+    margin: 10px;
+  }
+  @media only screen and (max-width: 700px) {
+    right: 14px;
+    top: 10px;
+  }
+`
+const ChooseFile = styled.div`
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  margin: 14px auto;
+  display: flex;
+  padding: 20px;
+  border: 1px solid ${Color.neutral.gray};
+  background: ${({ theme }) => theme.bg2};
+  cursor: pointer;
+`
+const TextInput = styled.div`
+  margin-top: 15px;
+  // margin-right: 20px;
+  width: 100%;
+  .text-input {
+    position: relative;
+    margin-top: 10px;
+    background: ${({ theme }) => theme.bg1};
+    height: 48px;
+    display: flex;
+    border: 1px solid #ccc;
+    justify-content: space-between;
+    border-radius: 10px;
+  }
+  input {
+    background: ${({ theme }) => theme.bg1};
+    color: ${({ theme }) => theme.text1};
+    width: 100%;
+    border: none;
+    outline: none;
+    margin: 10px;
+  }
+`
+const AdvancedSetting = styled.button`
+  border: 0;
+  padding: 12px;
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 15px;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  background: ${({ theme }) => theme.bg4};
+  color: ${({ theme }) => theme.text1};
+`
+const CreateBtn = styled.button`
+  width: 240px;
+  height: 48px;
+  text-align: center;
+  ${{ ...Button.btn.primary }};
+`
+const CreateItem = styled.div`
+  display: flex;
+  margin-top: 2rem;
+  justify-content: space-between;
+`
+const ErrorMessage = styled.div`
+  color: red;
+  ${{ ...Typography.fontSize.x20 }}
+  ${{ ...Typography.fontWeight.bold }}
+`
+
 export const Single = ({ history }: RouteComponentProps) => {
   const { isSingle } = window.history.state.state
   const dispatch = useDispatch()
   const darkMode = useIsDarkMode()
   const state = useMintState()
 
-  const { account } = useActiveWeb3React()
-  const { mint } = usePolrareNft()
-
   const [openMint, setOpenMint] = useState(false)
   const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
 
-  const [item, setItem] = useState({
+  const [item] = useState({
     name: '',
     descriptions: '',
     urlFile: '',
@@ -83,219 +243,6 @@ export const Single = ({ history }: RouteComponentProps) => {
     readAs: 'DataURL',
   })
 
-  useEffect(() => {
-    plainFiles[0] && dispatch(fileChange({ value: plainFiles[0] }))
-    plainFiles[0] && dispatch(fieldChange({ fieldName: 'fileType', fieldValue: plainFiles[0].type }))
-  }, [plainFiles[0]])
-
-  const formik = useFormik({
-    initialValues: item,
-    validationSchema: validationFormCreateSchema,
-    onSubmit: (values) => {
-      if (state.file) {
-        setOpenMint(true)
-        const file = state.file
-        const reader = new window.FileReader()
-        reader.readAsArrayBuffer(file)
-        reader.onloadend = async () => {
-          Ipfs.GetHash(reader.result)
-            .then((response: any) => {
-              const hash = response.Hash
-              dispatch(fieldChange({ fieldName: 'ipfsHash', fieldValue: hash }))
-              mint()
-              if (state.categorie) {
-                const body: Item = {
-                  categoryId: state.categorie.id,
-                  name: values.name,
-                  descriptions: values.descriptions,
-                  price: values.price,
-                  contractAddress: POLRARE_ADDRESS[1],
-                  symbol: state.symbol ?? 'ETH',
-                  urlFile: hash,
-                  numberOfCopies: 1,
-                  putOnSaleType: switchType,
-                  collectionId: '',
-                  royalties: 0,
-                }
-
-                // dispatch(postItem(body))
-                if (state.isCompleted === true) {
-                  window.location.href = '/#/myitem'
-                }
-              }
-            })
-            .catch((e) => {
-              console.log(e)
-            })
-        }
-      }
-      formik.resetForm()
-      dispatch(resetForm({ value: 'resetform' }))
-    },
-  })
-
-  useEffect(() => {
-    dispatch(getCategories())
-  }, [])
-
-  const Title = styled.p`
-    ${{ ...Typography.header.x30 }}
-  `
-  const Text = styled.span`
-    ${{ ...Typography.fontSize.x20 }}
-    color: ${Color.neutral.gray}
-  `
-  const Around = styled.div`
-    margin-top: 10px;
-    height: auto;
-    border: 1px dashed ${Color.neutral.gray};
-    display: flex;
-    justify-content: center;
-    padding: 30px 0;
-    border-radius: 16px;
-    position: relative;
-    background: ${({ theme }) => theme.bg3};
-    @media only screen and (max-width: 700px) {
-      width: 100%;
-    }
-  `
-  const Preview = styled.div`
-    position: sticky;
-    top: 10vh;
-    @media only screen and (max-width: 700px) {
-      display: none;
-    }
-    .content {
-      position: absolute;
-      justify-content: center;
-      align-items: center;
-      border-radius: 16px;
-      border: 1px solid ${({ theme }) => theme.text5};
-      background: ${({ theme }) => theme.bg6};
-      height: 400px;
-      padding: 22px 24px;
-    }
-
-    .unlockContent {
-      height: 20px;
-      width: 190px;
-      padding: 22px 24px;
-    }
-
-    .image {
-      width: 100%;
-      border-radius: 5px;
-      display: block;
-    }
-  `
-  const LoadingContainer = styled.div`
-    width: 100%
-    padding: 10px;
-    .header {
-      ${{ ...Typography.fontSize.x50 }}
-      ${{ ...Typography.fontWeight.bold }}
-    }
-    .mint {
-      margin-top: 2rem;
-      display: flex;
-      flex-direction: row;
-    }
-    .content {
-      margin-left: 2rem;
-    }
-    .btn {
-      width: 100%;
-      height: 48px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 1rem;
-      border-radius: ${Outline.borderRadius.base}px;
-      cursor: pointer;
-    }
-    .btnLoading {
-      background: rgb(230, 230, 230);
-      color: rgb(255, 255, 255);
-    }
-    .btnCancel{
-      ${{ ...Outline.border.gray }}
-    }
-  `
-  const CloseBtn = styled.div`
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
-    position: absolute;
-    padding: 4px 3px;
-    top: 20px;
-    right: 39px;
-    border: 1px solid ${Color.neutral.gray};
-    cursor: pointer;
-    .closeBtn {
-      margin: 10px;
-    }
-    @media only screen and (max-width: 700px) {
-      right: 14px;
-      top: 10px;
-    }
-  `
-  const ChooseFile = styled.div`
-    width: 60px;
-    height: 60px;
-    border-radius: 30px;
-    margin: 14px auto;
-    display: flex;
-    padding: 20px;
-    border: 1px solid ${Color.neutral.gray};
-    background: ${({ theme }) => theme.bg2};
-    cursor: pointer;
-  `
-  const TextInput = styled.div`
-    margin-top: 15px;
-    // margin-right: 20px;
-    width: 100%;
-    .text-input {
-      position: relative;
-      margin-top: 10px;
-      background: ${({ theme }) => theme.bg1};
-      height: 48px;
-      display: flex;
-      border: 1px solid #ccc;
-      justify-content: space-between;
-      border-radius: 10px;
-    }
-    input {
-      background: ${({ theme }) => theme.bg1};
-      color: ${({ theme }) => theme.text1};
-      width: 100%;
-      border: none;
-      outline: none;
-      margin: 10px;
-    }
-  `
-  const AdvancedSetting = styled.button`
-    padding: 12px;
-    width: 50%;
-    margin: 0 auto;
-    margin-top: 15px;
-    text-align: center;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    background: ${({ theme }) => theme.bg4};
-    color: ${({ theme }) => theme.text1};
-  `
-  const CreateBtn = styled.button`
-    width: 240px;
-    height: 48px;
-    text-align: center;
-    ${{ ...Button.btn.primary }};
-  `
-  const CreateItem = styled.div`
-    display: flex;
-    margin-top: 2rem;
-    justify-content: space-between;
-  `
   const Create = styled.div`
     margin-top: 16px;
     display: flex;
@@ -320,11 +267,44 @@ export const Single = ({ history }: RouteComponentProps) => {
       height: 40px;
     }
   `
-  const ErrorMessage = styled.div`
-    color: red;
-    ${{ ...Typography.fontSize.x20 }}
-    ${{ ...Typography.fontWeight.bold }}
-  `
+  useEffect(() => {
+    plainFiles[0] && dispatch(fileChange({ value: plainFiles[0] }))
+    plainFiles[0] && dispatch(fieldChange({ fieldName: 'fileType', fieldValue: plainFiles[0].type }))
+  }, [plainFiles, dispatch])
+  useEffect(() => {
+    dispatch(getCategories())
+  }, [dispatch])
+
+  const formik = useFormik({
+    initialValues: item,
+    validationSchema: validationFormCreateSchema,
+    onSubmit: () => {
+      if (state.file) {
+        setOpenMint(true)
+        const file = state.file
+        const reader = new window.FileReader()
+        reader.readAsArrayBuffer(file)
+        reader.onloadend = async () => {
+          Ipfs.GetHash(reader.result)
+            .then((response: any) => {
+              const hash = response.Hash
+              dispatch(fieldChange({ fieldName: 'ipfsHash', fieldValue: hash }))
+              if (state.categorie) {
+                // dispatch(postItem(body))
+                if (state.isCompleted === true) {
+                  window.location.href = '/#/myitem'
+                }
+              }
+            })
+            .catch((e) => {
+              console.log(e)
+            })
+        }
+      }
+      formik.resetForm()
+      dispatch(resetForm({ value: 'resetform' }))
+    },
+  })
 
   const PreviewFile = () => {
     if (state.file) {
@@ -403,7 +383,7 @@ export const Single = ({ history }: RouteComponentProps) => {
     )
   }
   const FormInput = (location?: string) => {
-    return Forms.map((r, i) => {
+    return Forms.map((r) => {
       if (location === r.location) {
         return r.control?.map((f, index) => {
           if (f.type === Type.Input) {

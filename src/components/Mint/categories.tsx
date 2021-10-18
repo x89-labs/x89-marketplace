@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import * as Asset from 'assets'
 import styled from 'styled-components'
 import { useState } from 'react'

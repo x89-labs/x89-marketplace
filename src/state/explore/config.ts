@@ -1,4 +1,3 @@
-import React from 'react'
 import * as GameSvg from 'pages/Explore/Game/images'
 export const optionsTopSeller = [
   {

@@ -14,7 +14,6 @@ import Footer from '../components/Footer'
 import Explore from './Explore'
 
 import Create from './Create'
-import { Multiple } from './Create/Multiple'
 import { Single } from './Create/Single'
 // import DetailItem from './DetailItem'
 // import Stats from './Stats'

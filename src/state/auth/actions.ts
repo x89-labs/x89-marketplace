@@ -1,5 +1,5 @@
-import { createAction, createAsyncThunk } from '@reduxjs/toolkit'
-import { clientStorage, sessionStorage } from 'constants/clientStorage'
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import { clientStorage } from 'constants/clientStorage'
 import { client, Endpoint } from 'api'
 
 export const login = createAsyncThunk('', async (body?: any) => {

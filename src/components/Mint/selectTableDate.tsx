@@ -1,22 +1,19 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import * as Asset from 'assets'
 import styled from 'styled-components'
 import { useState } from 'react'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import { useModalOpen, useToggleModal } from 'state/application/hooks'
 import { ApplicationModal } from 'state/application/actions'
-import { useDispatch } from 'react-redux'
-import { useMintState } from 'state/mint/hooks'
-import { Button, Outline, Sizing, Typography } from 'styles'
+import { Button, Outline, Sizing } from 'styles'
 import DayPicker from 'react-day-picker'
 import 'react-day-picker/lib/style.css'
-import { flex } from 'styled-system'
 interface SelectTableDateProps {
   option?: any[]
   width?: any
 }
 
-export default function SelectTableDate({ option, width }: SelectTableDateProps) {
+export default function SelectTableDate({ option }: SelectTableDateProps) {
   const [show, setShow] = useState(true)
   const [datePicker, setDatePicker] = useState(true)
   const [selected, setSelected] = useState()

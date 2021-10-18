@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import * as Asset from 'assets'
 import styled from 'styled-components'
 import { useState } from 'react'
@@ -15,9 +15,8 @@ interface stablePriceProps {
   width?: any
 }
 
-export default function StablePrice({ option, width }: stablePriceProps) {
+export default function StablePrice({ option }: stablePriceProps) {
   const [show, setShow] = useState(true)
-  const [selected, setSelected] = useState()
   const open = useModalOpen(ApplicationModal.DROPDOWN)
   const toggle = useToggleModal(ApplicationModal.DROPDOWN)
   const node = useRef<HTMLDivElement>()

@@ -1,4 +1,4 @@
-import { FormInput, Option, Type } from 'models/formInput'
+import { FormInput, Type } from 'models/formInput'
 import React from 'react'
 import * as Asset from 'assets'
 import * as Yup from 'yup'
