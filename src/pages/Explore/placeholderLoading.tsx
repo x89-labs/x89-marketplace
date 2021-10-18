@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react'
-import { optionsTopSeller } from 'state/explore/config'
+import React from 'react'
 import styled from 'styled-components'
-import { Color, Outline, Sizing } from 'styles'
+import { Outline, Sizing } from 'styles'
 
 const Container = styled.div`
   .loading {
@@ -51,7 +50,6 @@ const Container = styled.div`
     margin-top: 1rem;
   }
 `
-
 const Item = styled.div`
   position: relative;
   border-radius: ${Outline.borderRadius.base}px;
@@ -60,7 +58,6 @@ const Item = styled.div`
   box-shadow: 0 0 0 1px #ccc;
   margin: 0 10px;
 `
-
 const Image = styled.div`
   width: ${Sizing.screen.width};
   height: ${Sizing.x255}px;
@@ -109,6 +106,7 @@ export default function PlaceholderLoading() {
 
   return (
     <Container>
+      <div className="loading title" />
       <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
         {[...Array(4)].map((index) => (
           <Item key={index}>
@@ -123,6 +121,7 @@ export default function PlaceholderLoading() {
 
       <div className="loading title" />
       {GridList()}
+
       <div className="loading title" />
       <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
         {[...Array(4)].map((index) => (
@@ -134,10 +133,6 @@ export default function PlaceholderLoading() {
                 <div className="loading avatar" />
                 <div className="loading name" />
               </Owner>
-              <InfoItem>
-                <div className="loading name" />
-                <div className="loading name" />
-              </InfoItem>
               <InfoItem>
                 <div className="loading name" />
                 <div className="loading name" />

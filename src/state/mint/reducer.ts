@@ -22,6 +22,7 @@ export const initialState: MintState = {
   typedValue: '',
   otherTypedValue: '',
   initValues: {
+    id: '',
     name: '',
     contractAddress: '',
     descriptions: '',

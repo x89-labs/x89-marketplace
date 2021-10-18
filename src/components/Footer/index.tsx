@@ -14,7 +14,6 @@ const FooterFrame = styled.div`
   bottom: 0;
   background: ${({ theme }) => theme.bg2};
   padding: 0 10%;
-  margin-top: 4rem;
   @media only screen and (max-width: 700px) {
     padding-bottom: 4rem;
   }
@@ -36,9 +35,9 @@ const Content = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 100%;
-  margin-bottom: 2rem;
+  padding: 2rem 0;
 `
 const InfoWithSearch = styled.div`
   width: 300px;
@@ -122,14 +121,6 @@ const BoldText = styled.h4`
   ${{ ...Typography.fontSize.x50 }};
   margin: 24px 0;
 `
-const Term = styled.p`
-  margin: 8px 20px;
-  color: ${({ theme }) => theme.text1};
-  cursor: pointer;
-  &:hover {
-    opacity: 0.8;
-  }
-`
 
 export default function Footer() {
   const darkMode = useIsDarkMode()
@@ -203,8 +194,6 @@ export default function Footer() {
       </Content>
       <FooterPolicy>
         <Text> @ POLRARE | All rights reserved 2021</Text>
-        <Term> Privacy Policy</Term>
-        <Term> {`Term & Conditions`}</Term>
       </FooterPolicy>
     </FooterFrame>
   )

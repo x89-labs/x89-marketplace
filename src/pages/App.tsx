@@ -25,7 +25,6 @@ const AppWrapper = styled.div`
   height: 100vh;
   flex-flow: column;
   align-items: center;
-  max-width: 1400px;
   width: 100%;
   margin: auto;
 `
@@ -34,7 +33,7 @@ const BodyWrapper = styled.div`
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  padding-top: 80px;
+  padding: 80px;
   align-items: center;
   flex: 1;
   z-index: 1;
@@ -49,6 +48,12 @@ const HeaderWrapper = styled.div`
   justify-content: space-between;
   position: fixed;
   top: 0;
+  z-index: 2;
+`
+const FooterWrapper = styled.div`
+  ${({ theme }) => theme.flexRowNoWrap}
+  width: 100%;
+  justify-content: space-around;
   z-index: 2;
 `
 
@@ -78,8 +83,10 @@ export default function App() {
             </Switch>
           </Web3ReactManager>
         </BodyWrapper>
-        <Footer />
         {/* {href.includes('detail') ? <></> : <Footer />} */}
+        <FooterWrapper>
+          <Footer />
+        </FooterWrapper>
       </AppWrapper>
     </ErrorBoundary>
   )
