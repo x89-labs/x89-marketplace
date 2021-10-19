@@ -15,6 +15,7 @@ import Explore from './Explore'
 
 import Create from './Create'
 import { Single } from './Create/Single'
+import DetailItem from './DetailItem'
 // import DetailItem from './DetailItem'
 // import Stats from './Stats'
 // import MyItem from './MyItems'
@@ -76,8 +77,8 @@ export default function App() {
               <Route exact strict path="/create" component={Create} />
               <Route exact strict path={`/create/erc721`} component={Single} />
               <Route exact strict path="/create/erc1155" component={Single} />
+              <Route exact strict path={`/items/:itemid`} component={DetailItem} />
               {/* <Route exact strict path="/stats" component={Stats} />
-              <Route exact strict path={`/detail/:itemid`} component={DetailItem} />
               <Route exact strict path={`/profile`} component={MyItem} />
               <Route exact strict path={`/edit-profile`} component={EditProfile} /> */}
             </Switch>

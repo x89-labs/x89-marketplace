@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { BookOpen, Info } from 'react-feather'
+import { User, LogOut, List } from 'react-feather'
 import { Link, NavLink } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
@@ -10,7 +10,6 @@ import { useModalOpen, useToggleModal } from '../../state/application/hooks'
 import { Trans } from '@lingui/macro'
 
 import { ExternalLink } from '../../theme'
-import Web3Status from 'components/Web3Status'
 
 export enum FlyoutAlignment {
   LEFT = 'LEFT',
@@ -153,27 +152,31 @@ export default function Menu() {
 
       {open && (
         <MenuFlyout>
-          <Web3Status />
-          <MenuItem href="https://polrare.co/">
-            <Info size={14} />
+          <div>
             <div>
-              <Trans>About</Trans>
+              <Trans>Your Name</Trans>
             </div>
-          </MenuItem>
-          <MenuItem href="https://docs.polrare.co">
+          </div>
+          <StyledNavLink to={'/profile'}>
+            <User size={14} />
+            <div>
+              <Trans>Profile</Trans>
+            </div>
+          </StyledNavLink>
+          {/* <MenuItem href="https://docs.polrare.co">
             <BookOpen size={14} />
             <div>
               <Trans>Docs</Trans>
             </div>
-          </MenuItem>
+          </MenuItem> */}
           {/* <MenuItem href={CODE_LINK}>
             <Code size={14} />
             <div>
               <Trans>Code</Trans>
             </div>
           </MenuItem> */}
-          <StyledNavLink to={'/profile'}>
-            <BookOpen size={14} />
+          <StyledNavLink to={'/myitems'}>
+            <List size={14} />
             <div>
               <Trans>My Items</Trans>
             </div>
@@ -183,13 +186,13 @@ export default function Menu() {
             <div>
               <Trans>Discord</Trans>
             </div>
-          </MenuItem>
+          </MenuItem>*/}
           <MenuItem href="https://info.uniswap.org/">
-            <PieChart size={14} />
+            <LogOut size={14} />
             <div>
-              <Trans>Analytics</Trans>
+              <Trans>Logout</Trans>
             </div>
-          </MenuItem> */}
+          </MenuItem>
         </MenuFlyout>
       )}
     </StyledMenu>

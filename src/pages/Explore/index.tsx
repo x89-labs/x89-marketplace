@@ -14,6 +14,8 @@ import { useOnClickOutside } from 'hooks/useOnClickOutside'
 
 import { Item } from 'models/item'
 import PlaceholderLoading from './placeholderLoading'
+import { useIsDarkMode } from 'state/user/hooks'
+import { RouteComponentProps } from 'react-router-dom'
 
 // import * as theme from 'theme'
 // import ItemView from './ItemView'
@@ -151,7 +153,8 @@ const Title = styled.div`
   align-items: center;
   ${{ ...Typography.header.x70 }}
 `
-export default function Explore() {
+export default function Explore({ history }: RouteComponentProps) {
+  const darkMode = useIsDarkMode()
   const dispatch = useDispatch()
   const state = useExploreState()
   const node = useRef<HTMLDivElement>()
@@ -202,9 +205,9 @@ export default function Explore() {
         <Row>
           {list.map((value, index) => (
             <Col className="mt-4" lg="3" md="4" sm="6" xs="12" key={index}>
-              <Card style={{ backgroundColor: 'transparent' }}>
+              <Card style={{ backgroundColor: 'transparent' }} onClick={() => Detail(value.id)}>
                 <CardImg style={{ minHeight: 250, maxHeight: 250, objectFit: 'cover' }} src={value.urlFile} />
-                <CardBody style={{ background: Color.linearGradient.black }}>
+                <CardBody style={{ background: darkMode ? Color.linearGradient.black : Color.linearGradient.white }}>
                   <CardTitle tag="h5">{value.name}</CardTitle>
                   <CardText className="text-justify">{value.descriptions?.slice(0, 70)}</CardText>
                   <CardText>
@@ -219,6 +222,10 @@ export default function Explore() {
         </Row>
       </Container>
     )
+  }
+
+  const Detail = (id: string) => {
+    return history.push(`/items/${id}`)
   }
   return (
     <>

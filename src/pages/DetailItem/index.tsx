@@ -1,304 +1,71 @@
-import { parse } from 'qs'
-import React, { useEffect, useState } from 'react'
-import { Bold } from 'react-feather'
-import ReactPlayer from 'react-player'
-import { useDispatch } from 'react-redux'
-import { fieldChange, getItem } from 'state/explore/actions'
-import { useExploreState } from 'state/explore/hooks'
-import styled from 'styled-components'
-import { display } from 'styled-system'
-import { Button, Color, Outline, Sizing, Typography } from 'styles'
-import { shortenAddress } from 'utils'
-import * as Asset from 'assets'
+import React, { useState } from 'react'
 import { useIsDarkMode } from 'state/user/hooks'
+import { PutOnSaleType } from 'models/item'
+import { Heart, MoreHorizontal, Octagon } from 'react-feather'
 
-enum SwitchType {
-  Details = 1,
-  Bids = 2,
-  History = 3,
-}
+import { Container, Row, Col, Button } from 'reactstrap'
+import { shortenAddress } from 'utils'
 
-const Container = styled.div`
-  width: 100%;
-  max-height: 32rem;
-  display: flex;
-  p {
-    margin: 0 5px;
-  }
-  @media only screen and (max-width: 700px) {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-`
-const Image = styled.div`
-  width: 60%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  .file {
-    width: 60%;
-    height: 100%;
-    border-radius: 10px;
-    @media only screen and (max-width: 700px) {
-      width: 100%;
-    }
-  }
-  @media only screen and (max-width: 700px) {
-    width: 100%;
-  }
-`
-const ContentItem = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-left: 1px solid ${Color.neutral.gray2};
-  width: 40%;
-  @media only screen and (max-width: 700px) {
-    width: 100%;
-  }
-`
-const HeaderContent = styled.div`
-  padding: 0 1rem;
-`
-const Creator = styled.div``
-const BodyContent = styled.div``
-const SwitchTab = styled.div`
-  display: flex;
-  margin-top: 1rem;
-  border-bottom: 1px solid ${Color.neutral.gray2};
-`
-const Tab = styled.div`
-  padding: 5px 10px;
-  ${{ ...Typography.fontWeight.bold }}
-  cursor: pointer;
-`
-const FooterContent = styled.div`
-  border-top: 2px solid ${Color.neutral.gray2};
-  height: 35%;
-  display: flex;
-  bottom: 0;
-  justify-content: space-around;
-  align-items: center;
-`
-const Author = styled.div`
-  display: flex;
-  margin: 12px 0;
-  ${{ ...Typography.fontSize.x40 }};
-  ${{ ...Typography.fontWeight.regular }};
-`
-const Avatar = styled.img`
-  width: ${Sizing.icons.x25}px;
-  height: ${Sizing.icons.x25}px;
-  border-radius: ${Outline.borderRadius.small};
-  margin-right: 10px;
-`
-const GrayText = styled.p`
-  ${{ ...Typography.text.grayText }}
-  margin-right: 5px;
-`
-
-const GreenText = styled.p`
-  color: ${Color.neutral.green};
-`
-
-const Text = styled.p``
-const BoldText = styled.p`
-  ${{ ...Typography.fontWeight.bold }}
-  ${{ ...Typography.fontSize.x30 }}
-  display: flex;
-`
-
-const HighBid = styled.div`
-  margin-left: 20px;
-  display: flex;
-`
-
-const Collection = styled.div`
-  margin-left: 40px;
-`
-const NameItem = styled.p`
-  ${{ ...Typography.fontSize.x70 }};
-  ${{ ...Typography.fontWeight.bold }};
-`
-
-const ButtonBuy = styled.div`
-  ${{ ...Button.btn.primary }};
-  width: ${Sizing.x240}px;
-  margin-right: ${Sizing.x40}px;
-  text-align: center;
-  &:hover {
-    opacity: 0.8;
-  }
-`
-const ButtonBid = styled.div`
-  ${{ ...Button.btn.secondary }};
-  width: ${Sizing.x240}px;
-  &:hover {
-    opacity: 0.8;
-  }
-`
-
-const Detail = styled.div`
-  height: 200px;
-  padding: 10px;
-`
 export default function DetailItem() {
-  const [switchType, setSwitchType] = useState(SwitchType.Details)
-  const dispatch = useDispatch()
   const darkMode = useIsDarkMode()
-  const item = useExploreState().item
-  useEffect(() => {
-    let href = window.location.href
-    href = href.substring(href.lastIndexOf('/') + 1)
-    dispatch(fieldChange({ fieldName: 'href', fieldValue: window.location.href }))
-    dispatch(getItem(href))
-  }, [])
-  const [isReadMore, setIsReadMore] = useState(true)
-  const toggleReadMore = () => {
-    setIsReadMore(!isReadMore)
-  }
-  const ReadMore = (text: string) => {
-    return (
-      <div>
-        {isReadMore ? text.slice(0, 230) + '. . .' : text}
-        <span
-          onClick={toggleReadMore}
-          style={{
-            color: 'blue',
-            cursor: 'pointer',
-          }}
-        >
-          <GreenText>{isReadMore ? ' Read More' : ' Show Less'}</GreenText>
-        </span>
-      </div>
-    )
-  }
-
-  const PreviewFile = () => {
-    if (item) {
-      if (item.type.includes('image')) {
-        return <img src={item.image} className="file" />
-      } else if (item.type.includes('video')) {
-        return (
-          <div className="file">
-            <ReactPlayer
-              url={item.image}
-              muted={true}
-              playing={true}
-              controls={true}
-              loop={true}
-              width={'100%'}
-              height={'100%'}
-              style={{ borderRadius: '10px' }}
-            />
-          </div>
-        )
-      }
-    }
-  }
+  const [item] = useState({
+    id: 'a8a01adc-0dd5-4ed8-b942-85f5d9636b15',
+    name: 'Built-In',
+    descriptions:
+      'Experience the art created and animated by Artificial Intelligence! \nIntroducing a new limited edition 4K AI video paintings with increased frame rate!\nWe additionally involved 4 new neural networks in the production process, which made it possible to decompose the video into frames, increase their number, then increase the size with improved quality and then glue them back into a full-fledged video. The production has become much more complicated and interesting. All owners of previous versions of AI video can contact us on Twitter and increase their video size for an additional fee',
+    price: 22,
+    symbol: 'ETH',
+    numberOfCopies: 1,
+    contractAddress: '0x398bcBcd555326A875C6e6A52907807303E6Af15',
+    urlFile: 'https://ipfs.infura.io/ipfs/QmYqFj6rjGdrCaUDWLZjMaa9HAqbRoMgUnvbhLFBCjGfmz',
+    categoryId: '9c9debff-35d5-4276-ba59-d606c8ed9859',
+    createdBy: '0x0C7c950F4dFb218328fFAC4ba54C6BaF51be820e',
+    owner: '0x0C7c950F4dFb218328fFAC4ba54C6BaF51be820e',
+    expireTime: null,
+    collectionId: '',
+    royalties: 1,
+    putOnSaleType: PutOnSaleType.FixedPrice,
+    startingDate: new Date(),
+    expirationDate: new Date(),
+  })
   return (
-    <Container>
-      <Image>{PreviewFile()}</Image>
-      <ContentItem>
-        <div style={{ overflowY: 'scroll', height: '65%' }}>
-          <HeaderContent>
-            <NameItem>{item?.name}</NameItem>
-            <Author>
-              <GrayText>By</GrayText> {item?.owner && shortenAddress(item?.owner)}
-            </Author>
-            <div style={{ display: 'flex' }}>
-              {item?.totalQuantity && item?.totalQuantity > 1 ? (
-                <BoldText>
-                  Multiple Edition <GrayText>1/{item?.totalQuantity}</GrayText>
-                </BoldText>
-              ) : (
-                <div>
-                  <BoldText>
-                    Single Edition <GrayText>1/{item?.totalQuantity}</GrayText>
-                  </BoldText>
-                </div>
-              )}
-              <HighBid>
-                <GrayText>Highest bid</GrayText> <GreenText>0,21 ETH</GreenText>
-              </HighBid>
+    <Container fluid>
+      <Row>
+        <Col lg={7} className="preview p-3  text-center">
+          <img src={item.urlFile} style={{ maxHeight: '85vh' }} alt="" />
+        </Col>
+        <Col lg={5} className="info p-3">
+          {/* head */}
+          <div className="info-header border border-info py-2 px-3 rounded d-flex justify-content-between">
+            <span className="h5 mb-0 align-self-center">{`# ` + item.name}</span>
+            <span>
+              <button className="px-1 border rounded">
+                <Heart width={12} height={12} />
+                <small>{` 25`}</small>
+              </button>
+              <MoreHorizontal className="info-more m-1 ms-2" />
+            </span>
+          </div>
+          {/* body */}
+          <div className="info-body">
+            <div className="price my-2 text-secondary">
+              from <span className="text-light">{item.price + item.symbol}</span>
+              <Octagon className="mx-2 align-self-center" width={10} />
+              {item.numberOfCopies} of {item.numberOfCopies} available
             </div>
-            {item?.description && item?.description.length > 100 ? (
-              ReadMore(item.description)
-            ) : (
-              <Text>{item?.description}</Text>
-            )}
-            <div style={{ display: 'flex', marginTop: 20 }}>
-              <Creator>
-                <GrayText>Creator</GrayText>
-                <div style={{ display: 'flex', alignItems: 'center', marginTop: 10 }}>
-                  <Avatar src={Asset.SrcAvatar} />
-                  <Text>{item?.owner ? shortenAddress(item.owner) : ''}</Text>
-                </div>
-              </Creator>
-
-              <Collection>
-                <GrayText>Collection</GrayText>
-                <div style={{ display: 'flex', alignItems: 'center', marginTop: 10 }}>
-                  <Avatar src={Asset.SrcLogo} />
-                  <Text>Polrare</Text>
-                </div>
-              </Collection>
+            <div className="description">{item.descriptions}</div>
+            <div className="creator my-3">
+              <img src={item.urlFile} alt="" className="rounded-circle" style={{ width: 40, height: 40 }} />
+              <span className="mx-3">Polrare</span>
+              <span className="p-2 border rounded ms-2">{shortenAddress(item.owner)}</span>
             </div>
-          </HeaderContent>
-
-          <BodyContent>
-            <SwitchTab>
-              <Tab
-                style={{
-                  borderBottom: switchType === 1 ? (darkMode ? '1px solid #fff' : '1px solid #000') : '',
-                  color: switchType === 1 ? (darkMode ? Color.neutral.white : Color.neutral.black) : Color.neutral.gray,
-                }}
-                onClick={() => setSwitchType(SwitchType.Details)}
-              >
-                Details
-              </Tab>
-              <Tab
-                style={{
-                  borderBottom: switchType === 2 ? (darkMode ? '1px solid #fff' : '1px solid #000') : '',
-                  color: switchType === 2 ? (darkMode ? Color.neutral.white : Color.neutral.black) : Color.neutral.gray,
-                }}
-                onClick={() => setSwitchType(SwitchType.Bids)}
-              >
-                Bids
-              </Tab>
-              <Tab
-                style={{
-                  borderBottom: switchType === 3 ? (darkMode ? '1px solid #fff' : '1px solid #000') : '',
-                  color: switchType === 3 ? (darkMode ? Color.neutral.white : Color.neutral.black) : Color.neutral.gray,
-                }}
-                onClick={() => setSwitchType(SwitchType.History)}
-              >
-                History
-              </Tab>
-            </SwitchTab>
-            {switchType === 1 && <Detail>Detail</Detail>}
-            {switchType === 2 && <Detail>Bids</Detail>}
-            {switchType === 3 && <Detail>History</Detail>}
-          </BodyContent>
-        </div>
-        <div
-          style={{
-            width: '100%',
-            height: 2,
-            background:
-              'linear-gradient(226.07deg, #02E879 8.39%, #279EA5 28.31%, #475CCC 47.69%, #5B34E4 61.69%, #6324ED 68.92%)',
-          }}
-        />
-        <FooterContent>
-          <ButtonBuy>
-            Buy for {item?.price} {item?.symbol}
-          </ButtonBuy>
-          <ButtonBid>Place a Bids</ButtonBid>
-        </FooterContent>
-      </ContentItem>
+            <div className="action">
+              <Button>Buy for {item.price + item.symbol}</Button>
+              <Button>Place a bid</Button>
+            </div>
+          </div>
+        </Col>
+      </Row>
     </Container>
   )
 }
