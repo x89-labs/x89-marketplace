@@ -13,7 +13,7 @@ const ipfs = IPFS.create({
 
 const IpfsClient = class {
   async add(file) {
-    const res = await ipfs.add(Buffer(file), (err, ipfshash) => {
+    await ipfs.add(Buffer(file), (err, ipfshash) => {
       console.log(ipfshash)
     })
   }

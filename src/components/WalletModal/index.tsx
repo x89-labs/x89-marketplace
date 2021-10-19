@@ -15,11 +15,13 @@ import { useModalOpen, useWalletModalToggle } from '../../state/application/hook
 import { ExternalLink, TYPE } from '../../theme'
 import AccountDetails from '../AccountDetails'
 import { Trans } from '@lingui/macro'
-
+import { ethers } from 'ethers'
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
 import { LightCard } from '../Card'
+import { login } from 'state/auth/actions'
+import { useDispatch } from 'react-redux'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -133,6 +135,7 @@ export default function WalletModal({
 
   const previousAccount = usePrevious(account)
 
+  const dispatch = useDispatch()
   // close on connection, when logged out before
   useEffect(() => {
     if (account && !previousAccount && walletModalOpen) {
@@ -157,11 +160,28 @@ export default function WalletModal({
     }
   }, [setWalletView, active, error, connector, walletModalOpen, activePrevious, connectorPrevious])
 
+  const signMessage = async () => {
+    try {
+      const message = 'marketplace-service'
+      if (!window.ethereum) throw new Error('No crypto wallet found. Please install it.')
+      if (!message) throw new Error('no message!')
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const signature = await signer.signMessage(message)
+      const publicAddress = await signer.getAddress()
+      return {
+        signature,
+        publicAddress,
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const tryActivation = async (connector: AbstractConnector | undefined) => {
-    let name = ''
     Object.keys(SUPPORTED_WALLETS).map((key) => {
       if (connector === SUPPORTED_WALLETS[key].connector) {
-        return (name = SUPPORTED_WALLETS[key].name)
+        return SUPPORTED_WALLETS[key].name
       }
       return true
     })
@@ -180,13 +200,19 @@ export default function WalletModal({
     // }
 
     connector &&
-      activate(connector, undefined, true).catch((error) => {
-        if (error instanceof UnsupportedChainIdError) {
-          activate(connector) // a little janky...can't use setError because the connector isn't set
-        } else {
-          setPendingError(true)
-        }
-      })
+      activate(connector, undefined, true)
+        .then(() => {
+          signMessage().then((res) => {
+            dispatch(login(res))
+          })
+        })
+        .catch((error) => {
+          if (error instanceof UnsupportedChainIdError) {
+            activate(connector) // a little janky...can't use setError because the connector isn't set
+          } else {
+            setPendingError(true)
+          }
+        })
   }
 
   // close wallet modal if fortmatic modal is active

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import * as Asset from 'assets'
 import styled from 'styled-components'
 import { useState } from 'react'
@@ -15,9 +15,8 @@ interface stablePriceProps {
   width?: any
 }
 
-export default function StablePrice({ option, width }: stablePriceProps) {
+export default function StablePrice({ option }: stablePriceProps) {
   const [show, setShow] = useState(true)
-  const [selected, setSelected] = useState()
   const open = useModalOpen(ApplicationModal.DROPDOWN)
   const toggle = useToggleModal(ApplicationModal.DROPDOWN)
   const node = useRef<HTMLDivElement>()
@@ -28,9 +27,7 @@ export default function StablePrice({ option, width }: stablePriceProps) {
   const Container = styled.div`
     padding: 10px;
     align-self: center;
-    min-width: ${width};
     justify-content: space-between;
-    postiton: relative;
   `
   const Around = styled.div`
     display: flex;
@@ -39,33 +36,24 @@ export default function StablePrice({ option, width }: stablePriceProps) {
     cursor: pointer;
     justify-content: space-between;
     align-items: center;
-    h4 {
-      margin: 0;
-    }
   `
   const DropDown = styled.div`
     margin-top: 1rem;
     background: ${({ theme }) => theme.bg2};
-    box-shadow: rgb(4 4 5 / 20%) 0px 7px 36px -8px;
-    border-radius: 5px;
-    min-width: 300px;
-    padding: 12px;
-    height: auto;
+    border-radius: 8px;
+    min-width: 200px;
+    padding: 15px;
     position: absolute;
     right: 0;
     z-index: 1;
     .item {
       display: flex;
-      cursor: pointer;
       justify-content: space-between;
       align-items: center;
-      width: auto;
-      .itemName {
-        display: flex;
-        align-items: center;
-        margin-right: 1rem;
-      }
-      p {
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 8px;
+      span {
         ${{ ...Typography.fontSize.x30 }}
         ${{ ...Typography.fontWeight.bold }}
         margin-left: 12px;
@@ -79,8 +67,8 @@ export default function StablePrice({ option, width }: stablePriceProps) {
   return (
     <Container ref={node as any}>
       <Around onClick={() => setShow(!show)}>
-        <h4>{state.symbol ? state.symbol : option && option[0]?.name}</h4>
-        <Asset.DownArrow width={12} height={12} />
+        <span>{state.symbol ? state.symbol : option && option[0]?.name}</span>
+        <Asset.DownArrow className="ms-2" width={12} height={12} />
       </Around>
       <DropDown hidden={show}>
         {option?.map((item, index) => (
@@ -94,7 +82,7 @@ export default function StablePrice({ option, width }: stablePriceProps) {
           >
             <div className="itemName">
               {item.icon && item.icon}
-              <p>{item.name}</p>
+              <span>{item.name}</span>
             </div>
             {state.symbol === item.name && <Asset.Check width={16} height={16}></Asset.Check>}
           </div>

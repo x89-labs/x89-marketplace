@@ -22,7 +22,7 @@ axios.defaults.timeout = 360000
 
 const RequestClient = class {
   constructor() {
-    const access_token = clientStorage.get('sp-afro4isc')
+    const access_token = clientStorage.get('market-service-n')
     if (access_token) {
       this.init(access_token)
     } else {

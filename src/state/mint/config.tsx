@@ -1,4 +1,4 @@
-import { FormInput, Option, Type } from 'models/formInput'
+import { FormInput, Type } from 'models/formInput'
 import React from 'react'
 import * as Asset from 'assets'
 import * as Yup from 'yup'
@@ -73,16 +73,15 @@ export const Forms: FormInput[] = [
         title: 'Description ',
         titleSmall: '(Optional)',
         type: Type.Input,
-        id: 'description',
+        id: 'descriptions',
         placeHolder: `e.g.After purchasing you'll be able to get the real T-shirt`,
         panel: 'With preserved line-breaks',
       },
       {
-        row: 3,
         title: 'Royalties',
-        type: Type.InputPercent,
+        type: Type.InputNumber,
         id: 'royalties',
-        placeHolder: `0`,
+        placeHolder: `e.g. 10%`,
         panel: 'Suggested: 0%, 10%, 20%, 30%. Maximum is 50%',
       },
     ],
@@ -141,7 +140,7 @@ export const Forms: FormInput[] = [
         row: 1,
         title: 'Number of copies',
         type: Type.Input,
-        id: 'totalQuantity',
+        id: 'numberOfCopies',
         placeHolder: 'E.g 10',
         panel: 'Amount of tokens',
       },

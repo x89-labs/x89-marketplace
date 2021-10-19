@@ -1,17 +1,12 @@
-import { parseBytes32String } from '@ethersproject/strings'
 import { Currency, Token } from '@uniswap/sdk-core'
-import { arrayify } from 'ethers/lib/utils'
 import { useMemo } from 'react'
 import { createTokenFilterFunction } from '../components/SearchModal/filtering'
-import { ExtendedEther, WETH9_EXTENDED } from '../constants/tokens'
 import { useAllLists, useCombinedActiveList, useInactiveListUrls } from '../state/lists/hooks'
 import { WrappedTokenInfo } from '../state/lists/wrappedTokenInfo'
 import { useUserAddedTokens } from '../state/user/hooks'
-import { isAddress } from '../utils'
 import { TokenAddressMap, useUnsupportedTokenList } from './../state/lists/hooks'
 
 import { useActiveWeb3React } from './web3'
-import { useBytes32TokenContract, useTokenContract } from './useContract'
 
 // reduce token map into standard address <-> Token mapping, optionally include user added tokens
 function useTokensFromMap(tokenMap: TokenAddressMap, includeUserAdded: boolean): { [address: string]: Token } {
@@ -107,16 +102,4 @@ export function useIsUserAddedToken(currency: Currency | undefined | null): bool
   }
 
   return !!userAddedTokens.find((token) => currency.equals(token))
-}
-
-// parse a name or symbol from a token response
-const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/
-
-function parseStringOrBytes32(str: string | undefined, bytes32: string | undefined, defaultValue: string): string {
-  return str && str.length > 0
-    ? str
-    : // need to check for proper bytes string and valid terminator
-    bytes32 && BYTES32_REGEX.test(bytes32) && arrayify(bytes32)[31] === 0
-    ? parseBytes32String(bytes32)
-    : defaultValue
 }

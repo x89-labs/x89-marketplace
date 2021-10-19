@@ -25,6 +25,7 @@ export enum Type {
   InputDropdown,
   InputPercent,
   Dropdown,
+  InputNumber,
 }
 export interface Option {
   name?: string

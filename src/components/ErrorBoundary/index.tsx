@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import React, { ErrorInfo } from 'react'
+import React from 'react'
 import store, { AppState } from '../../state'
 import { ExternalLink, TYPE } from '../../theme'
 import { AutoColumn } from '../Column'
@@ -55,13 +55,13 @@ export default class ErrorBoundary extends React.Component<unknown, ErrorBoundar
     return { error }
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // ReactGA.exception({
-    //   ...error,
-    //   ...errorInfo,
-    //   fatal: true,
-    // })
-  }
+  // componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  //   // ReactGA.exception({
+  //   //   ...error,
+  //   //   ...errorInfo,
+  //   //   fatal: true,
+  //   // })
+  // }
 
   render() {
     const { error } = this.state

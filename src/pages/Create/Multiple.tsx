@@ -64,23 +64,22 @@ export const Multiple = ({ history }: RouteComponentProps) => {
           Ipfs.GetHash(reader.result)
             .then((hash) => {
               if (state.categorie) {
-                const body: BodyItem = {
-                  royalties: 0,
-                  categoryId: state.categorie.id,
-                  name: values.name,
-                  description: values.description,
-                  price: values.price,
-                  contractAddress: POLRARE_ADDRESS[1],
-                  assetId: '1233',
-                  symbol: state.symbol ?? 'ETH',
-                  image: hash,
-                  totalQuantity: values.totalQuantity,
-                  createdBy: account!,
-                  type: state.fileType,
-                  categoryName: state.categorie.categoryName,
-                }
+                // const body: BodyItem = {
+                //   categoryId: state.categorie.id,
+                //   name: values.name,
+                //   description: values.description,
+                //   price: values.price,
+                //   contractAddress: POLRARE_ADDRESS[1],
+                //   assetId: '1233',
+                //   symbol: state.symbol ?? 'ETH',
+                //   image: hash,
+                //   totalQuantity: values.totalQuantity,
+                //   createdBy: account!,
+                //   type: state.fileType,
+                //   categoryName: state.categorie.name,
+                // }
 
-                dispatch(postItem(body))
+                // dispatch(postItem(body))
               }
             })
             .catch((e) => {

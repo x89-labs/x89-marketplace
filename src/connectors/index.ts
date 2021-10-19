@@ -5,7 +5,6 @@ import getLibrary from '../utils/getLibrary'
 
 import { FortmaticConnector } from './Fortmatic'
 import { NetworkConnector } from './NetworkConnector'
-import UNISWAP_LOGO_URL from '../assets/svg/logo.svg'
 
 const INFURA_KEY = process.env.REACT_APP_INFURA_KEY
 const FORMATIC_KEY = process.env.REACT_APP_FORTMATIC_KEY
@@ -22,8 +21,8 @@ const NETWORK_URLS: {
   [SupportedChainId.ROPSTEN]: `https://ropsten.infura.io/v3/${INFURA_KEY}`,
   [SupportedChainId.GOERLI]: `https://goerli.infura.io/v3/${INFURA_KEY}`,
   [SupportedChainId.KOVAN]: `https://kovan.infura.io/v3/${INFURA_KEY}`,
-  [SupportedChainId.ARBITRUM_KOVAN]: `https://kovan5.arbitrum.io/rpc`,
-  [SupportedChainId.ARBITRUM_ONE]: `https://arb1.arbitrum.io/rpc`,
+  [SupportedChainId.BSC]: `https://bsc-dataseed.binance.org/`,
+  [SupportedChainId.BSCTEST]: `https://data-seed-prebsc-1-s1.binance.org:8545/`,
 }
 
 const SUPPORTED_CHAIN_IDS: SupportedChainId[] = [
@@ -32,8 +31,8 @@ const SUPPORTED_CHAIN_IDS: SupportedChainId[] = [
   SupportedChainId.GOERLI,
   SupportedChainId.RINKEBY,
   SupportedChainId.ROPSTEN,
-  SupportedChainId.ARBITRUM_KOVAN,
-  SupportedChainId.ARBITRUM_ONE,
+  SupportedChainId.BSC,
+  SupportedChainId.BSCTEST,
 ]
 
 export const network = new NetworkConnector({

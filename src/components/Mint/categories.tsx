@@ -1,24 +1,63 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import * as Asset from 'assets'
 import styled from 'styled-components'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { fieldChange } from 'state/mint/actions'
 import { useMintState } from 'state/mint/hooks'
-import { theme } from 'theme'
 import { Color, Outline, Typography } from 'styles'
 
+const cate = [
+  {
+    id: '4fa53b94-0be7-4e51-a5f8-9a63fcaec305',
+    name: 'Art',
+    descriptions: null,
+    icon: null,
+    isActive: 1,
+    backgroundImage: null,
+    createdDate: '2021-08-25T03:36:58.585Z',
+    modifiedDate: '2021-08-25T03:36:58.585Z',
+  },
+  {
+    id: 'd80412ed-5b10-4481-9a9a-ed789d5677ed',
+    name: 'Game',
+    descriptions: null,
+    icon: null,
+    isActive: 1,
+    backgroundImage: null,
+    createdDate: '2021-08-25T03:36:58.585Z',
+    modifiedDate: '2021-08-25T03:36:58.585Z',
+  },
+  {
+    id: 'e110febe-a573-43d1-9f6b-183e7f87d03d',
+    name: 'Music',
+    descriptions: null,
+    icon: null,
+    isActive: 1,
+    backgroundImage: null,
+    createdDate: '2021-08-25T03:36:58.585Z',
+    modifiedDate: '2021-08-25T03:36:58.585Z',
+  },
+  {
+    id: 'eaf705a7-dc2f-4562-93e6-7a69be5a39fc',
+    name: 'Photography',
+    descriptions: null,
+    icon: null,
+    isActive: 1,
+    backgroundImage: null,
+    createdDate: '2021-08-25T03:36:58.585Z',
+    modifiedDate: '2021-08-25T03:36:58.585Z',
+  },
+]
 const Container = styled.div`
-  margin-top: 1.2rem;
-  align-self: center;
-  justify-content: center;
   width: 50%;
-  padding-right: 0px;
+  margin-top: 15px;
 `
 const Title = styled.p`
   ${{ ...Typography.fontSize.x30 }}
   ${{ ...Typography.fontWeight.bold }}
   color: ${({ theme }) => theme.text1};
+  margin-bottom: 10px;
 `
 const Around = styled.div`
   background: ${({ theme }) => theme.bg1};
@@ -26,22 +65,18 @@ const Around = styled.div`
   flex-direction: row;
 
   display: flex;
-  color: ${Color.neutral.gray};
-  padding: 10px;
-  border-radius: ${Outline.borderRadius.base}px;
-  margin: 0;
-  cursor: pointer;
   justify-content: space-between;
+  cursor: pointer;
+  padding: 10px;
+  color: ${Color.neutral.gray};
+  border-radius: ${Outline.borderRadius.base}px;
   align-items: center;
   border: 1px solid ${Color.neutral.gray};
-  h4 {
-    margin: 2px;
-  }
 `
 const DropDown = styled.div`
-  margin-top: 0.6rem;
   background: ${({ theme }) => theme.bg2};
-  border-radius: 5px;
+  border-radius: 8px;
+  width: 250px;
   padding: 12px;
   height: auto;
   z-index: 1;
@@ -50,17 +85,12 @@ const DropDown = styled.div`
     cursor: pointer;
     justify-content: space-between;
     align-items: center;
-    width: auto;
+    padding: 5px;
+    border-radius: 8px;
     .itemName {
       display: flex;
       align-items: center;
       margin-right: 1rem;
-    }
-    p {
-      ${{ ...Typography.fontSize.x30 }}
-      ${{ ...Typography.fontWeight.bold }}
-      margin-left: 12px;
-      color: ${({ theme }) => theme.text1};
     }
   }
   .item:hover {
@@ -81,27 +111,21 @@ export default function Categories() {
           setShow(!show)
         }}
       >
-        <h4>
-          {state.categorie?.categoryName
-            ? state.categorie?.categoryName
-            : state.categories && state.categories.length > 0
-            ? state.categories[0].categoryName
-            : ''}
-        </h4>
+        <span>{state.categorie?.name ? state.categorie?.name : cate && cate[0].name}</span>
         <Asset.DownArrow width={12} height={12} fill={'#9c9292'} />
       </Around>
-      <DropDown hidden={show} className="dropdown">
-        {state.categories?.map((item, index) => (
+      <DropDown hidden={show} className="dropdown mt-3">
+        {cate?.map((item, index) => (
           <div
             className="item"
             key={index}
             onClick={() => {
-              setShow(true)
+              setShow(!show)
               dispatch(fieldChange({ fieldName: 'categorie', fieldValue: item }))
             }}
           >
             <div className="itemName">
-              <p>{item.categoryName}</p>
+              <span>{item.name}</span>
             </div>
             {state.categorie?.id === item.id && <Asset.Check width={16} height={16} />}
           </div>

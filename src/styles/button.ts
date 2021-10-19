@@ -1,5 +1,5 @@
 import { CSSProperties } from 'styled-components'
-import { Color, Outline, Sizing } from 'styles'
+import { Color, Outline } from 'styles'
 
 import * as Colors from './color'
 import * as Typography from './typography'

@@ -1,8 +1,9 @@
-import { createAction, createAsyncThunk, getDefaultMiddleware } from '@reduxjs/toolkit'
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { client, Endpoint } from 'api'
 
 export const fieldChange = createAction<{ fieldName: string; fieldValue: any }>('explore/fieldChange')
-export const getListItems = createAsyncThunk('explore/items', async (skip, take) => {
+
+export const getListItems = createAsyncThunk('explore/items', async () => {
   const URL = `${Endpoint.ITEM}`
   const response = await client.get(URL, {})
   if (response && response.status == 200) {
@@ -11,7 +12,7 @@ export const getListItems = createAsyncThunk('explore/items', async (skip, take)
     return []
   }
 })
-export const getItem = createAsyncThunk('explore/getItem', async (itemId: string, { getState }) => {
+export const getItem = createAsyncThunk('explore/getItem', async (itemId: string) => {
   const URL = `${Endpoint.ITEM}/${itemId}`
   const response = await client.get(URL, {})
   if (response && response.status == 200) {

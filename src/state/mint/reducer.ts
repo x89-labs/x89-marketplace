@@ -1,18 +1,7 @@
-import { createReducer, createSlice } from '@reduxjs/toolkit'
-import { BodyItem } from 'models/bodyItem'
+import { createSlice } from '@reduxjs/toolkit'
 import { Categories } from 'models/categories'
-import { Item } from 'models/explore'
-import {
-  deleteFile,
-  Field,
-  fieldChange,
-  fileChange,
-  getCategories,
-  getMyItems,
-  postItem,
-  resetForm,
-  actBtnAdvanced,
-} from './actions'
+import { Item, PutOnSaleType } from 'models/item'
+import { deleteFile, Field, fieldChange, fileChange, getCategories, getMyItems, postItem, resetForm } from './actions'
 export interface MintState {
   readonly independentField: Field
   readonly typedValue: string
@@ -23,7 +12,7 @@ export interface MintState {
   readonly categories?: Categories[]
   readonly categorie?: Categories
   readonly symbol?: string
-  readonly initValues: BodyItem
+  readonly initValues: Item
   readonly listMyItem?: Item[]
   readonly isCompleted: boolean
   readonly ipfsHash?: string
@@ -35,19 +24,20 @@ export const initialState: MintState = {
   otherTypedValue: '',
   showBtnAdvanced: true,
   initValues: {
-    categoryId: '',
-    description: '',
-    price: 0,
+    id: '',
     name: '',
-    royalties: 0,
     contractAddress: '',
-    assetId: '1233',
-    symbol: 'ETH',
-    image: '',
-    totalQuantity: 1,
-    createdBy: '',
-    type: '',
-    categoryName: '',
+    descriptions: '',
+    urlFile: '',
+    price: 0,
+    symbol: '',
+    royalties: 0,
+    numberOfCopies: 1,
+    putOnSaleType: PutOnSaleType.FixedPrice,
+    startingDate: new Date(),
+    expirationDate: new Date(),
+    categoryId: '',
+    collectionId: '',
   },
   isCompleted: false,
 }
@@ -70,7 +60,7 @@ const mintSlice = createSlice({
           [fieldName]: fieldValue,
         }
       })
-      .addCase(deleteFile, (state, action) => {
+      .addCase(deleteFile, (state) => {
         return {
           ...state,
           file: undefined,
@@ -87,13 +77,13 @@ const mintSlice = createSlice({
           state.listMyItem = action.payload.items
         }
       })
-      .addCase(postItem.fulfilled, (state, action) => {
+      .addCase(postItem.fulfilled, (state) => {
         return {
           ...state,
           isCompleted: true,
         }
       })
-      .addCase(resetForm, (state, action) => {
+      .addCase(resetForm, (state) => {
         return {
           ...state,
           file: undefined,

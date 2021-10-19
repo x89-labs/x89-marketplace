@@ -85,7 +85,7 @@ export function colors(darkMode: boolean): Colors {
     yellow1: '#e3a507',
     yellow2: '#ff8f00',
     yellow3: '#F3B71E',
-    blue1: '#2172E5',
+    blue1: darkMode ? '#ffffff' : '#2172E5',
     blue2: '#5199FF',
 
     error: '#FD4040',
@@ -196,6 +196,10 @@ html {
 }
 
 a {
- color: ${({ theme }) => theme.blue1}; 
+ color: ${({ theme }) => theme.blue1} !important; 
+}
+body{
+  background-color:transparent;
+  color: ${({ theme }) => theme.blue1} !important; 
 }
 `
