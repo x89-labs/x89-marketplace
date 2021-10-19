@@ -15,7 +15,7 @@ import useFilePicker from 'hooks/useFilePicker'
 
 import { useIsDarkMode } from 'state/user/hooks'
 import { useMintState } from 'state/mint/hooks'
-import { fieldChange, fileChange, getCategories, resetForm, deleteFile } from 'state/mint/actions'
+import { fieldChange, fileChange, resetForm, deleteFile } from 'state/mint/actions'
 import { Forms, validationFormCreateSchema } from 'state/mint/config'
 
 import { PutOnSaleType } from 'models/item'
@@ -28,25 +28,7 @@ import SelectTableDate from 'components/Mint/selectTableDate'
 import { Button, Color, Outline, Typography } from 'styles'
 import styled from 'styled-components'
 
-interface ico {
-  icon: any
-  name: string
-}
-const icons: ico = {
-  icon: <Icon.ArrowLeft />,
-  name: 'Manage collectible type',
-}
-const FeatherIcon = (icon: ico) => {
-  return (
-    <div style={{ position: 'relative', left: '0', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-      <div>{icon.icon}</div>
-      <div>{icon.name}</div>
-    </div>
-  )
-}
-
 // style component
-
 const Title = styled.p`
   ${{ ...Typography.header.x30 }}
 `
@@ -63,7 +45,7 @@ const Around = styled.div`
   padding: 30px 0;
   border-radius: 16px;
   position: relative;
-  background: ${({ theme }) => theme.bg3};
+  background: ${Color.linearGradient.black};
   @media only screen and (max-width: 700px) {
     width: 100%;
   }
@@ -82,6 +64,7 @@ const Preview = styled.div`
     border: 1px solid ${({ theme }) => theme.text5};
     background: ${({ theme }) => theme.bg6};
     height: 400px;
+    width: 100%;
     padding: 22px 24px;
   }
 
@@ -93,8 +76,11 @@ const Preview = styled.div`
 
   .image {
     width: 100%;
+    height: 100%;
+    max-height: 270px;
     border-radius: 5px;
     display: block;
+    object-fit: cover;
   }
 `
 const LoadingContainer = styled.div`
@@ -220,7 +206,6 @@ export const Single = ({ history }: RouteComponentProps) => {
 
   const [openMint, setOpenMint] = useState(false)
   const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
-
   const [item] = useState({
     name: '',
     descriptions: '',
@@ -271,9 +256,9 @@ export const Single = ({ history }: RouteComponentProps) => {
     plainFiles[0] && dispatch(fileChange({ value: plainFiles[0] }))
     plainFiles[0] && dispatch(fieldChange({ fieldName: 'fileType', fieldValue: plainFiles[0].type }))
   }, [plainFiles, dispatch])
-  useEffect(() => {
-    dispatch(getCategories())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(getCategories())
+  // }, [dispatch])
 
   const formik = useFormik({
     initialValues: item,
@@ -305,27 +290,6 @@ export const Single = ({ history }: RouteComponentProps) => {
       dispatch(resetForm({ value: 'resetform' }))
     },
   })
-
-  const PreviewFile = () => {
-    if (state.file) {
-      if (state.file.type.includes('image')) {
-        return <img src={URL.createObjectURL(state.file)} className="image" />
-      } else {
-        return (
-          <div className="image">
-            <ReactPlayer
-              url={URL.createObjectURL(state.file)}
-              playing={false}
-              muted={true}
-              controls={true}
-              width={'90%'}
-              height={'auto'}
-            />
-          </div>
-        )
-      }
-    } else return <></>
-  }
   const LoadingForm = () => {
     return (
       <LoadingContainer>
@@ -356,6 +320,7 @@ export const Single = ({ history }: RouteComponentProps) => {
       </LoadingContainer>
     )
   }
+  // render type
   const TypeCreate = (type: PutOnSaleType) => {
     return (
       <div
@@ -382,6 +347,7 @@ export const Single = ({ history }: RouteComponentProps) => {
       </div>
     )
   }
+  // render input
   const FormInput = (location?: string) => {
     return Forms.map((r) => {
       if (location === r.location) {
@@ -466,8 +432,25 @@ export const Single = ({ history }: RouteComponentProps) => {
 
   return (
     <Container style={{ width: 1000 }}>
+      {/* back window */}
       <Row>
-        <Title onClick={() => history.goBack()}>{FeatherIcon(icons)}</Title>
+        <Title onClick={() => history.goBack()}>
+          <div
+            style={{
+              position: 'relative',
+              left: '0',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              cursor: 'pointer',
+            }}
+          >
+            <div>
+              <Icon.ArrowLeft />
+            </div>
+            <div>Manage collectible type</div>
+          </div>
+        </Title>
       </Row>
       <Row>
         <h1 className="my-4 bold text-center">Create {isSingle ? 'single' : 'multi'} collectible</h1>
@@ -494,12 +477,7 @@ export const Single = ({ history }: RouteComponentProps) => {
               </CloseBtn>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 {state.file && state.file.type.includes('image') ? (
-                  <img
-                    src={URL.createObjectURL(state.file)}
-                    width={'70%'}
-                    height={240}
-                    style={{ borderRadius: 10 }}
-                  ></img>
+                  <img src={URL.createObjectURL(state.file)} style={{ borderRadius: 10, maxHeight: 200 }}></img>
                 ) : (
                   state.file && (
                     <ReactPlayer
@@ -587,6 +565,7 @@ export const Single = ({ history }: RouteComponentProps) => {
             <LoadingForm />
           </Modal>
         </Col>
+        {/*  */}
         <Col xs={4}>
           <Preview>
             <h4>Preview</h4>
@@ -595,7 +574,25 @@ export const Single = ({ history }: RouteComponentProps) => {
                 <img width={'24px'} src={darkMode ? Logo : Logo} alt="logo" /> Polrare
               </p>
               <Text hidden={state.file ? true : false}> Upload file to preview your brand new NFT</Text>
-              <PreviewFile />
+              {/* <PreviewFile /> */}
+              {state.file && state.file.type.includes('image') ? (
+                state.file ? (
+                  <img src={URL.createObjectURL(state.file)} className="image" />
+                ) : (
+                  <div className="image">
+                    <ReactPlayer
+                      url={URL.createObjectURL(state.file)}
+                      playing={false}
+                      muted={true}
+                      controls={true}
+                      width={'90%'}
+                      height={'auto'}
+                    />
+                  </div>
+                )
+              ) : (
+                <></>
+              )}
               <Text hidden={!isSingle && state.file ? false : true}> {getIn(formik.values, 'numberOfCopies')}</Text>
               <Text hidden={state.file ? false : true}> {getIn(formik.values, 'name')}</Text>
               <div

@@ -274,8 +274,8 @@ const NETWORK_LABELS: { [chainId in SupportedChainId | number]: string } = {
   [SupportedChainId.ROPSTEN]: 'Ropsten',
   [SupportedChainId.GOERLI]: 'Görli',
   [SupportedChainId.KOVAN]: 'Kovan',
-  [SupportedChainId.ARBITRUM_KOVAN]: 'kArbitrum',
-  [SupportedChainId.ARBITRUM_ONE]: 'Arbitrum One',
+  [SupportedChainId.BSCTEST]: 'TESTNET',
+  [SupportedChainId.BSC]: '',
 }
 
 export default function Header() {

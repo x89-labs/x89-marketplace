@@ -22,7 +22,7 @@ export enum ExplorerDataType {
  * @param type the type of the data
  */
 export function getExplorerLink(chainId: number, data: string, type: ExplorerDataType): string {
-  if (chainId === SupportedChainId.ARBITRUM_KOVAN) {
+  if (chainId === SupportedChainId.BSC) {
     switch (type) {
       case ExplorerDataType.TRANSACTION:
         return `https://explorer5.arbitrum.io/#/tx/${data}`
@@ -35,7 +35,7 @@ export function getExplorerLink(chainId: number, data: string, type: ExplorerDat
     }
   }
 
-  if (chainId === SupportedChainId.ARBITRUM_ONE) {
+  if (chainId === SupportedChainId.BSCTEST) {
     switch (type) {
       case ExplorerDataType.TRANSACTION:
         return `https://mainnet-arb-explorer.netlify.app/tx/${data}`
