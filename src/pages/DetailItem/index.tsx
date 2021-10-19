@@ -59,7 +59,7 @@ export default function DetailItem() {
               <span className="mx-3">Polrare</span>
               <span className="p-2 border rounded ms-2">{shortenAddress(item.owner)}</span>
             </div>
-            <div className="action">
+            <div className="action d-flex mt-auto justify-content-around">
               <Button>Buy for {item.price + item.symbol}</Button>
               <Button>Place a bid</Button>
             </div>
