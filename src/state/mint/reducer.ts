@@ -89,12 +89,6 @@ const mintSlice = createSlice({
           file: undefined,
         }
       })
-      .addCase(actBtnAdvanced, (state, action) => {
-        return {
-          ...state,
-          showBtnAdvanced: !state.showBtnAdvanced,
-        }
-      })
   },
 })
 export default mintSlice.reducer

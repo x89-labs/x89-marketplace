@@ -1,0 +1,343 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2021-10-19 17:47+0700\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en-US\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/components/AccountDetails/index.tsx
+msgid "(clear all)"
+msgstr "(clear all)"
+
+#: src/components/InputStepCounter/InputStepCounter.tsx
+msgid "+{feeAmountFormatted}%"
+msgstr "+{feeAmountFormatted}%"
+
+#: src/components/InputStepCounter/InputStepCounter.tsx
+msgid "-{feeAmountFormatted}%"
+msgstr "-{feeAmountFormatted}%"
+
+#: src/components/AccountDetails/index.tsx
+msgid "Account"
+msgstr "Account"
+
+#: src/components/SearchModal/ImportRow.tsx
+msgid "Active"
+msgstr "Active"
+
+#: src/components/Settings/index.tsx
+msgid "Allow high price impact trades and skip the confirm screen. Use at your own risk."
+msgstr "Allow high price impact trades and skip the confirm screen. Use at your own risk."
+
+#: src/components/Header/URLWarning.tsx
+msgid "Always make sure the URL is<0>app.uniswap.org</0> - bookmark it to be safe."
+msgstr "Always make sure the URL is<0>app.uniswap.org</0> - bookmark it to be safe."
+
+#: src/components/Settings/index.tsx
+msgid "Are you sure?"
+msgstr "Are you sure?"
+
+#: src/components/TransactionSettings/index.tsx
+msgid "Auto"
+msgstr "Auto"
+
+#: src/components/WalletModal/index.tsx
+msgid "Back"
+msgstr "Back"
+
+#: src/components/WalletModal/index.tsx
+msgid "By connecting a wallet, you agree to Polare <0>Terms of Service</0> and acknowledge that you have read and understand the <1>Polrare disclaimer</1>."
+msgstr "By connecting a wallet, you agree to Polare <0>Terms of Service</0> and acknowledge that you have read and understand the <1>Polrare disclaimer</1>."
+
+#: src/components/AccountDetails/index.tsx
+msgid "Change"
+msgstr "Change"
+
+#: src/components/Badge/RangeBadge.tsx
+msgid "Closed"
+msgstr "Closed"
+
+#: src/components/SearchModal/CommonBases.tsx
+msgid "Common bases"
+msgstr "Common bases"
+
+#: src/components/WalletModal/index.tsx
+#: src/components/Web3Status/index.tsx
+msgid "Connect to a wallet"
+msgstr "Connect to a wallet"
+
+#: src/components/AccountDetails/index.tsx
+msgid "Connected with {name}"
+msgstr "Connected with {name}"
+
+#: src/components/AccountDetails/Copy.tsx
+msgid "Copied"
+msgstr "Copied"
+
+#: src/components/AccountDetails/index.tsx
+#: src/components/AccountDetails/index.tsx
+msgid "Copy Address"
+msgstr "Copy Address"
+
+#: src/components/ErrorBoundary/index.tsx
+msgid "Create an issue on GitHub"
+msgstr "Create an issue on GitHub"
+
+#: src/components/Settings/index.tsx
+msgid "Disable Multihops"
+msgstr "Disable Multihops"
+
+#: src/components/AccountDetails/index.tsx
+msgid "Disconnect"
+msgstr "Disconnect"
+
+#: src/components/TransactionSettings/index.tsx
+msgid "Enter a valid slippage percentage"
+msgstr "Enter a valid slippage percentage"
+
+#: src/components/Web3Status/index.tsx
+msgid "Error"
+msgstr "Error"
+
+#: src/components/WalletModal/PendingView.tsx
+#: src/components/WalletModal/index.tsx
+msgid "Error connecting"
+msgstr "Error connecting"
+
+#: src/components/WalletModal/index.tsx
+msgid "Error connecting. Try refreshing the page."
+msgstr "Error connecting. Try refreshing the page."
+
+#: src/components/SearchModal/CurrencyList.tsx
+msgid "Expanded results from inactive Token Lists"
+msgstr "Expanded results from inactive Token Lists"
+
+#: src/components/Settings/index.tsx
+msgid "Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result in bad rates and lost funds."
+msgstr "Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result in bad rates and lost funds."
+
+#: src/components/Header/index.tsx
+msgid "Explore"
+msgstr "Explore"
+
+#: src/components/Header/index.tsx
+msgid "Games"
+msgstr "Games"
+
+#: src/components/ErrorBoundary/index.tsx
+msgid "Get support on Discord"
+msgstr "Get support on Discord"
+
+#: src/components/SearchModal/ImportRow.tsx
+msgid "Import"
+msgstr "Import"
+
+#: src/components/Badge/RangeBadge.tsx
+msgid "In range"
+msgstr "In range"
+
+#: src/components/WalletModal/PendingView.tsx
+msgid "Initializing..."
+msgstr "Initializing..."
+
+#: src/components/WalletModal/index.tsx
+msgid "Install Metamask"
+msgstr "Install Metamask"
+
+#: src/components/Settings/index.tsx
+msgid "Interface Settings"
+msgstr "Interface Settings"
+
+#: src/components/Menu/index.tsx
+msgid "Logout"
+msgstr "Logout"
+
+#: src/components/Header/URLWarning.tsx
+msgid "Make sure the URL is<0>app.uniswap.org</0>"
+msgstr "Make sure the URL is<0>app.uniswap.org</0>"
+
+#: src/components/RangeSelector/index.tsx
+msgid "Max Price"
+msgstr "Max Price"
+
+#: src/components/RangeSelector/index.tsx
+msgid "Min Price"
+msgstr "Min Price"
+
+#: src/components/Header/index.tsx
+msgid "Mint"
+msgstr "Mint"
+
+#: src/components/Menu/index.tsx
+msgid "My Items"
+msgstr "My Items"
+
+#: src/components/Toggle/ListToggle.tsx
+msgid "OFF"
+msgstr "OFF"
+
+#: src/components/Toggle/ListToggle.tsx
+msgid "ON"
+msgstr "ON"
+
+#: src/components/Settings/index.tsx
+msgid "ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING."
+msgstr "ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING."
+
+#: src/components/Toggle/index.tsx
+msgid "Off"
+msgstr "Off"
+
+#: src/components/Toggle/index.tsx
+msgid "On"
+msgstr "On"
+
+#: src/components/Web3ReactManager/index.tsx
+msgid "Oops! An unknown error occurred. Please refresh the page, or visit from another browser or device."
+msgstr "Oops! An unknown error occurred. Please refresh the page, or visit from another browser or device."
+
+#: src/components/Badge/RangeBadge.tsx
+msgid "Out of range"
+msgstr "Out of range"
+
+#: src/components/WalletModal/index.tsx
+msgid "Please connect to the appropriate Ethereum network."
+msgstr "Please connect to the appropriate Ethereum network."
+
+#: src/components/Settings/index.tsx
+msgid "Please type the word \"{confirmWord}\" to enable expert mode."
+msgstr "Please type the word \"{confirmWord}\" to enable expert mode."
+
+#: src/components/Menu/index.tsx
+msgid "Profile"
+msgstr "Profile"
+
+#: src/components/AccountDetails/index.tsx
+msgid "Recent Transactions"
+msgstr "Recent Transactions"
+
+#: src/components/Settings/index.tsx
+msgid "Restricts swaps to direct pairs only."
+msgstr "Restricts swaps to direct pairs only."
+
+#: src/components/TransactionSettings/index.tsx
+msgid "Slippage tolerance"
+msgstr "Slippage tolerance"
+
+#: src/components/ErrorBoundary/index.tsx
+msgid "Something went wrong"
+msgstr "Something went wrong"
+
+#: src/components/Header/index.tsx
+msgid "Stats"
+msgstr "Stats"
+
+#: src/components/Badge/RangeBadge.tsx
+msgid "The price of this pool is outside of your selected range. Your position is not currently earning fees."
+msgstr "The price of this pool is outside of your selected range. Your position is not currently earning fees."
+
+#: src/components/Badge/RangeBadge.tsx
+msgid "The price of this pool is within your selected range. Your position is currently earning fees."
+msgstr "The price of this pool is within your selected range. Your position is currently earning fees."
+
+#: src/components/SearchModal/CommonBases.tsx
+msgid "These tokens are commonly paired with other tokens."
+msgstr "These tokens are commonly paired with other tokens."
+
+#: src/components/Settings/index.tsx
+msgid "Toggle Expert Mode"
+msgstr "Toggle Expert Mode"
+
+#: src/components/SearchModal/CurrencyList.tsx
+msgid "Tokens from inactive lists. Import specific tokens below or click Manage to activate more lists."
+msgstr "Tokens from inactive lists. Import specific tokens below or click Manage to activate more lists."
+
+#: src/components/Settings/index.tsx
+msgid "Transaction Settings"
+msgstr "Transaction Settings"
+
+#: src/components/TransactionSettings/index.tsx
+msgid "Transaction deadline"
+msgstr "Transaction deadline"
+
+#: src/components/WalletModal/PendingView.tsx
+msgid "Try Again"
+msgstr "Try Again"
+
+#: src/components/Settings/index.tsx
+msgid "Turn On Expert Mode"
+msgstr "Turn On Expert Mode"
+
+#: src/components/AccountDetails/index.tsx
+#: src/components/AccountDetails/index.tsx
+msgid "View on Explorer"
+msgstr "View on Explorer"
+
+#: src/components/WalletModal/index.tsx
+#: src/components/Web3Status/index.tsx
+msgid "Wrong Network"
+msgstr "Wrong Network"
+
+#: src/components/Menu/index.tsx
+msgid "Your Name"
+msgstr "Your Name"
+
+#: src/components/Badge/RangeBadge.tsx
+msgid "Your position has 0 liquidity, and is not earning fees."
+msgstr "Your position has 0 liquidity, and is not earning fees."
+
+#: src/components/TransactionSettings/index.tsx
+msgid "Your transaction may be frontrun"
+msgstr "Your transaction may be frontrun"
+
+#: src/components/TransactionSettings/index.tsx
+msgid "Your transaction may fail"
+msgstr "Your transaction may fail"
+
+#: src/components/TransactionSettings/index.tsx
+msgid "Your transaction will revert if it is pending for more than this period of time."
+msgstr "Your transaction will revert if it is pending for more than this period of time."
+
+#: src/components/TransactionSettings/index.tsx
+msgid "Your transaction will revert if the price changes unfavorably by more than this percentage."
+msgstr "Your transaction will revert if the price changes unfavorably by more than this percentage."
+
+#: src/components/AccountDetails/index.tsx
+msgid "Your transactions will appear here..."
+msgstr "Your transactions will appear here..."
+
+#: src/components/Settings/index.tsx
+msgid "confirm"
+msgstr "confirm"
+
+#: src/components/TransactionSettings/index.tsx
+msgid "minutes"
+msgstr "minutes"
+
+#: src/components/SearchModal/ImportRow.tsx
+msgid "via {0}"
+msgstr "via {0}"
+
+#: src/components/Header/index.tsx
+msgid "{0} ETH"
+msgstr "{0} ETH"
+
+#: src/components/Web3Status/index.tsx
+msgid "{0} Pending"
+msgstr "{0} Pending"
+
+#: src/components/SearchModal/CurrencyList.tsx
+msgid "{0} • Added by user"
+msgstr "{0} • Added by user"
+
+#: src/components/InputStepCounter/InputStepCounter.tsx
+msgid "{tokenB} per {tokenA}"
+msgstr "{tokenB} per {tokenA}"

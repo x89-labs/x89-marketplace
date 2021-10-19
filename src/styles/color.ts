@@ -16,7 +16,7 @@ export const primary: Record<Primary, string> = {
   s600: '#0c3659',
 }
 
-type LinearGradient = 'brand' | 'layer' | 'button' | 'black'
+type LinearGradient = 'brand' | 'layer' | 'button' | 'black' | 'white'
 export const linearGradient: Record<LinearGradient, string> = {
   layer: `linear-gradient(
     91.26deg,
@@ -36,6 +36,7 @@ export const linearGradient: Record<LinearGradient, string> = {
   )`,
   brand: '#0d548f',
   button: 'linear-gradient(226.07deg, #02e879 8.39%, #279ea5 28.31%, #475ccc 47.69%, #5b34e4 61.69%, #6324ed 68.92%)',
+  white: 'linear-gradient(65deg, rgba(240,255,255,1) 0%, rgba(255,255,255,1) 100%)',
 }
 type Secondary = 'brand' | 's200' | 's600'
 export const secondary: Record<Secondary, string> = {

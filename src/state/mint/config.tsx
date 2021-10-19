@@ -78,6 +78,7 @@ export const Forms: FormInput[] = [
         panel: 'With preserved line-breaks',
       },
       {
+        row: 1,
         title: 'Royalties',
         type: Type.InputNumber,
         id: 'royalties',
