@@ -16,10 +16,10 @@ import Explore from './Explore'
 import Create from './Create'
 import { Single } from './Create/Single'
 import DetailItem from './DetailItem'
-// import DetailItem from './DetailItem'
+import Profile from './Profile'
+import MyItem from './MyItems'
+import EditProfile from './Profile/editProfile'
 // import Stats from './Stats'
-// import MyItem from './MyItems'
-// import EditProfile from './MyItems/editProfile'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -78,9 +78,10 @@ export default function App() {
               <Route exact strict path={`/create/erc721`} component={Single} />
               <Route exact strict path="/create/erc1155" component={Single} />
               <Route exact strict path={`/items/:itemid`} component={DetailItem} />
-              {/* <Route exact strict path="/stats" component={Stats} />
-              <Route exact strict path={`/profile`} component={MyItem} />
-              <Route exact strict path={`/edit-profile`} component={EditProfile} /> */}
+              <Route exact strict path={`/profile`} component={Profile} />
+              <Route exact strict path={`/myitems`} component={MyItem} />
+              <Route exact strict path={`/profile/edit`} component={EditProfile} />
+              {/* <Route exact strict path="/stats" component={Stats} />*/}
             </Switch>
           </Web3ReactManager>
         </BodyWrapper>

@@ -510,6 +510,7 @@ export const Single = ({ history }: RouteComponentProps) => {
                 onClick={() => {
                   formik.handleSubmit()
                 }}
+                to=""
               >
                 Mint
               </Button>
@@ -517,6 +518,7 @@ export const Single = ({ history }: RouteComponentProps) => {
                 onClick={() => {
                   formik.resetForm()
                 }}
+                to=""
               >
                 Unsaved changes
               </Button>

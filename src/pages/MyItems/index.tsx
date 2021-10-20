@@ -1,141 +1,115 @@
-import { useActiveWeb3React } from 'hooks/web3'
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { getMyItems } from 'state/mint/actions'
-import { useMintState } from 'state/mint/hooks'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import ItemView from 'pages/Explore/ItemView'
+import {
+  Container,
+  Row,
+  TabContent,
+  TabPane,
+  Nav,
+  NavItem,
+  NavLink,
+  Col,
+  Card,
+  CardBody,
+  CardTitle,
+  CardText,
+  CardImg,
+} from 'reactstrap'
+import classnames from 'classnames'
 import * as Asset from 'assets'
-import { shortenAddress } from 'utils'
-import { NavLink } from 'react-router-dom'
-import { Outline, Typography } from 'styles'
+import { Item } from 'models/item'
+import { Title } from 'pages/styled'
+import { Color } from 'styles'
+import { useIsDarkMode } from 'state/user/hooks'
+import { ListHotBid } from 'state/explore/config'
 
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 100px;
-  @media only screen and (max-width: 700px) {
-    padding: 0;
+const NavTab = styled.div`
+  .nav .active {
+    background: ${({ theme }) => theme.active};
+  }
+  .tab-content::-webkit-scrollbar {
+    display: none;
+  }
+  .tab-content {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 `
-const Header = styled.div`
-  width: 100%;
-  height: 16rem;
-  position: relative;
-  display: flex;
-  border-radius: 1rem;
-  justify-content: center;
-  background-size: cover;
-  background-position: center center;
-  background-image: url(https://ipfs.rarible.com/ipfs/QmaLi63zn9drDVH3Wku22kxZ1sLF5VjLnTHdy8CGC2CtNU);
-`
-
-const Avatar = styled.div`
-  ${{ ...Outline.border.white }}
-  position: absolute;
-  bottom: -30px;
-  width: 8rem;
-  height: 8rem;
-  background-color: #ccc;
-  background-size: cover;
-  background-position: center center;
-  background-image: url(${Asset.SrcAvatar});
-  border-radius: 50%;
-`
-const Name = styled.div`
-  ${{ ...Typography.header.x30 }};
-  color: ${({ theme }) => theme.text1};
-  margin-top: 3rem;
-`
-const activeClassName = 'ACTIVE'
-const EditProfile = styled(NavLink).attrs({
-  activeClassName,
-})`
-  ${{ ...Outline.border.gray }}
-  color: ${({ theme }) => theme.text1};
-  cursor: pointer;
-  padding: 10px 20px;
-  border-radius: 20px;
-  background-color: ${({ theme }) => theme.bg3};
-  margin-top: 1rem;
-  text-decoration: none;
-`
-
-const Option = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  border-bottom: 1px solid #ccc;
-  flex-wrap: wrap;
-`
-
-const OptionItem = styled.div`
-  margin: 10px;
-  cursor: pointer;
-`
-
-const Content = styled.div`
-  margin: 1rem;
-  display: flex;
-`
-
 const optionsItem = ['Sale', 'Owned', 'Created', 'Colection', 'Followers']
 
-export default function MyItem() {
-  const dispatch = useDispatch()
-  const { account } = useActiveWeb3React()
-  const listItems = useMintState().listMyItem
-  useEffect(() => {
-    account && dispatch(getMyItems(account))
-  }, [])
-
-  const GridList = () => {
-    const matrix = new Array<Array<any>>()
-    const list = listItems
-    if (list) {
-      for (let i = 0, k = -1; i < list.length; i++) {
-        if (i % 4 == 0) {
-          k++
-          matrix[k] = []
-        }
-        matrix[k].push(list[i])
-      }
-      return matrix.map((mt, i) => (
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', width: '100%' }} key={i}>
-          {mt.map((item, index) => (
-            <ItemView item={item} key={index} isMyItem={true} />
-          ))}
-        </div>
-      ))
-    }
+export default function Myitem() {
+  const darkMode = useIsDarkMode()
+  const [activeTab, setActiveTab] = useState(optionsItem[0])
+  const toggle = (tab: any) => {
+    if (activeTab !== tab) setActiveTab(tab)
   }
-
-  const [selected, setSelected] = useState('Sale')
+  const Block = (list: Item[], nameBlock?: string, icon?: any) => {
+    return (
+      <Container>
+        {nameBlock && (
+          <Row>
+            <Title className="mt-3">
+              {nameBlock}
+              {icon}
+            </Title>
+          </Row>
+        )}
+        <Row>
+          {list.map((value, index) => (
+            <Col className="mt-4" lg="3" md="4" sm="6" xs="12" key={index}>
+              <Card style={{ backgroundColor: 'transparent' }}>
+                <CardImg style={{ minHeight: 250, maxHeight: 250, objectFit: 'cover' }} src={value.urlFile} />
+                <CardBody style={{ background: darkMode ? Color.linearGradient.black : Color.linearGradient.white }}>
+                  <CardTitle tag="h5">{value.name}</CardTitle>
+                  <CardText className="text-justify">{value.descriptions?.slice(0, 70)}</CardText>
+                  <CardText>
+                    <small className="text-muted">
+                      {value.price} {value.symbol}
+                    </small>
+                  </CardText>
+                </CardBody>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    )
+  }
   return (
     <Container>
-      <Header>
-        <Avatar></Avatar>
-        <Asset.YellowCheck style={{ position: 'absolute', width: 36, height: 36, marginLeft: 94, bottom: -28 }} />
-      </Header>
-      <Name>{account ? shortenAddress(account) : ''}</Name>
-      <EditProfile to={`/edit-profile`}>Edit Profile</EditProfile>
-      <Option>
-        {optionsItem.map((item, index) => (
-          <OptionItem
-            key={index}
-            style={{
-              borderBottom: selected === item ? '1px solid #000' : '',
-              fontWeight: selected === item ? 'bolder' : 500,
-            }}
-            onClick={() => setSelected(item)}
-          >
-            {item}
-          </OptionItem>
-        ))}
-      </Option>
-      {GridList()}
+      <NavTab>
+        <Nav tabs>
+          {optionsItem.map((v) => (
+            <NavItem key={v}>
+              <NavLink
+                className={classnames({ active: activeTab === v })}
+                onClick={() => {
+                  toggle(v)
+                }}
+              >
+                {v}
+              </NavLink>
+            </NavItem>
+          ))}
+        </Nav>
+        <TabContent activeTab={activeTab} className="p-3 tab-content" style={{ minHeight: '40vh' }}>
+          <TabPane tabId="Sale">
+            <Row>{Block(ListHotBid.slice(0, 4))}</Row>
+          </TabPane>
+          <TabPane tabId="Owned">
+            <Row>{Block(ListHotBid.slice(1, 4))}</Row>
+          </TabPane>
+          <TabPane tabId="Created">
+            <Row>{Block(ListHotBid.slice(2, 4))}</Row>
+          </TabPane>
+          <TabPane tabId="Colection">
+            <Row>{Block(ListHotBid.slice(3, 4))}</Row>
+          </TabPane>
+          <TabPane tabId="Followers">
+            <Row>{Block(ListHotBid.slice(2, 3))}</Row>
+          </TabPane>
+        </TabContent>
+      </NavTab>
     </Container>
   )
 }

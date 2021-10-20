@@ -284,8 +284,8 @@ export default function DetailItem() {
               </TabContent>
             </NavTab>
             <div className="action d-flex mt-5 justify-content-around">
-              <Button>Buy for {item.price + item.symbol}</Button>
-              <Button>Place a bid</Button>
+              <Button to="">Buy for {item.price + item.symbol}</Button>
+              <Button to="">Place a bid</Button>
             </div>
           </div>
         </Col>
