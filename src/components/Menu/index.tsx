@@ -187,12 +187,12 @@ export default function Menu() {
               <Trans>Discord</Trans>
             </div>
           </MenuItem>*/}
-          <MenuItem href="https://info.uniswap.org/">
+          <StyledNavLink to="">
             <LogOut size={14} />
             <div>
               <Trans>Logout</Trans>
             </div>
-          </MenuItem>
+          </StyledNavLink>
         </MenuFlyout>
       )}
     </StyledMenu>

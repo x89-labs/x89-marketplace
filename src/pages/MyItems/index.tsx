@@ -16,7 +16,6 @@ import {
   CardImg,
 } from 'reactstrap'
 import classnames from 'classnames'
-import * as Asset from 'assets'
 import { Item } from 'models/item'
 import { Title } from 'pages/styled'
 import { Color } from 'styles'

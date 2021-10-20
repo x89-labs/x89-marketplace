@@ -19,6 +19,7 @@ import DetailItem from './DetailItem'
 import Profile from './Profile'
 import MyItem from './MyItems'
 import EditProfile from './Profile/editProfile'
+import Box from './Box'
 // import Stats from './Stats'
 
 const AppWrapper = styled.div`
@@ -73,6 +74,7 @@ export default function App() {
           <Web3ReactManager>
             <Switch>
               <Route exact strict path="/" component={Explore} />
+              <Route exact strict path="/boxes" component={Box} />
               <Route exact strict path="/explore" component={Explore} />
               <Route exact strict path="/create" component={Create} />
               <Route exact strict path={`/create/erc721`} component={Single} />

@@ -304,10 +304,10 @@ export default function Header() {
         </StyledNavLink>
         {/* <StyledNavLink id={`stats-nav-link`} to={'/stats'}>
           <Trans>Games</Trans>
-        </StyledNavLink>
-        <StyledNavLink id={`stats-nav-link`} to={'/game'}>
-          <Trans>Stats</Trans>
         </StyledNavLink> */}
+        <StyledNavLink id={`stats-nav-link`} to={'/boxes'}>
+          <Trans>Boxes</Trans>
+        </StyledNavLink>
         <StyledNavLink
           id={`pool-nav-link`}
           to={'/create'}
