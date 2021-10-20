@@ -38,7 +38,8 @@ export interface Colors {
   secondary1: Color
   secondary2: Color
   secondary3: Color
-
+  active: Color
+  activemenu: Color
   // other
   red1: Color
   red2: Color
@@ -53,6 +54,10 @@ export interface Colors {
   error: Color
   success: Color
   warning: Color
+
+  btn: Color
+  // line-gradient
+  lgbg1: Color
 }
 
 export interface Grids {

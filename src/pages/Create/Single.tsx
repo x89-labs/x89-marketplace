@@ -18,15 +18,15 @@ import { useMintState } from 'state/mint/hooks'
 import { fieldChange, fileChange, resetForm, deleteFile } from 'state/mint/actions'
 import { Forms, validationFormCreateSchema } from 'state/mint/config'
 
-import { PutOnSaleType } from 'models/item'
 import { Type } from 'models/formInput'
 import Modal from 'components/Modal'
 import Categories from 'components/Mint/categories'
 import StablePrice from 'components/Mint/stablePrice'
 import SelectTableDate from 'components/Mint/selectTableDate'
 
-import { Button, Color, Outline, Typography } from 'styles'
+import { Color, Outline, Typography } from 'styles'
 import styled from 'styled-components'
+import { Button } from 'pages/styled'
 
 // style component
 const Title = styled.p`
@@ -45,7 +45,7 @@ const Around = styled.div`
   padding: 30px 0;
   border-radius: 16px;
   position: relative;
-  background: ${Color.linearGradient.black};
+  background: ${({ theme }) => theme.lgbg1};
   @media only screen and (max-width: 700px) {
     width: 100%;
   }
@@ -80,7 +80,7 @@ const Preview = styled.div`
     max-height: 270px;
     border-radius: 5px;
     display: block;
-    object-fit: cover;
+    object-fit: contain;
   }
 `
 const LoadingContainer = styled.div`
@@ -168,29 +168,10 @@ const TextInput = styled.div`
     margin: 10px;
   }
 `
-const AdvancedSetting = styled.button`
-  border: 0;
-  padding: 12px;
-  width: 50%;
-  margin: 0 auto;
-  margin-top: 15px;
-  text-align: center;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  background: ${({ theme }) => theme.bg4};
-  color: ${({ theme }) => theme.text1};
-`
-const CreateBtn = styled.button`
-  width: 240px;
-  height: 48px;
-  text-align: center;
-  ${{ ...Button.btn.primary }};
-`
 const CreateItem = styled.div`
   display: flex;
   margin-top: 2rem;
-  justify-content: space-between;
+  justify-content: space-around;
 `
 const ErrorMessage = styled.div`
   color: red;
@@ -205,7 +186,6 @@ export const Single = ({ history }: RouteComponentProps) => {
   const state = useMintState()
 
   const [openMint, setOpenMint] = useState(false)
-  const [showBtnAdvanced, setShowBtnAdvanced] = useState(true)
   const [item] = useState({
     name: '',
     descriptions: '',
@@ -220,7 +200,7 @@ export const Single = ({ history }: RouteComponentProps) => {
     categoryId: '',
     collectionId: '',
   })
-  const [switchType, setSwitchType] = useState<PutOnSaleType>(PutOnSaleType.FixedPrice)
+  // const [switchType, setSwitchType] = useState<PutOnSaleType>(PutOnSaleType.FixedPrice)
 
   const [openFileSelector, { plainFiles }] = useFilePicker({
     multiple: false,
@@ -228,30 +208,30 @@ export const Single = ({ history }: RouteComponentProps) => {
     readAs: 'DataURL',
   })
 
-  const Create = styled.div`
-    margin-top: 16px;
-    display: flex;
-    margin-right: 10px;
-    .type-create {
-      width: 32%;
-      text-align: center;
-      align-items: center;
-      margin-right: 10px;
-      justify-content: center;
-      background: ${darkMode ? Color.linearGradient.black : `linear-gradient(#fff,#fff)`} padding-box,
-        ${Color.linearGradient.button} border-box;
-      border-radius: 16px;
-      border: 2px solid transparent;
-      padding: 15px 0;
-      cursor: pointer;
-    }
-    .image {
-      display: block;
-      margin: 10px auto;
-      width: 40px;
-      height: 40px;
-    }
-  `
+  // const Create = styled.div`
+  //   margin-top: 16px;
+  //   display: flex;
+  //   margin-right: 10px;
+  //   .type-create {
+  //     width: 32%;
+  //     text-align: center;
+  //     align-items: center;
+  //     margin-right: 10px;
+  //     justify-content: center;
+  //     background: ${darkMode ? Color.linearGradient.black : `linear-gradient(#fff,#fff)`} padding-box,
+  //       ${Color.linearGradient.button} border-box;
+  //     border-radius: 16px;
+  //     border: 2px solid transparent;
+  //     padding: 15px 0;
+  //     cursor: pointer;
+  //   }
+  //   .image {
+  //     display: block;
+  //     margin: 10px auto;
+  //     width: 40px;
+  //     height: 40px;
+  //   }
+  // `
   useEffect(() => {
     plainFiles[0] && dispatch(fileChange({ value: plainFiles[0] }))
     plainFiles[0] && dispatch(fieldChange({ fieldName: 'fileType', fieldValue: plainFiles[0].type }))
@@ -320,33 +300,33 @@ export const Single = ({ history }: RouteComponentProps) => {
       </LoadingContainer>
     )
   }
-  // render type
-  const TypeCreate = (type: PutOnSaleType) => {
-    return (
-      <div
-        className="type-create"
-        onClick={() => setSwitchType(type)}
-        style={{
-          border: switchType === type ? '2px solid transparent' : '2px solid lightgray',
-        }}
-      >
-        {type == PutOnSaleType.FixedPrice ? (
-          <Asset.FixedPrice className="image" fill={darkMode ? '#ffffff' : '#000000'} />
-        ) : type == PutOnSaleType.TimedAuction ? (
-          <Asset.TimedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
-        ) : (
-          <Asset.UnlimitedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
-        )}
-        <span>
-          {type == PutOnSaleType.FixedPrice
-            ? 'Fixed Price'
-            : type == PutOnSaleType.TimedAuction
-            ? 'Timed Auction'
-            : 'Unlimited Auction'}
-        </span>
-      </div>
-    )
-  }
+  // // render type
+  // const TypeCreate = (type: PutOnSaleType) => {
+  //   return (
+  //     <div
+  //       className="type-create"
+  //       onClick={() => setSwitchType(type)}
+  //       style={{
+  //         border: switchType === type ? '2px solid transparent' : '2px solid lightgray',
+  //       }}
+  //     >
+  //       {type == PutOnSaleType.FixedPrice ? (
+  //         <Asset.FixedPrice className="image" fill={darkMode ? '#ffffff' : '#000000'} />
+  //       ) : type == PutOnSaleType.TimedAuction ? (
+  //         <Asset.TimedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
+  //       ) : (
+  //         <Asset.UnlimitedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
+  //       )}
+  //       <span>
+  //         {type == PutOnSaleType.FixedPrice
+  //           ? 'Fixed Price'
+  //           : type == PutOnSaleType.TimedAuction
+  //           ? 'Timed Auction'
+  //           : 'Unlimited Auction'}
+  //       </span>
+  //     </div>
+  //   )
+  // }
   // render input
   const FormInput = (location?: string) => {
     return Forms.map((r) => {
@@ -456,7 +436,7 @@ export const Single = ({ history }: RouteComponentProps) => {
         <h1 className="my-4 bold text-center">Create {isSingle ? 'single' : 'multi'} collectible</h1>
       </Row>
       {/* info item */}
-      <Row>
+      <Row style={{ height: '100%' }}>
         <Col xs={8}>
           <Title>Upload File</Title>
           <Around>
@@ -501,62 +481,45 @@ export const Single = ({ history }: RouteComponentProps) => {
               marginTop: 15,
             }}
           >
-            <Title>Put on type-create</Title>
+            {/* <Title>Put on type-create</Title>
             {switchType === 1 ? (
               <Text>Enter price to allow users instantly purchase your NFT</Text>
             ) : switchType === 2 ? (
               <Text>Set a period of time for which buyers can place bids</Text>
             ) : (
               <Text>{`Put your new NFT on Polrare's type-create`}</Text>
-            )}
+            )} */}
             {/* choose type */}
-            <Create>
+            {/* <Create>
               {TypeCreate(PutOnSaleType.FixedPrice)}
               {isSingle && TypeCreate(PutOnSaleType.TimedAuction)}
               {TypeCreate(PutOnSaleType.UnlimitedAuction)}
-            </Create>
+            </Create> */}
             {/* form info */}
-            <div>
+            {/* <div>
               {switchType === PutOnSaleType.FixedPrice && FormInput('price')}
               <div style={{ justifyContent: 'space-between', display: 'flex', flexWrap: 'wrap' }}>
                 {switchType === PutOnSaleType.TimedAuction && FormInput('bids')}
               </div>
-            </div>
+            </div> */}
             {FormInput('infomation')}
             {isSingle === false && FormInput('multiple')}
-            {/* advance */}
-            <AdvancedSetting onClick={() => setShowBtnAdvanced(!showBtnAdvanced)}>
-              {showBtnAdvanced == true ? 'Show Advenced Setting' : 'Hide Advenced Setting'}
-            </AdvancedSetting>
-            <div hidden={showBtnAdvanced}>
-              <TextInput>
-                <Title>Properties</Title>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <div className="text-input" style={{ width: '49%' }}>
-                    <input type="text" placeholder="e.g. Size" />
-                  </div>
-                  <div className="text-input" style={{ width: '49%' }}>
-                    <input type="text" placeholder="e.g.M" />
-                  </div>
-                </div>
-              </TextInput>
-            </div>
             {/* action */}
             <CreateItem>
-              <CreateBtn
+              <Button
                 onClick={() => {
                   formik.handleSubmit()
                 }}
               >
                 Mint
-              </CreateBtn>
-              <CreateBtn
+              </Button>
+              <Button
                 onClick={() => {
                   formik.resetForm()
                 }}
               >
                 Unsaved changes
-              </CreateBtn>
+              </Button>
             </CreateItem>
           </Row>
 

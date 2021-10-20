@@ -76,6 +76,8 @@ export function colors(darkMode: boolean): Colors {
     secondary1: darkMode ? '#2172E5' : '#ff007a',
     secondary2: darkMode ? '#17000b26' : '#F6DDE8',
     secondary3: darkMode ? '#17000b26' : '#FDEAF1',
+    active: darkMode ? '#17000b26' : '#FDEAF1',
+    activemenu: darkMode ? '#0AC7C9' : 'rgb(0 0 0 / 23%)',
 
     // other
     red1: '#FD4040',
@@ -91,7 +93,10 @@ export function colors(darkMode: boolean): Colors {
     error: '#FD4040',
     success: '#27AE60',
     warning: '#ff8f00',
-
+    lgbg1: darkMode
+      ? 'linear-gradient(133.84deg,#4e4e4e -16.04%,#333333 9.33%,#1a1a1a 32.02%,#1a1a1a 62.06%,#262626 87.42%,#4e4e4e 112.12%)'
+      : 'linear-gradient(65deg, rgba(240,255,255,1) 0%, rgba(255,255,255,1) 100%)',
+    btn: darkMode ? `#0AC7C9` : ``,
     // dont wanna forget these blue yet
     // blue4: darkMode ? '#153d6f70' : '#C4D9F8',
     // blue5: darkMode ? '#153d6f70' : '#EBF4FF',
@@ -194,7 +199,9 @@ html {
   color: ${({ theme }) => theme.text1};
   background-color: ${({ theme }) => theme.bg1} !important;
 }
-
+.table{
+  color: ${({ theme }) => theme.blue1};
+}
 a {
  color: ${({ theme }) => theme.blue1} !important; 
 }

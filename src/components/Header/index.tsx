@@ -198,7 +198,7 @@ const StyledNavLink = styled(NavLink).attrs({
     border-radius: 12px;
     font-weight: 600;
     color: ${({ theme }) => theme.text1};
-    background-color: ${({ theme }) => theme.bg2};
+    background-color: ${({ theme }) => theme.activemenu};
   }
 
   :hover,
