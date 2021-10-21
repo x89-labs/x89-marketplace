@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import {
   Container,
   Row,
@@ -17,23 +16,11 @@ import {
 } from 'reactstrap'
 import classnames from 'classnames'
 import { Item } from 'models/item'
-import { Title } from 'pages/styled'
+import { NavTab, Title } from 'pages/styled'
 import { Color } from 'styles'
 import { useIsDarkMode } from 'state/user/hooks'
 import { ListHotBid } from 'state/explore/config'
 
-const NavTab = styled.div`
-  .nav .active {
-    background: ${({ theme }) => theme.active};
-  }
-  .tab-content::-webkit-scrollbar {
-    display: none;
-  }
-  .tab-content {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-`
 const optionsItem = ['Sale', 'Owned', 'Created', 'Colection', 'Followers']
 
 export default function Myitem() {

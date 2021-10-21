@@ -6,20 +6,7 @@ import { Container, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink, Table 
 import { shortenAddress } from 'utils'
 import classnames from 'classnames'
 import styled from 'styled-components'
-import { Button } from 'pages/styled'
-
-const NavTab = styled.div`
-  .nav .active {
-    background: ${({ theme }) => theme.active};
-  }
-  .tab-content::-webkit-scrollbar {
-    display: none;
-  }
-  .tab-content {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-`
+import { Button, FlexAround, NavTab, Title } from 'pages/styled'
 
 const Price = styled.span`
   color: ${({ theme }) => theme.blue1};
@@ -50,7 +37,7 @@ export default function DetailItem() {
   }
   const [item] = useState({
     id: 'a8a01adc-0dd5-4ed8-b942-85f5d9636b15',
-    name: 'Built-In',
+    name: 'Built-In #1288',
     descriptions:
       'Experience the art created and animated by Artificial Intelligence! \nIntroducing a new limited edition 4K AI video paintings with increased frame rate!\nWe additionally involved 4 new neural networks in the production process, which made it possible to decompose the video into frames, increase their number, then increase the size with improved quality and then glue them back into a full-fledged video. The production has become much more complicated and interesting. All owners of previous versions of AI video can contact us on Twitter and increase their video size for an additional fee',
     price: 22,
@@ -109,20 +96,21 @@ export default function DetailItem() {
   return (
     <Container fluid>
       <Row>
-        <Col lg={7} className="preview p-3  text-center">
+        <Col lg={8} className="preview p-3  text-center">
           <img src={item.urlFile} style={{ maxHeight: '85vh' }} alt="" />
         </Col>
-        <Col lg={5} className="info p-3">
+        <Col lg={4} className="info p-3">
           {/* head */}
-          <div className="info-header py-2 px-3 rounded d-flex justify-content-between">
-            <span className="h5 mb-0 align-self-center">{`# ` + item.name}</span>
-            <span style={{ position: 'relative' }}>
-              <button className="px-1 border rounded">
-                <Heart width={12} height={12} />
-                <small>{` 25`}</small>
+          <div className="info-header py-2 rounded d-flex justify-content-between">
+            <Title className="align-self-center">{item.name}</Title>
+
+            <span style={{ display: 'flex', position: 'relative', alignSelf: 'flex-start' }}>
+              <button className="px-1 border rounded d-flex align-self-center">
+                <Heart className="me-2" width={28} height={28} />
+                <small className="align-self-center">{` 25`}</small>
               </button>
               <MoreHorizontal
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', width: 40, height: 40 }}
                 className="info-more m-1 ms-2"
                 onClick={() => setMore(!more)}
               />
@@ -170,11 +158,13 @@ export default function DetailItem() {
               <Octagon className="mx-2 align-self-center" width={10} />
               {item.numberOfCopies} of {item.numberOfCopies} available
             </div>
-            <div className="description">{item.descriptions}</div>
-            <div className="creator my-3 d-flex ">
-              <img src={item.urlFile} alt="" className="rounded-circle" style={{ width: 40, height: 40 }} />
-              <span className="mx-3 align-self-center">Polrare</span>
-              <span className="p-2 border rounded ms-auto">{shortenAddress(item.owner)}</span>
+            <div className="creator my-3">
+              <span className="text-secondary h6">Creator</span>
+              <div className=" d-flex mt-2">
+                <img src={item.urlFile} alt="" className="rounded-circle" style={{ width: 40, height: 40 }} />
+                <span className="mx-3 align-self-center">Polrare</span>
+                <span className="p-2 border rounded ms-auto">{shortenAddress(item.owner)}</span>
+              </div>
             </div>
             <NavTab>
               <Nav tabs>
@@ -222,6 +212,8 @@ export default function DetailItem() {
                       <span className="mx-3">Polrare</span>
                     </div>
                     <span className="text-secondary h6">Properties</span>
+                    <span className="text-secondary h6">Descriptions</span>
+                    <div className="description">{item.descriptions}</div>
                   </Row>
                 </TabPane>
                 <TabPane tabId="2">
@@ -283,10 +275,10 @@ export default function DetailItem() {
                 </TabPane>
               </TabContent>
             </NavTab>
-            <div className="action d-flex mt-5 justify-content-around">
-              <Button to="">Buy for {item.price + item.symbol}</Button>
-              <Button to="">Place a bid</Button>
-            </div>
+            <FlexAround>
+              <Button>Buy for {item.price + item.symbol}</Button>
+              <Button>Place a bid</Button>
+            </FlexAround>
           </div>
         </Col>
       </Row>

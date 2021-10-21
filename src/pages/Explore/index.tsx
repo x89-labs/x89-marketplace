@@ -5,7 +5,7 @@ import { fieldChange, getListItems } from 'state/explore/actions'
 import { useExploreState } from 'state/explore/hooks'
 import * as Asset from 'assets'
 import styled from 'styled-components'
-import { Button, Color, Typography } from 'styles'
+import { Button, Color } from 'styles'
 import { ListHotBid } from 'state/explore/config'
 import { getCategories } from 'state/mint/actions'
 import { useModalOpen, useToggleModal } from 'state/application/hooks'
@@ -16,6 +16,7 @@ import { Item } from 'models/item'
 import PlaceholderLoading from './placeholderLoading'
 import { useIsDarkMode } from 'state/user/hooks'
 import { RouteComponentProps } from 'react-router-dom'
+import { Title } from 'pages/styled'
 
 // import * as theme from 'theme'
 // import ItemView from './ItemView'
@@ -147,11 +148,6 @@ const BtnLoadmore = styled.div`
   ${{ ...Button.btn.secondary }};
   margin-top: 1rem;
   text-align: center;
-`
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-  ${{ ...Typography.header.x70 }}
 `
 export default function Explore({ history }: RouteComponentProps) {
   const darkMode = useIsDarkMode()

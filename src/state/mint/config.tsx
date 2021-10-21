@@ -139,35 +139,35 @@ export const validationFormCreateSchema = Yup.object().shape({
   name: Yup.string().required('* Field Required'),
   price: Yup.string().required('* Field Required'),
   symbol: Yup.string().required('* Field Required'),
-  description: Yup.string().required('* Field Required'),
+  panel: Yup.string().required('* Field Required'),
 })
 
 export const EditForm = [
   {
     id: 'displayName',
     title: 'Display name',
-    placeholder: 'Enter your display name',
+    placeHolder: 'Enter your display name',
   },
   {
     id: 'customURL',
     title: 'Custom URL',
-    placeholder: 'app.polrare.co/ Enter short URL',
-    description: 'Customize your URL on Polrare Market. Must only contain lowercase letters, numbers, and hyphens.',
+    placeHolder: 'app.polrare.co/ Enter short URL',
+    panel: 'Customize your URL on Polrare Market. Must only contain lowercase letters, numbers, and hyphens.',
   },
   {
     id: 'bio',
     title: 'Bio ',
-    placeholder: 'Write about yourself in a few words',
+    placeHolder: 'Write about yourself in a few words',
   },
   {
     id: 'personalSite',
     title: 'Personal site or portfolio',
-    placeholder: 'https://',
-    description: 'Display name',
+    placeHolder: 'https://',
+    panel: 'Display name',
   },
   {
     id: 'emailE',
     title: 'Email  (Optional)',
-    placeholder: 'Your email for marketplace notifications',
+    placeHolder: 'Your email for marketplace notifications',
   },
 ]

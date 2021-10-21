@@ -5,8 +5,8 @@ import { useDispatch } from 'react-redux'
 import useFilePicker from 'hooks/useFilePicker'
 import { EditForm } from 'state/mint/config'
 import { fileChange } from 'state/mint/actions'
-import { Col, Container, Row, Input } from 'reactstrap'
-import { Button } from 'pages/styled'
+import { Col, Container, Row } from 'reactstrap'
+import { Around, Button, ErrorMessage, LabelInput, SubTitle, TextDescription, TextInput, Title } from 'pages/styled'
 import { RouteComponentProps } from 'react-router-dom'
 
 export default function EditProfile({ history }: RouteComponentProps) {
@@ -37,64 +37,62 @@ export default function EditProfile({ history }: RouteComponentProps) {
             <div>
               <Icon.ArrowLeft />
             </div>
-            <div>Manage collectible type</div>
           </div>
         </span>
       </Row>
       <Row>
         <Col>
           <div className="text-center">
-            <h1>Edit Profile</h1>
-            <p>
+            <Title>Edit Profile</Title>
+            <SubTitle>
               You can set preferred display name, create your branded profile URL and manage other personal settings
-            </p>
+            </SubTitle>
           </div>
         </Col>
       </Row>
       <Row>
         <Col xs={8}>
-          <div>
-            <div>
-              {EditForm.map((item, index) => (
-                <div key={index} className="mb-3">
-                  <h5>{item.title}</h5>
-                  <Input id={item.id} placeholder={item.placeholder} />
-                  <small className="text-secondary">{item.description}</small>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Col>
-        <Col xs={4}>
-          <div className="text-center">
-            <h5 className="text-center">Avatar</h5>
-            {plainFiles[0] ? (
-              <img
-                className="d-block my-3"
-                style={{ height: 220, width: 220, margin: 'auto', objectFit: 'cover', borderRadius: '50%' }}
-                src={URL.createObjectURL(plainFiles[0])}
-                onClick={() => openFileSelector()}
-              />
-            ) : (
-              <div
-                style={{ border: '1px dashed grey', borderRadius: 15, padding: 30 }}
-                onClick={() => openFileSelector()}
-              >
-                <Asset.Plus
-                  width={80}
-                  height={80}
-                  style={{ borderRadius: '50%', border: '1px groove #cccc', padding: 10 }}
+          {EditForm.map((f) => (
+            <TextInput key={f.id}>
+              <LabelInput style={{ margin: 0 }}>{f.title}</LabelInput>
+              <div className="text-input ">
+                <input
+                  id={f.id}
+                  type={'input'}
+                  placeholder={f.placeHolder}
+                  // onBlur={(e) => formik.setFieldValue(f.id, e.target.value)}
+                  // defaultValue={getIn(formik.values, f.id)}
                 />
               </div>
-            )}
-            <small className="text-secondary">We recommend an image of at least 200x200. Gifs work too.</small>
-          </div>
+              <ErrorMessage></ErrorMessage>
+              <TextDescription>{f.panel}</TextDescription>
+            </TextInput>
+          ))}
+        </Col>
+        <Col xs={4} className="text-center">
+          <LabelInput style={{ marginTop: 15, marginBottom: 0 }}>Avatar</LabelInput>
+          {plainFiles[0] ? (
+            <img
+              className="d-block my-3"
+              style={{ height: 220, width: 220, margin: 'auto', objectFit: 'cover', borderRadius: '50%' }}
+              src={URL.createObjectURL(plainFiles[0])}
+              onClick={() => openFileSelector()}
+            />
+          ) : (
+            <Around>
+              <Asset.Plus
+                width={72}
+                height={72}
+                onClick={() => openFileSelector()}
+                style={{ borderRadius: '50%', border: '1px groove #cccc', padding: 10, cursor: 'pointer' }}
+              />
+            </Around>
+          )}
+          <TextDescription>We recommend an image of at least 200x200. Gifs work too.</TextDescription>
         </Col>
       </Row>
       <Row>
-        <Button className="w-25 m-auto text-center" to="">
-          Update profile
-        </Button>
+        <Button className="w-25 m-auto mt-5 text-center">Update profile</Button>
       </Row>
     </Container>
   )

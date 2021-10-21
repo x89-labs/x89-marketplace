@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { Color, Typography } from 'styles'
 import { useIsDarkMode } from 'state/user/hooks'
 import * as Asset from 'assets'
+import { SubTitle, Title } from 'pages/styled'
 
 export default function Create({ history }: RouteComponentProps) {
   const darkMode = useIsDarkMode()
@@ -44,15 +45,6 @@ export default function Create({ history }: RouteComponentProps) {
       border-radius: 8px;
       border: 1px solid #939393;
     }
-  `
-  const Title = styled.p`
-    ${{ ...Typography.header.x70 }}
-  `
-  const Text = styled.p`
-    ${{ ...Typography.fontSize.x30 }}
-    ${{ ...Typography.fontWeight.bold }}
-    color: ${({ theme }) => theme.text5};
-    margin-top: 20px;
   `
 
   const Single = () => {
@@ -93,16 +85,16 @@ export default function Create({ history }: RouteComponentProps) {
   return (
     <>
       <Container style={{ maxWidth: '800px', justifyContent: 'center', textAlign: 'center', marginTop: '3vh' }}>
-        <Title>Create collectible</Title>
-        <Text>
+        <Title className="text-center">Create collectible</Title>
+        <SubTitle>
           Choose “Single” if you want your collectible to be one of a kind or “Multiple” if you want to sell one
           collectible multiple times
-        </Text>
+        </SubTitle>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', margin: '30px auto' }}>
           <SingleComponent />
           <MultipleComponent />
         </div>
-        <Text>We do not own your private keys and cannot access your funds without your confirmation</Text>
+        <SubTitle>We do not own your private keys and cannot access your funds without your confirmation</SubTitle>
       </Container>
     </>
   )

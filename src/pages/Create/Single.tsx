@@ -24,32 +24,11 @@ import Categories from 'components/Mint/categories'
 import StablePrice from 'components/Mint/stablePrice'
 import SelectTableDate from 'components/Mint/selectTableDate'
 
-import { Color, Outline, Typography } from 'styles'
+import { Outline, Typography } from 'styles'
 import styled from 'styled-components'
-import { Button } from 'pages/styled'
+import { Around, Button, ErrorMessage, FlexAround, LabelInput, TextDescription, TextInput } from 'pages/styled'
 
 // style component
-const Title = styled.p`
-  ${{ ...Typography.header.x30 }}
-`
-const Text = styled.span`
-  ${{ ...Typography.fontSize.x20 }}
-  color: ${Color.neutral.gray}
-`
-const Around = styled.div`
-  margin-top: 10px;
-  height: auto;
-  border: 1px dashed ${Color.neutral.gray};
-  display: flex;
-  justify-content: center;
-  padding: 30px 0;
-  border-radius: 16px;
-  position: relative;
-  background: ${({ theme }) => theme.lgbg1};
-  @media only screen and (max-width: 700px) {
-    width: 100%;
-  }
-`
 const Preview = styled.div`
   position: sticky;
   top: 10vh;
@@ -116,75 +95,14 @@ padding: 10px;
   ${{ ...Outline.border.gray }}
 }
 `
-const CloseBtn = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
-  position: absolute;
-  padding: 4px 3px;
-  top: 20px;
-  right: 39px;
-  border: 1px solid ${Color.neutral.gray};
-  cursor: pointer;
-  .closeBtn {
-    margin: 10px;
-  }
-  @media only screen and (max-width: 700px) {
-    right: 14px;
-    top: 10px;
-  }
-`
-const ChooseFile = styled.div`
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  margin: 14px auto;
-  display: flex;
-  padding: 20px;
-  border: 1px solid ${Color.neutral.gray};
-  background: ${({ theme }) => theme.bg2};
-  cursor: pointer;
-`
-const TextInput = styled.div`
-  margin-top: 15px;
-  // margin-right: 20px;
-  width: 100%;
-  .text-input {
-    position: relative;
-    margin-top: 10px;
-    background: ${({ theme }) => theme.bg1};
-    height: 48px;
-    display: flex;
-    border: 1px solid #ccc;
-    justify-content: space-between;
-    border-radius: 10px;
-  }
-  input {
-    background: ${({ theme }) => theme.bg1};
-    color: ${({ theme }) => theme.text1};
-    width: 100%;
-    border: none;
-    outline: none;
-    margin: 10px;
-  }
-`
-const CreateItem = styled.div`
-  display: flex;
-  margin-top: 2rem;
-  justify-content: space-around;
-`
-const ErrorMessage = styled.div`
-  color: red;
-  ${{ ...Typography.fontSize.x20 }}
-  ${{ ...Typography.fontWeight.bold }}
-`
 
 export const Single = ({ history }: RouteComponentProps) => {
   const { isSingle } = window.history.state.state
   const dispatch = useDispatch()
   const darkMode = useIsDarkMode()
   const state = useMintState()
-
+  const [showImg, setShowImg] = useState(false)
+  const toggle = () => setShowImg(!showImg)
   const [openMint, setOpenMint] = useState(false)
   const [item] = useState({
     name: '',
@@ -200,46 +118,15 @@ export const Single = ({ history }: RouteComponentProps) => {
     categoryId: '',
     collectionId: '',
   })
-  // const [switchType, setSwitchType] = useState<PutOnSaleType>(PutOnSaleType.FixedPrice)
-
   const [openFileSelector, { plainFiles }] = useFilePicker({
     multiple: false,
     accept: ['.png', '.jpg', '.mp4', '.mov', '.gif', '.svg'],
     readAs: 'DataURL',
   })
-
-  // const Create = styled.div`
-  //   margin-top: 16px;
-  //   display: flex;
-  //   margin-right: 10px;
-  //   .type-create {
-  //     width: 32%;
-  //     text-align: center;
-  //     align-items: center;
-  //     margin-right: 10px;
-  //     justify-content: center;
-  //     background: ${darkMode ? Color.linearGradient.black : `linear-gradient(#fff,#fff)`} padding-box,
-  //       ${Color.linearGradient.button} border-box;
-  //     border-radius: 16px;
-  //     border: 2px solid transparent;
-  //     padding: 15px 0;
-  //     cursor: pointer;
-  //   }
-  //   .image {
-  //     display: block;
-  //     margin: 10px auto;
-  //     width: 40px;
-  //     height: 40px;
-  //   }
-  // `
   useEffect(() => {
     plainFiles[0] && dispatch(fileChange({ value: plainFiles[0] }))
     plainFiles[0] && dispatch(fieldChange({ fieldName: 'fileType', fieldValue: plainFiles[0].type }))
   }, [plainFiles, dispatch])
-  // useEffect(() => {
-  //   dispatch(getCategories())
-  // }, [dispatch])
-
   const formik = useFormik({
     initialValues: item,
     validationSchema: validationFormCreateSchema,
@@ -281,16 +168,16 @@ export const Single = ({ history }: RouteComponentProps) => {
             <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
           )}
           <div className="content">
-            <Title>Mint</Title>
-            <Text>Send transaction to create your NFT</Text>
+            <LabelInput>Mint</LabelInput>
+            <TextDescription>Send transaction to create your NFT</TextDescription>
           </div>
         </div>
         <div className=" btn btnLoading">Inprogress...</div>
         <div className="mint">
           <Asset.Check fill={'#ccc'} height={50} width={50} />
           <div className="content">
-            <Title>Approve</Title>
-            <Text>This transaction is conducted only once per collection</Text>
+            <LabelInput>Approve</LabelInput>
+            <TextDescription>This transaction is conducted only once per collection</TextDescription>
           </div>
         </div>
         <div className=" btn btnLoading">Start</div>
@@ -300,33 +187,6 @@ export const Single = ({ history }: RouteComponentProps) => {
       </LoadingContainer>
     )
   }
-  // // render type
-  // const TypeCreate = (type: PutOnSaleType) => {
-  //   return (
-  //     <div
-  //       className="type-create"
-  //       onClick={() => setSwitchType(type)}
-  //       style={{
-  //         border: switchType === type ? '2px solid transparent' : '2px solid lightgray',
-  //       }}
-  //     >
-  //       {type == PutOnSaleType.FixedPrice ? (
-  //         <Asset.FixedPrice className="image" fill={darkMode ? '#ffffff' : '#000000'} />
-  //       ) : type == PutOnSaleType.TimedAuction ? (
-  //         <Asset.TimedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
-  //       ) : (
-  //         <Asset.UnlimitedAuction className="image" fill={darkMode ? '#ffffff' : '#000000'} />
-  //       )}
-  //       <span>
-  //         {type == PutOnSaleType.FixedPrice
-  //           ? 'Fixed Price'
-  //           : type == PutOnSaleType.TimedAuction
-  //           ? 'Timed Auction'
-  //           : 'Unlimited Auction'}
-  //       </span>
-  //     </div>
-  //   )
-  // }
   // render input
   const FormInput = (location?: string) => {
     return Forms.map((r) => {
@@ -335,7 +195,7 @@ export const Single = ({ history }: RouteComponentProps) => {
           if (f.type === Type.Input) {
             return (
               <TextInput key={index}>
-                <Title style={{ margin: 0 }}>{f.title}</Title>
+                <LabelInput style={{ margin: 0 }}>{f.title}</LabelInput>
                 <div className="text-input ">
                   <input
                     id={f.id}
@@ -346,13 +206,13 @@ export const Single = ({ history }: RouteComponentProps) => {
                   />
                 </div>
                 <ErrorMessage>{errorMessage(f.id)}</ErrorMessage>
-                <Text>{f.panel}</Text>
+                <TextDescription>{f.panel}</TextDescription>
               </TextInput>
             )
           } else if (f.type === Type.InputDropdown) {
             return (
               <TextInput key={index}>
-                <Title style={{ margin: 0 }}>{f.title}</Title>
+                <LabelInput style={{ margin: 0 }}>{f.title}</LabelInput>
                 <div className="text-input">
                   <input
                     id={f.id}
@@ -366,13 +226,13 @@ export const Single = ({ history }: RouteComponentProps) => {
                   />
                   <StablePrice option={f.option} />
                 </div>
-                <Text>{f.panel}</Text>
+                <TextDescription>{f.panel}</TextDescription>
               </TextInput>
             )
           } else if (f.type === Type.Dropdown) {
             return (
               <TextInput style={{ width: '49%' }} key={f.id}>
-                <Title style={{ margin: 0 }}>{f.title}</Title>
+                <LabelInput style={{ margin: 0 }}>{f.title}</LabelInput>
                 <div className="text-input">
                   <SelectTableDate option={f.option} />
                 </div>
@@ -381,7 +241,7 @@ export const Single = ({ history }: RouteComponentProps) => {
           } else if (f.type === Type.InputNumber) {
             return (
               <TextInput key={f.id}>
-                <Title style={{ margin: 0 }}>{f.title}</Title>
+                <LabelInput style={{ margin: 0 }}>{f.title}</LabelInput>
                 <div className="text-input">
                   <input
                     id={f.id}
@@ -414,7 +274,7 @@ export const Single = ({ history }: RouteComponentProps) => {
     <Container style={{ width: 1000 }}>
       {/* back window */}
       <Row>
-        <Title onClick={() => history.goBack()}>
+        <LabelInput onClick={() => history.goBack()}>
           <div
             style={{
               position: 'relative',
@@ -430,32 +290,32 @@ export const Single = ({ history }: RouteComponentProps) => {
             </div>
             <div>Manage collectible type</div>
           </div>
-        </Title>
+        </LabelInput>
       </Row>
       <Row>
         <h1 className="my-4 bold text-center">Create {isSingle ? 'single' : 'multi'} collectible</h1>
       </Row>
       {/* info item */}
-      <Row style={{ height: '100%' }}>
+      <Row>
         <Col xs={8}>
-          <Title>Upload File</Title>
+          <LabelInput>Upload File</LabelInput>
+
           <Around>
             <FormGroup hidden={state.file ? true : false}>
-              <Label className="labelUpload">PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</Label>
-              <br />
-              <ChooseFile onClick={() => openFileSelector()}>
-                <Asset.Plus width={20} height={20} />
-              </ChooseFile>
+              <Label className="d-block mb-3">PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</Label>
+              <Asset.Plus
+                onClick={() => openFileSelector()}
+                width={72}
+                height={72}
+                style={{ borderRadius: '50%', border: '1px groove #cccc', padding: 10, cursor: 'pointer' }}
+              />
             </FormGroup>
             <FormGroup hidden={state.file ? false : true}>
-              <CloseBtn
+              <div
                 onClick={() => {
                   state.file && dispatch(deleteFile({ value: state.file }))
                 }}
               >
-                <Asset.Close width={12} height={12} className="closeBtn" fill={darkMode ? '#fff' : '#000'} />
-              </CloseBtn>
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
                 {state.file && state.file.type.includes('image') ? (
                   <img src={URL.createObjectURL(state.file)} style={{ borderRadius: 10, maxHeight: 200 }}></img>
                 ) : (
@@ -465,8 +325,8 @@ export const Single = ({ history }: RouteComponentProps) => {
                       playing={false}
                       muted={true}
                       controls={true}
-                      width={'90%'}
-                      height={'auto'}
+                      width={'100%'}
+                      style={{ maxHeight: 200, margin: 'auto' }}
                     />
                   )
                 )}
@@ -474,43 +334,20 @@ export const Single = ({ history }: RouteComponentProps) => {
             </FormGroup>
           </Around>
 
-          <Categories />
-
           <Row
             style={{
               marginTop: 15,
             }}
           >
-            {/* <Title>Put on type-create</Title>
-            {switchType === 1 ? (
-              <Text>Enter price to allow users instantly purchase your NFT</Text>
-            ) : switchType === 2 ? (
-              <Text>Set a period of time for which buyers can place bids</Text>
-            ) : (
-              <Text>{`Put your new NFT on Polrare's type-create`}</Text>
-            )} */}
-            {/* choose type */}
-            {/* <Create>
-              {TypeCreate(PutOnSaleType.FixedPrice)}
-              {isSingle && TypeCreate(PutOnSaleType.TimedAuction)}
-              {TypeCreate(PutOnSaleType.UnlimitedAuction)}
-            </Create> */}
-            {/* form info */}
-            {/* <div>
-              {switchType === PutOnSaleType.FixedPrice && FormInput('price')}
-              <div style={{ justifyContent: 'space-between', display: 'flex', flexWrap: 'wrap' }}>
-                {switchType === PutOnSaleType.TimedAuction && FormInput('bids')}
-              </div>
-            </div> */}
-            {FormInput('infomation')}
+            <Categories />
             {isSingle === false && FormInput('multiple')}
+            {FormInput('infomation')}
             {/* action */}
-            <CreateItem>
+            <FlexAround>
               <Button
                 onClick={() => {
                   formik.handleSubmit()
                 }}
-                to=""
               >
                 Mint
               </Button>
@@ -518,11 +355,10 @@ export const Single = ({ history }: RouteComponentProps) => {
                 onClick={() => {
                   formik.resetForm()
                 }}
-                to=""
               >
                 Unsaved changes
               </Button>
-            </CreateItem>
+            </FlexAround>
           </Row>
 
           {/* loading  */}
@@ -533,33 +369,47 @@ export const Single = ({ history }: RouteComponentProps) => {
         {/*  */}
         <Col xs={4}>
           <Preview>
-            <h4>Preview</h4>
+            <LabelInput>Preview</LabelInput>
             <div className="content">
               <p className="text-center" hidden={state.file ? false : true}>
                 <img width={'24px'} src={darkMode ? Logo : Logo} alt="logo" /> Polrare
               </p>
-              <Text hidden={state.file ? true : false}> Upload file to preview your brand new NFT</Text>
-              {/* <PreviewFile /> */}
-              {state.file && state.file.type.includes('image') ? (
-                state.file ? (
-                  <img src={URL.createObjectURL(state.file)} className="image" />
+              <TextDescription hidden={state.file ? true : false}>
+                Upload file to preview your brand new NFT
+              </TextDescription>
+              {state.file &&
+                (state.file.type.includes('image') ? (
+                  <img src={URL.createObjectURL(state.file)} className="image" onClick={toggle} />
                 ) : (
-                  <div className="image">
+                  <ReactPlayer
+                    url={URL.createObjectURL(state.file)}
+                    playing={false}
+                    muted={true}
+                    controls={true}
+                    width={'90%'}
+                    style={{ maxHeight: 200, margin: 'auto' }}
+                  />
+                ))}
+
+              <TextDescription hidden={!isSingle && state.file ? false : true}>
+                {getIn(formik.values, 'numberOfCopies') + ` `}
+              </TextDescription>
+              <TextDescription hidden={state.file ? false : true}>{getIn(formik.values, 'name')}</TextDescription>
+              <Modal isOpen={showImg} onDismiss={toggle}>
+                {state.file &&
+                  (state.file.type.includes('image') ? (
+                    <img style={{ width: '100%' }} src={URL.createObjectURL(state.file)} onClick={toggle} />
+                  ) : (
                     <ReactPlayer
                       url={URL.createObjectURL(state.file)}
                       playing={false}
                       muted={true}
                       controls={true}
                       width={'90%'}
-                      height={'auto'}
+                      style={{ maxHeight: 200, margin: 'auto' }}
                     />
-                  </div>
-                )
-              ) : (
-                <></>
-              )}
-              <Text hidden={!isSingle && state.file ? false : true}> {getIn(formik.values, 'numberOfCopies')}</Text>
-              <Text hidden={state.file ? false : true}> {getIn(formik.values, 'name')}</Text>
+                  ))}
+              </Modal>
               <div
                 hidden={!isSingle && getIn(formik.values, 'numberOfCopies') > 1 ? false : true}
                 style={{

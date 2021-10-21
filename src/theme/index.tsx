@@ -200,13 +200,13 @@ html {
   background-color: ${({ theme }) => theme.bg1} !important;
 }
 .table{
-  color: ${({ theme }) => theme.blue1};
+  color: ${({ theme }) => theme.text1};
 }
 a {
- color: ${({ theme }) => theme.blue1} !important; 
+ color: ${({ theme }) => theme.text1} !important; 
 }
 body{
   background-color:transparent;
-  color: ${({ theme }) => theme.blue1} !important; 
+  color: ${({ theme }) => theme.text1} !important; 
 }
 `

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import * as Asset from 'assets'
 import { Container } from 'reactstrap'
-import { Button } from 'pages/styled'
+import { ButtonLink } from 'pages/styled'
 import { useWeb3React } from '@web3-react/core'
 import { shortenAddress } from 'utils'
 import Myitem from 'pages/MyItems'
@@ -46,7 +46,7 @@ export default function Profile() {
         <div className="mt-5 text-center">
           <h5>{account ? 'Polrare Name' : ''}</h5>
           <h6 className="p-2 text-secondary m-auto my-1">{account ? shortenAddress(account) : ''}</h6>
-          <Button to="profile/edit">Edit Profile</Button>
+          <ButtonLink to="profile/edit">Edit Profile</ButtonLink>
         </div>
       </Profiles>
       {/* my item */}
